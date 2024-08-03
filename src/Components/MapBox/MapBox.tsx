@@ -1,52 +1,47 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import mapboxgl, { LngLatLike } from "mapbox-gl";
+import mapboxgl, { LngLatLike, Map, MapMouseEvent } from "mapbox-gl";
 import { useRef, useEffect, useState, useContext } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { MapBoxContext } from "./Context/MapBoxContext";
 import { useNavigate } from "react-router-dom";
 import { Coords } from "../../Types/Сoords";
 
-/* const markerHeight = 50;
-const markerRadius = 10;
-const linearOffset = 25;
-const popupOffsets = {
-  top: [0, 0],
-  "top-left": [0, 0],
-  "top-right": [0, 0],
-  bottom: [0, -markerHeight],
-  "bottom-left": [
-    linearOffset,
-    (markerHeight - markerRadius + linearOffset) * -1,
-  ],
-  "bottom-right": [
-    -linearOffset,
-    (markerHeight - markerRadius + linearOffset) * -1,
-  ],
-  left: [markerRadius, (markerHeight - markerRadius) * -1],
-  right: [-markerRadius, (markerHeight - markerRadius) * -1],
-}; */
+// Cyprus
 
 export const MapBox = () => {
   const navigate = useNavigate();
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const [userLocation, setUserLocation] = useState<LngLatLike>({
-    lng: 0,
-    lat: 0,
-  });
+  const initialCoords: LngLatLike = { lng: 33.354173, lat: 35.172871 };
+
+  const [userLocation, setUserLocation] = useState<LngLatLike>(initialCoords);
   const { map, setMap } = useContext(MapBoxContext);
 
-  useEffect(() => {
-    window.navigator.geolocation.getCurrentPosition((e) => {
-      console.log(e);
-      const coords: LngLatLike = {
-        lng: e.coords.longitude,
-        lat: e.coords.latitude,
-      };
-      setUserLocation(coords);
-    });
+  const onMapLoad = ({ target }: { type: "load"; target: Map }) => {
+    window.navigator.geolocation.getCurrentPosition(
+      (e) => {
+        console.log(e);
+        const coords: LngLatLike = {
+          lng: e.coords.longitude,
+          lat: e.coords.latitude,
+        };
+        setUserLocation(coords);
+      },
+      () => {
+        target.jumpTo({ zoom: 9 });
+      }
+    );
+  };
 
-    return () => {};
-  }, []);
+  const onMapClick = ({ target, lngLat }: MapMouseEvent) => {
+    const coords: Coords = {
+      longitude: `${lngLat.lng}`,
+      latitude: `${lngLat.lat}`,
+    };
+    target.flyTo({ center: lngLat });
+    navigate(`./new-point/${lngLat.toArray()}`, {
+      state: { coords },
+    });
+  };
 
   useEffect(() => {
     map?.setCenter(userLocation);
@@ -64,31 +59,8 @@ export const MapBox = () => {
       zoom: 15, // starting zoom
     });
 
-    mapboxMap.on("click", ({ lngLat }) => {
-      const coords: Coords = {
-        longitude: `${lngLat.lng}`,
-        latitude: `${lngLat.lat}`,
-      };
-      navigate(`./newPoint/${lngLat.toArray()}`, {
-        state: { coords },
-      });
-      /*    const features = mapboxMap.queryRenderedFeatures(e.point); */
-      /*       const marker = new mapboxgl.Marker()
-        .setLngLat(e.lngLat.toArray())
-        .addTo(mapboxMap);
-
-      marker.getElement().addEventListener("click", (e) => {
-        e.stopPropagation();
-        marker.remove();
-      }); */
-      /*       const popup = new mapboxgl.Popup({ offset: popupOffsets })
-        .setLngLat(e.lngLat)
-        .setHTML("<h1>Hello World!</h1>")
-        .setMaxWidth("300px")
-        .addTo(mapboxMap)
-        .on("close", () => marker.remove()).setDOMContent; */
-    });
-
+    mapboxMap.on("load", onMapLoad);
+    mapboxMap.on("click", onMapClick);
     setMap(mapboxMap);
 
     return () => {

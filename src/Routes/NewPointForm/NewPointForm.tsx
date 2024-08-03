@@ -4,18 +4,20 @@ import { Button, CloseButton, NumberInput, TextInput } from "@mantine/core";
 import { IconCurrencyDollar } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import { Coords } from "../../Types/Сoords";
+import { addPoint } from "../../api/addPoint";
+import { useClickOutside } from "@mantine/hooks";
 
 export const NewPointForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { coords } = location.state as { coords: Coords };
+  const { coords: coordinates } = location.state as { coords: Coords };
 
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
       title: "",
-      capacity: "",
-      rate: 0,
+      capacity: null,
+      rate: null,
     },
     validate: {
       title: (value) =>
@@ -26,43 +28,28 @@ export const NewPointForm = () => {
   const closeForm = () => {
     navigate(-1);
   };
+  const ref = useClickOutside(closeForm);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const validationResult = form.validate();
     if (validationResult.hasErrors) return;
     const formValues = form.getValues();
+    console.log(formValues);
+
     const dataToSend = {
       ...formValues,
-      ...coords,
+      coordinates,
     };
+    console.log(dataToSend);
 
-    const res = await fetch(
-      "https://b1e8-31-153-0-161.ngrok-free.app/api/park-point/add",
-
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToSend),
-      }
-    );
-    /*     const res = await fetch(
-      "https://b1e8-31-153-0-161.ngrok-free.app/api/park-point/",
-      {
-        headers: {
-          "ngrok-skip-browser-warning": "true",
-        },
-      }
-    );
-    console.log(res);
-    console.log(await res.json()); */
+    addPoint(dataToSend);
   };
   return (
     <OverlayContainer>
       <div className="p-3 w-full h-full flex justify-center items-center">
         <form
+          ref={ref}
           onSubmit={onSubmit}
           className="w-full sm:w-[500px] h-fit flex flex-col gap-7 bg-white rounded-lg p-6"
         >

@@ -8,7 +8,7 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/newPoint/:coords",
+        path: "/new-point/:coords",
         element: <NewPointForm />,
       },
     ],
