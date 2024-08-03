@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import mapboxgl, { LngLatLike } from "mapbox-gl";
-import { useRef, useEffect, useState } from "react";
+import mapboxgl, { LngLatLike, PopupOptions, Map } from "mapbox-gl";
+import { useRef, useEffect, useState, useContext } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { MapBoxContext } from "./Context/MapBoxContext";
 
 /* const markerHeight = 50;
 const markerRadius = 10;
@@ -23,17 +24,15 @@ const popupOffsets = {
   right: [-markerRadius, (markerHeight - markerRadius) * -1],
 }; */
 
-export const MapBox = ({ token }: { token: string }) => {
-  const [map, setMap] = useState<mapboxgl.Map>();
+export const MapBox = () => {
+  const mapContainerRef = useRef<HTMLDivElement>(null);
   const [userLocation, setUserLocation] = useState<LngLatLike>({
     lng: 0,
     lat: 0,
   });
-  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const { map, setMap } = useContext(MapBoxContext);
 
   useEffect(() => {
-    console.log(map);
-
     window.navigator.geolocation.getCurrentPosition((e) => {
       console.log(e);
       const coords: LngLatLike = {
@@ -51,38 +50,33 @@ export const MapBox = ({ token }: { token: string }) => {
   }, [userLocation]);
 
   useEffect(() => {
-    console.log(token);
-
-    mapboxgl.accessToken = token;
+    if (!mapContainerRef.current) {
+      throw new Error(`mapContainerRef.current not exists ${mapContainerRef}`);
+    }
 
     const mapboxMap = new mapboxgl.Map({
-      container: mapContainerRef.current ?? "",
+      container: mapContainerRef.current,
       center: userLocation, // starting position [lng, lat]
       style: "mapbox://styles/mapbox/streets-v12",
       zoom: 15, // starting zoom
     });
 
     mapboxMap.on("click", (e) => {
-      console.log(e);
-
       /*    const features = mapboxMap.queryRenderedFeatures(e.point); */
-      console.log(e.lngLat.toArray());
-
-      const marker = new mapboxgl.Marker()
+      /*       const marker = new mapboxgl.Marker()
         .setLngLat(e.lngLat.toArray())
         .addTo(mapboxMap);
 
       marker.getElement().addEventListener("click", (e) => {
         e.stopPropagation();
         marker.remove();
-      });
-
+      }); */
       /*       const popup = new mapboxgl.Popup({ offset: popupOffsets })
         .setLngLat(e.lngLat)
         .setHTML("<h1>Hello World!</h1>")
         .setMaxWidth("300px")
         .addTo(mapboxMap)
-        .on("close", () => marker.remove()); */
+        .on("close", () => marker.remove()).setDOMContent; */
     });
 
     setMap(mapboxMap);
@@ -92,5 +86,5 @@ export const MapBox = ({ token }: { token: string }) => {
     };
   }, []);
 
-  return <div style={{ height: "100%" }} ref={mapContainerRef} />;
+  return <div className="h-full w-full" ref={mapContainerRef} />;
 };
