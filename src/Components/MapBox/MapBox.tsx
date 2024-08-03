@@ -1,8 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import mapboxgl, { LngLatLike, PopupOptions, Map } from "mapbox-gl";
+import mapboxgl, { LngLatLike } from "mapbox-gl";
 import { useRef, useEffect, useState, useContext } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { MapBoxContext } from "./Context/MapBoxContext";
+import { useNavigate } from "react-router-dom";
+import { Coords } from "../../Types/Сoords";
 
 /* const markerHeight = 50;
 const markerRadius = 10;
@@ -25,6 +27,7 @@ const popupOffsets = {
 }; */
 
 export const MapBox = () => {
+  const navigate = useNavigate();
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [userLocation, setUserLocation] = useState<LngLatLike>({
     lng: 0,
@@ -61,7 +64,14 @@ export const MapBox = () => {
       zoom: 15, // starting zoom
     });
 
-    mapboxMap.on("click", (e) => {
+    mapboxMap.on("click", ({ lngLat }) => {
+      const coords: Coords = {
+        longitude: `${lngLat.lng}`,
+        latitude: `${lngLat.lat}`,
+      };
+      navigate(`./newPoint/${lngLat.toArray()}`, {
+        state: { coords },
+      });
       /*    const features = mapboxMap.queryRenderedFeatures(e.point); */
       /*       const marker = new mapboxgl.Marker()
         .setLngLat(e.lngLat.toArray())
