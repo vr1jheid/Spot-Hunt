@@ -5,6 +5,9 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { MapBoxContext } from "./Context/MapBoxContext";
 import { useNavigate } from "react-router-dom";
 import { Coords } from "../../Types/Сoords";
+import { useQuery } from "@tanstack/react-query";
+import { fetchAllPoints } from "../../api/fetchAllPoints";
+import { Marker } from "mapbox-gl";
 
 // Cyprus
 
@@ -12,9 +15,44 @@ export const MapBox = () => {
   const navigate = useNavigate();
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const initialCoords: LngLatLike = { lng: 33.354173, lat: 35.172871 };
+  const [markers, setMarkers] = useState<Marker[]>([]);
+  const { data } = useQuery({
+    queryKey: ["points"],
+    queryFn: fetchAllPoints,
+  });
 
   const [userLocation, setUserLocation] = useState<LngLatLike>(initialCoords);
   const { map, setMap } = useContext(MapBoxContext);
+
+  useEffect(() => {
+    if (!data || !map) {
+      return;
+    }
+    setMarkers(
+      data.map(({ coordinates, title }) => {
+        console.log(coordinates);
+        const lngLat = {
+          lng: Number.parseFloat(coordinates.longitude),
+          lat: Number.parseFloat(coordinates.latitude),
+        };
+        new mapboxgl.Popup({ offset: 25 })
+          .setText(title)
+          .setLngLat(lngLat)
+          .addTo(map);
+
+        const marker = new mapboxgl.Marker().setLngLat(lngLat).addTo(map);
+        const s = marker.getElement();
+        s.addEventListener("click", (e) => {
+          e.stopPropagation();
+        });
+        return marker;
+      })
+    );
+
+    return () => {
+      markers.forEach((m) => m.remove());
+    };
+  }, [data, map]);
 
   const onMapLoad = ({ target }: { type: "load"; target: Map }) => {
     window.navigator.geolocation.getCurrentPosition(
@@ -27,7 +65,7 @@ export const MapBox = () => {
         setUserLocation(coords);
       },
       () => {
-        target.jumpTo({ zoom: 9 });
+        target.easeTo({ zoom: 9 });
       }
     );
   };
@@ -37,7 +75,7 @@ export const MapBox = () => {
       longitude: `${lngLat.lng}`,
       latitude: `${lngLat.lat}`,
     };
-    target.flyTo({ center: lngLat });
+    target.easeTo({ center: lngLat });
     navigate(`./new-point/${lngLat.toArray()}`, {
       state: { coords },
     });

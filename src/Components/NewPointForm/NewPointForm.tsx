@@ -1,16 +1,35 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { OverlayContainer } from "../../Components/OverlayContainer/OverlayContainer";
-import { Button, CloseButton, NumberInput, TextInput } from "@mantine/core";
+import {
+  Button,
+  CloseButton,
+  LoadingOverlay,
+  NumberInput,
+  TextInput,
+} from "@mantine/core";
 import { IconCurrencyDollar } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import { Coords } from "../../Types/Сoords";
 import { addPoint } from "../../api/addPoint";
 import { useClickOutside } from "@mantine/hooks";
+import { PointDataToSend } from "../../Types/PointData";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const NewPointForm = () => {
   const navigate = useNavigate();
+  const closeForm = () => navigate(-1);
   const location = useLocation();
   const { coords: coordinates } = location.state as { coords: Coords };
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: addPoint,
+    onSuccess: () => {
+      console.log("Point added");
+      queryClient.invalidateQueries({ queryKey: ["points"] });
+      closeForm();
+    },
+  });
 
   const form = useForm({
     mode: "uncontrolled",
@@ -25,9 +44,6 @@ export const NewPointForm = () => {
     },
   });
 
-  const closeForm = () => {
-    navigate(-1);
-  };
   const ref = useClickOutside(closeForm);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -37,22 +53,25 @@ export const NewPointForm = () => {
     const formValues = form.getValues();
     console.log(formValues);
 
-    const dataToSend = {
+    const dataToSend: PointDataToSend = {
       ...formValues,
-      coordinates,
+      ...coordinates,
     };
-    console.log(dataToSend);
-
-    addPoint(dataToSend);
+    mutation.mutate(dataToSend);
   };
   return (
     <OverlayContainer>
-      <div className="p-3 w-full h-full flex justify-center items-center">
+      <div className="p-3 w-full h-full flex justify-center items-center ">
         <form
           ref={ref}
           onSubmit={onSubmit}
-          className="w-full sm:w-[500px] h-fit flex flex-col gap-7 bg-white rounded-lg p-6"
+          className="w-full sm:w-[500px] h-fit flex flex-col gap-7 bg-white rounded-lg p-6 relative"
         >
+          <LoadingOverlay
+            visible={mutation.isPending}
+            zIndex={1000}
+            overlayProps={{ radius: "sm", blur: 2 }}
+          />
           <header className="flex justify-between items-center font-medium">
             Add a spot <CloseButton onClick={closeForm} size="lg" />
           </header>

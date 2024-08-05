@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "../App";
-import { NewPointForm } from "./NewPointForm/NewPointForm";
+import App from "../Components/App/App";
+import { NewPointForm } from "../Components/NewPointForm/NewPointForm";
 
 export const router = createBrowserRouter([
   {

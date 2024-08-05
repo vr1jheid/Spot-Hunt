@@ -9,4 +9,8 @@ export interface PointServerData {
   capacity: number | null;
 }
 
-export interface PointDataToSend extends Coords {}
+export interface PointDataToSend
+  extends Omit<PointServerData, "id" | "images" | "coordinates"> {
+  longitude: string;
+  latitude: string;
+}
