@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
-import { fetchAllPoints } from "../../api/fetchAllPoints";
+import { fetchPoints } from "../../api/fetchPoints";
 import { MapBoxContextProvider } from "../MapBox/Context/MapBoxContextProvider";
 import { MapBox } from "../MapBox/MapBox";
 
 function App() {
   const testFunc = async () => {
-    const points = await fetchAllPoints();
+    const points = await fetchPoints();
     console.log(points);
   };
 
