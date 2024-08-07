@@ -1,12 +1,20 @@
-import { Coords } from "./Сoords";
-
 export interface PointServerData {
   id: number;
   title: string;
-  coordinates: Coords;
+  coordinates: {
+    longitude: string;
+    latitude: string;
+  };
   images: unknown[];
   rate: number | null;
   capacity: number | null;
+}
+
+export interface PointLocalData extends Omit<PointServerData, "coordinates"> {
+  coordinates: {
+    lng: number;
+    lat: number;
+  };
 }
 
 export interface PointDataToSend

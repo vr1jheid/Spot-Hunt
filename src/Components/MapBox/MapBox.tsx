@@ -1,10 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import mapboxgl, {
-  LngLatBounds,
-  LngLatLike,
-  Map,
-  MapMouseEvent,
-} from "mapbox-gl";
+import mapboxgl, { LngLatLike, Map, MapMouseEvent } from "mapbox-gl";
 import { useRef, useEffect, useState, useContext } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { MapBoxContext } from "./Context/MapBoxContext";
@@ -12,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchPoints } from "../../api/fetchPoints";
 import { getBounds } from "../../Utils/getBounds";
-import { coordsToLngLat } from "../../Utils/coordsToLngLat";
+import { useUserStore } from "../../Routes/MapPage/userStore";
 
 // Cyprus
 
@@ -23,26 +18,23 @@ export const MapBox = () => {
   const [markersIds, setMarkersIds] = useState<number[]>([]);
   const { map, setMap } = useContext(MapBoxContext);
   const queryClient = useQueryClient();
+  const { setLocation, location } = useUserStore();
 
   const { data: points } = useQuery({
     queryKey: ["points"],
     queryFn: async () => {
-      if (!map) return null;
+      if (!map) return;
       return await fetchPoints({ params: getBounds(map) });
     },
   });
 
-  const [userLocation, setUserLocation] = useState<LngLatLike>();
-
   const onMapLoad = ({ target }: { type: "load"; target: Map }) => {
     window.navigator.geolocation.getCurrentPosition(
-      (e) => {
-        const coords: LngLatLike = {
-          lng: e.coords.longitude,
-          lat: e.coords.latitude,
-        };
-        setUserLocation(coords);
+      ({ coords }) => {
+        const { longitude: lng, latitude: lat } = coords;
+        setLocation({ lng, lat });
         queryClient.invalidateQueries({ queryKey: ["points"] });
+        target.setCenter({ lng, lat });
       },
       () => {
         target.easeTo({ zoom: 9 });
@@ -60,7 +52,7 @@ export const MapBox = () => {
       newIds.push(id);
 
       new mapboxgl.Marker()
-        .setLngLat(coordsToLngLat(coordinates))
+        .setLngLat(coordinates)
         .addTo(map)
         .getElement()
         .addEventListener("click", (e) => {
@@ -69,8 +61,6 @@ export const MapBox = () => {
         });
     });
     setMarkersIds((prev) => [...prev, ...newIds]);
-
-    return () => {};
   }, [points]);
 
   const onMapClick = ({ target, lngLat }: MapMouseEvent) => {
@@ -79,17 +69,13 @@ export const MapBox = () => {
   };
 
   useEffect(() => {
-    userLocation && map?.setCenter(userLocation);
-  }, [userLocation]);
-
-  useEffect(() => {
     if (!mapContainerRef.current) {
       throw new Error(`mapContainerRef.current not exists ${mapContainerRef}`);
     }
 
     const mapboxMap = new mapboxgl.Map({
       container: mapContainerRef.current,
-      center: userLocation ?? initialCoords, // starting position [lng, lat]
+      center: location ?? initialCoords, // starting position [lng, lat]
       style: "mapbox://styles/mapbox/streets-v12",
       zoom: 15, // starting zoom
     });
@@ -116,11 +102,7 @@ export const MapBox = () => {
         className="absolute top-0 right-0 z-[9999] bg-white"
         onClick={() => {
           points!.forEach(({ coordinates }) => {
-            const lngLat = {
-              lng: +coordinates.longitude,
-              lat: +coordinates.latitude,
-            };
-            new mapboxgl.Marker().setLngLat(lngLat).addTo(map);
+            new mapboxgl.Marker().setLngLat(coordinates).addTo(map!);
           });
         }}
       >
