@@ -37,7 +37,6 @@ export const MapBox = () => {
   const onMapLoad = ({ target }: { type: "load"; target: Map }) => {
     window.navigator.geolocation.getCurrentPosition(
       (e) => {
-        console.log(e);
         const coords: LngLatLike = {
           lng: e.coords.longitude,
           lat: e.coords.latitude,
