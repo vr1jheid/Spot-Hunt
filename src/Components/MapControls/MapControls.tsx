@@ -9,9 +9,11 @@ export const MapControls = () => {
   const { setLocation } = useUserStore();
 
   if (!map) return;
+
   const getLocation = () => {
     navigator.geolocation.getCurrentPosition(({ coords }) => {
       const { longitude: lng, latitude: lat } = coords;
+
       setLocation({ lng, lat });
       map.flyTo({ center: { lng, lat } });
     });

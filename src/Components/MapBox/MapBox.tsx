@@ -8,6 +8,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchPoints } from "../../api/fetchPoints";
 import { getBounds } from "../../Utils/getBounds";
 import { useUserStore } from "../../Routes/MapPage/userStore";
+import { createPulsingDotOnMap } from "./Utils/createPulsingDotOnMap";
+import { PULSING_DOT_ID } from "./Constants/pulsingDot";
+import { changePulsingDotLocation } from "./Utils/changePulsingDotLocation";
 
 // Cyprus
 
@@ -32,9 +35,12 @@ export const MapBox = () => {
     window.navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
         const { longitude: lng, latitude: lat } = coords;
-        setLocation({ lng, lat });
+        const validCoords = { lng, lat };
+
+        setLocation(validCoords);
         queryClient.invalidateQueries({ queryKey: ["points"] });
-        target.setCenter({ lng, lat });
+        target.setCenter(validCoords);
+        createPulsingDotOnMap(target, validCoords);
       },
       () => {
         target.easeTo({ zoom: 9 });
@@ -43,11 +49,23 @@ export const MapBox = () => {
   };
 
   useEffect(() => {
-    if (!map) {
+    if (!map || !location) return;
+    console.log("here");
+
+    const dot = map.getSource(PULSING_DOT_ID);
+    if (dot) {
+      changePulsingDotLocation(map, location);
+    } else {
+      createPulsingDotOnMap(map, location);
+    }
+  }, [location]);
+
+  useEffect(() => {
+    if (!map || !points) {
       return;
     }
     const newIds: number[] = [];
-    points?.forEach(({ id, coordinates }) => {
+    points.forEach(({ id, coordinates }) => {
       if (markersIds.includes(id)) return;
       newIds.push(id);
 
@@ -61,7 +79,7 @@ export const MapBox = () => {
         });
     });
     setMarkersIds((prev) => [...prev, ...newIds]);
-  }, [points]);
+  }, [points, map]);
 
   const onMapClick = ({ target, lngLat }: MapMouseEvent) => {
     target.easeTo({ center: lngLat });
@@ -75,9 +93,9 @@ export const MapBox = () => {
 
     const mapboxMap = new mapboxgl.Map({
       container: mapContainerRef.current,
-      center: location ?? initialCoords, // starting position [lng, lat]
+      center: location ?? initialCoords,
       style: "mapbox://styles/mapbox/streets-v12",
-      zoom: 15, // starting zoom
+      zoom: 15,
     });
 
     mapboxMap.on("load", onMapLoad);
@@ -89,7 +107,6 @@ export const MapBox = () => {
       queryClient.invalidateQueries({ queryKey: ["points"] });
     });
     setMap(mapboxMap);
-
     return () => {
       mapboxMap.remove();
     };
@@ -101,9 +118,7 @@ export const MapBox = () => {
       <button
         className="absolute top-0 right-0 z-[9999] bg-white"
         onClick={() => {
-          points!.forEach(({ coordinates }) => {
-            new mapboxgl.Marker().setLngLat(coordinates).addTo(map!);
-          });
+          createPulsingDotOnMap(map, { lng: 34, lat: 34 });
         }}
       >
         TEST

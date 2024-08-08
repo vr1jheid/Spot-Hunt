@@ -152,9 +152,7 @@ export const fetchPoints = async ({
 }: {
   params: { [key in string]: string };
 }): Promise<PointLocalData[]> => {
-  /*   const { params } = props.meta as { params: { [key in string]: string } };
-  console.log(params); */
-  const localData = mockPoints.map((p) => {
+  /*   const localData = mockPoints.map((p) => {
     return {
       ...p,
       coordinates: {
@@ -163,9 +161,9 @@ export const fetchPoints = async ({
       },
     };
   });
-  return localData as PointLocalData[];
+  return localData as PointLocalData[]; */
 
-  /*   const url = new URL(`${API_URL}/api/park-point/`);
+  const url = new URL(`${API_URL}/api/park-point/`);
   params &&
     Object.entries(params).forEach(([name, value]) => {
       url.searchParams.set(name, value);
@@ -182,6 +180,15 @@ export const fetchPoints = async ({
   }
   const data = await response.json();
   console.log(data.data.items);
+  const serverData = data.data.items as PointServerData[];
 
-  return data.data.items as PointServerData[]; */
+  return serverData.map((p) => {
+    return {
+      ...p,
+      coordinates: {
+        lng: +p.coordinates.longitude,
+        lat: +p.coordinates.latitude,
+      },
+    };
+  });
 };
