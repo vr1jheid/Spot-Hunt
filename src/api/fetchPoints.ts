@@ -1,7 +1,7 @@
 import { PointLocalData, PointServerData } from "../Types/PointData";
 import { API_URL } from "./Constants/constants";
 
-const mockPoints = [
+export const mockPoints = [
   {
     id: 22,
     title: "cypRUS",
@@ -152,37 +152,24 @@ export const fetchPoints = async ({
 }: {
   params: { [key in string]: string };
 }): Promise<PointLocalData[]> => {
-  /*   const localData = mockPoints.map((p) => {
-    return {
-      ...p,
-      coordinates: {
-        lng: +p.coordinates.longitude,
-        lat: +p.coordinates.latitude,
-      },
-    };
-  });
-  return localData as PointLocalData[]; */
-
   const url = new URL(`${API_URL}/api/park-point/`);
   params &&
     Object.entries(params).forEach(([name, value]) => {
       url.searchParams.set(name, value);
     });
 
-  const response = await fetch(url, {
+  /*   const response = await fetch(url, {
     headers: {
       "ngrok-skip-browser-warning": "true",
     },
   });
   if (!response.ok) {
-    console.log(await response.text());
     throw new Error("Api response error");
   }
   const data = await response.json();
-  console.log(data.data.items);
-  const serverData = data.data.items as PointServerData[];
+  const serverData = data.data.items as PointServerData[]; */
 
-  return serverData.map((p) => {
+  return mockPoints.map((p) => {
     return {
       ...p,
       coordinates: {

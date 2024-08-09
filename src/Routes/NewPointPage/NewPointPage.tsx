@@ -1,5 +1,5 @@
-import { OverlayContainer } from "../Components/OverlayContainer/OverlayContainer";
-import { NewPointForm } from "../Components/NewPointForm/NewPointForm";
+import { NewPointForm } from "../../Components/NewPointForm/NewPointForm";
+import { OverlayContainer } from "../../Components/OverlayContainer/OverlayContainer";
 
 export const NewPointPage = () => {
   return (

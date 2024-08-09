@@ -26,7 +26,7 @@ export const MapBox = () => {
   const { data: points } = useQuery({
     queryKey: ["points"],
     queryFn: async () => {
-      if (!map) return;
+      if (!map) return null;
       return await fetchPoints({ params: getBounds(map) });
     },
   });
@@ -61,9 +61,8 @@ export const MapBox = () => {
   }, [location]);
 
   useEffect(() => {
-    if (!map || !points) {
-      return;
-    }
+    if (!map || !points) return;
+
     const newIds: number[] = [];
     points.forEach(({ id, coordinates }) => {
       if (markersIds.includes(id)) return;
@@ -75,7 +74,14 @@ export const MapBox = () => {
         .getElement()
         .addEventListener("click", (e) => {
           e.stopPropagation();
-          console.log("OPENED ", id);
+          map?.easeTo({
+            center: {
+              lat: coordinates.lat - 0.005,
+              lng: coordinates.lng,
+            },
+            zoom: 15,
+          });
+          navigate(`point/${id}`);
         });
     });
     setMarkersIds((prev) => [...prev, ...newIds]);
@@ -83,7 +89,7 @@ export const MapBox = () => {
 
   const onMapClick = ({ target, lngLat }: MapMouseEvent) => {
     target.easeTo({ center: lngLat });
-    navigate(`./new-point/${lngLat.toArray()}`);
+    navigate(`new-point/${lngLat.toArray()}`);
   };
 
   useEffect(() => {
@@ -118,7 +124,17 @@ export const MapBox = () => {
       <button
         className="absolute top-0 right-0 z-[9999] bg-white"
         onClick={() => {
-          createPulsingDotOnMap(map, { lng: 34, lat: 34 });
+          /* createPulsingDotOnMap(map, { lng: 34, lat: 34 }); */
+          points!.forEach(({ id, coordinates }) => {
+            new mapboxgl.Marker()
+              .setLngLat(coordinates)
+              .addTo(map!)
+              .getElement()
+              .addEventListener("click", (e) => {
+                e.stopPropagation();
+                console.log("OPENED ", id);
+              });
+          });
         }}
       >
         TEST
