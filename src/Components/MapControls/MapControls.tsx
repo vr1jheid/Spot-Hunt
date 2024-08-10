@@ -22,7 +22,7 @@ export const MapControls = () => {
   return (
     <div className="absolute right-1 w-12 bottom-1/2 translate-y-1/2 flex flex-col gap-10">
       <MapControlButton onClick={getLocation}>
-        <IconNavigationFilled size={"full"} />
+        <IconNavigationFilled size={33} />
       </MapControlButton>
       <div className="flex flex-col gap-3">
         <MapControlButton
@@ -30,14 +30,14 @@ export const MapControls = () => {
             map.zoomIn();
           }}
         >
-          <IconPlus size={"full"} />
+          <IconPlus size={33} />
         </MapControlButton>
         <MapControlButton
           onClick={() => {
             map.zoomOut();
           }}
         >
-          <IconMinus size={"full"} />
+          <IconMinus size={33} />
         </MapControlButton>
       </div>
     </div>

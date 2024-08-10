@@ -11,7 +11,7 @@ export const PointPreview = ({ pointData, onClick }: Props) => {
   return (
     <div onClick={onClick} className="w-full h-[60px] flex items-center">
       <div className=" h-3/4 p-2 bg-slate-100 rounded-md">
-        <IconCar stroke={1} size={"full"} />
+        <IconCar stroke={1} size={25} />
       </div>
       <div className=" inline-flex flex-col px-4 grow">
         <span className=" text-md  font-medium">{title}</span>
