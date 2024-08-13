@@ -17,6 +17,8 @@ export const useDraggableList = ({
     maxVisibleItems * itemSize + 28,
     itemsCount * itemSize + 28
   );
+  /* console.log("maxVisibleHeight", maxVisibleHeight);
+   */
   const midVisibleHeight =
     itemsCount > 3 ? 3 * itemSize + 28 : itemsCount * itemSize + 28;
   const minVisibleHeight = touchAreaHeight;
@@ -29,6 +31,7 @@ export const useDraggableList = ({
     itemSize * (itemsCount ?? 0) + touchAreaHeight,
     maxVisibleHeight
   );
+  /*   console.log("height", height); */
 
   const getVisibleHeight = (actualHeight: number) => {
     if (actualHeight > midMaxCenter) {

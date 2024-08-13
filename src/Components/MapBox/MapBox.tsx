@@ -74,13 +74,6 @@ export const MapBox = () => {
         .getElement()
         .addEventListener("click", (e) => {
           e.stopPropagation();
-          map?.easeTo({
-            center: {
-              lat: coordinates.lat - 0.005,
-              lng: coordinates.lng,
-            },
-            zoom: 15,
-          });
           navigate(`point/${id}`);
         });
     });

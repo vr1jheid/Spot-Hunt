@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { PointLocalData } from "../../Types/PointData";
 import { PointPreview } from "../PointPreview/PointPreview";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { MapBoxContext } from "../MapBox/Context/MapBoxContext";
 import { mockPoints } from "../../api/fetchPoints";
 import clsx from "clsx";
@@ -18,15 +18,27 @@ export const PointsList = () => {
   const { map } = useContext(MapBoxContext);
   const navigate = useNavigate();
 
-  const { visibleHeight, height, dragging, onTouchStart, isFullOpen } =
-    useDraggableList({
-      touchAreaHeight,
-      maxVisibleItems,
-      itemSize,
-      itemsCount: data?.length ?? 0,
-    });
+  const {
+    visibleHeight,
+    height,
+    dragging,
+    onTouchStart,
+    isFullOpen,
+    setHeight,
+  } = useDraggableList({
+    touchAreaHeight,
+    maxVisibleItems,
+    itemSize,
+    itemsCount: data?.length ?? 0,
+  });
 
   const { value: visibleHeightValue } = visibleHeight;
+
+  useEffect(() => {
+    if (!data?.length) {
+      setHeight("min");
+    }
+  }, [data]);
 
   return (
     <div
@@ -51,13 +63,6 @@ export const PointsList = () => {
             <li key={p.id} className="block">
               <PointPreview
                 onClick={() => {
-                  map?.easeTo({
-                    center: {
-                      lat: p.coordinates.lat - 0.005,
-                      lng: p.coordinates.lng,
-                    },
-                    zoom: 15,
-                  });
                   navigate(`point/${p.id}`);
                 }}
                 pointData={p}

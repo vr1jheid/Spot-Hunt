@@ -1,4 +1,4 @@
-import { CloseButton, Image } from "@mantine/core";
+import { CloseButton } from "@mantine/core";
 import photoPlug from "../../Assets/no_photo.jpg";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -6,19 +6,35 @@ import { PointLocalData } from "../../Types/PointData";
 import { IconCurrencyDollar, IconMapPin } from "@tabler/icons-react";
 import googleMapsIcon from "../../Assets/google-maps-icon.png";
 import wazeMapsIcon from "../../Assets/waze-maps-icon.svg";
+import { useContext, useEffect } from "react";
+import { MapBoxContext } from "../../Components/MapBox/Context/MapBoxContext";
 
 export const PointPage = () => {
+  const { map } = useContext(MapBoxContext);
   const { data } = useQuery<PointLocalData[]>({ queryKey: ["points"] });
   const navigate = useNavigate();
-  const closePage = () => navigate(-1);
+  const closePage = () => navigate("/");
   const params = useParams();
   const id = params.id;
-  if (!id || !data) return;
-  const pointData = data?.find((p) => p.id == +id);
+
+  const pointData = data?.find((p) => p.id == +(id ?? -1));
+
+  useEffect(() => {
+    if (!pointData) return;
+    map?.easeTo({
+      center: {
+        lat: pointData.coordinates.lat - 0.005,
+        lng: pointData.coordinates.lng,
+      },
+      zoom: 15,
+    });
+  }, [pointData, map]);
+
   if (!pointData) {
     navigate(-1);
     return;
   }
+
   const { title, rate, capacity, coordinates } = pointData;
   const { lng, lat } = coordinates;
 

@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   Button,
   CloseButton,
+  FileButton,
   LoadingOverlay,
   NumberInput,
   TextInput,
@@ -12,8 +13,12 @@ import { addPoint } from "../../api/addPoint";
 import { useClickOutside } from "@mantine/hooks";
 import { PointDataToSend } from "../../Types/PointData";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { API_URL } from "../../api/Constants/constants";
+import { addPhotoToPoint } from "../../api/addPhotoToPoint";
 
 export const NewPointForm = () => {
+  const [photos, setPhotos] = useState<{ photo: File; url: string }[]>([]);
   const navigate = useNavigate();
   const closeForm = () => navigate(-1);
   const { coords } = useParams() as { coords: string };
@@ -21,12 +26,24 @@ export const NewPointForm = () => {
 
   const queryClient = useQueryClient();
 
-  const mutation = useMutation({
+  const addPhotoMutation = useMutation({
+    mutationFn: addPhotoToPoint,
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({ queryKey: ["points"] });
+      console.log(res);
+    },
+  });
+
+  const addPointMutation = useMutation({
     mutationFn: addPoint,
-    onSuccess: () => {
-      console.log("Point added");
+    onSuccess: async ({ data }) => {
+      console.log("Point added", data);
       queryClient.invalidateQueries({ queryKey: ["points"] });
       closeForm();
+      const photoData = photos.map((p) => {
+        return { ...p, key: p.url };
+      });
+      addPhotoMutation.mutate({ id: data.id, photoData });
     },
   });
 
@@ -57,7 +74,7 @@ export const NewPointForm = () => {
       longitude,
       latitude,
     };
-    mutation.mutate(dataToSend);
+    addPointMutation.mutate(dataToSend);
   };
   return (
     <form
@@ -66,7 +83,7 @@ export const NewPointForm = () => {
       className="w-full sm:w-[500px] h-fit flex flex-col gap-7 bg-white rounded-lg p-6 relative"
     >
       <LoadingOverlay
-        visible={mutation.isPending}
+        visible={addPointMutation.isPending}
         zIndex={1000}
         overlayProps={{ radius: "sm", blur: 2 }}
       />
@@ -95,9 +112,45 @@ export const NewPointForm = () => {
         key={form.key("rate")}
         {...form.getInputProps("rate")}
       />
+      <div>
+        <div className="w-14">
+          <FileButton
+            accept="image/png,image/jpeg"
+            onChange={(photo) => {
+              if (!photo) return;
+              /*  setPhotos((prev) => [...prev, photo]); */
+
+              const reader = new FileReader();
+              reader.readAsDataURL(photo);
+              reader.onloadstart = (e) => {
+                console.log(reader.result);
+              };
+              reader.onprogress = (e) => {
+                console.log(e.loaded, e.total);
+              };
+              reader.onload = (e) => {
+                const url = reader.result?.toString();
+                if (url) {
+                  setPhotos((prev) => [...prev, { photo, url }]);
+                }
+              };
+            }}
+          >
+            {(props) => (
+              <Button size="compact-xs" color="pink" {...props}>
+                Add photos
+              </Button>
+            )}
+          </FileButton>
+        </div>
+      </div>
+
       <Button size="sm" type="submit">
         Save
       </Button>
+      {photos.map(({ url }) => {
+        return <img className="block w-24 h-24" src={url} />;
+      })}
     </form>
   );
 };

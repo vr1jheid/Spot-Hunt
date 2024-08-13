@@ -158,7 +158,7 @@ export const fetchPoints = async ({
       url.searchParams.set(name, value);
     });
 
-  /*   const response = await fetch(url, {
+  const response = await fetch(url, {
     headers: {
       "ngrok-skip-browser-warning": "true",
     },
@@ -167,9 +167,9 @@ export const fetchPoints = async ({
     throw new Error("Api response error");
   }
   const data = await response.json();
-  const serverData = data.data.items as PointServerData[]; */
+  const serverData = data.data.items as PointServerData[];
 
-  return mockPoints.map((p) => {
+  return serverData.map((p) => {
     return {
       ...p,
       coordinates: {
