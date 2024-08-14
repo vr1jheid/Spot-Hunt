@@ -18,27 +18,15 @@ export const PointsList = () => {
   const { map } = useContext(MapBoxContext);
   const navigate = useNavigate();
 
-  const {
-    visibleHeight,
-    height,
-    dragging,
-    onTouchStart,
-    isFullOpen,
-    setHeight,
-  } = useDraggableList({
-    touchAreaHeight,
-    maxVisibleItems,
-    itemSize,
-    itemsCount: data?.length ?? 0,
-  });
+  const { visibleHeight, height, dragging, onTouchStart, isFullOpen } =
+    useDraggableList({
+      touchAreaHeight,
+      maxVisibleItems,
+      itemSize,
+      itemsCount: data?.length ?? 0,
+    });
 
   const { value: visibleHeightValue } = visibleHeight;
-
-  useEffect(() => {
-    if (!data?.length) {
-      setHeight("min");
-    }
-  }, [data]);
 
   return (
     <div

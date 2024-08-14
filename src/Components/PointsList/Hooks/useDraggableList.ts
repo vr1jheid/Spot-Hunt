@@ -7,12 +7,17 @@ interface Props {
   itemsCount: number;
 }
 
-export const useDraggableList = ({
-  touchAreaHeight,
+const getSizes = ({
   maxVisibleItems,
-  itemSize,
   itemsCount,
-}: Props) => {
+  itemSize,
+  touchAreaHeight,
+}: {
+  maxVisibleItems: number;
+  itemsCount: number;
+  itemSize: number;
+  touchAreaHeight: number;
+}) => {
   const maxVisibleHeight = Math.min(
     maxVisibleItems * itemSize + 28,
     itemsCount * itemSize + 28
@@ -31,25 +36,65 @@ export const useDraggableList = ({
     itemSize * (itemsCount ?? 0) + touchAreaHeight,
     maxVisibleHeight
   );
-  /*   console.log("height", height); */
+  return {
+    maxVisibleHeight,
+    midVisibleHeight,
+    minVisibleHeight,
+    minMidCenter,
+    midMaxCenter,
+    height,
+  };
+};
 
-  const getVisibleHeight = (actualHeight: number) => {
+export const useDraggableList = (props: Props) => {
+  const { touchAreaHeight, itemsCount } = props;
+
+  const {
+    maxVisibleHeight,
+    midVisibleHeight,
+    minVisibleHeight,
+    minMidCenter,
+    midMaxCenter,
+    height,
+  } = getSizes(props);
+
+  const getStateFromCurrentHeight = (actualHeight: number) => {
     if (actualHeight > midMaxCenter) {
-      return maxVisibleHeight;
+      return "max";
     }
     if (actualHeight <= midMaxCenter && actualHeight >= minMidCenter) {
-      return midVisibleHeight;
+      return "mid";
     }
-    return minVisibleHeight;
+    return "min";
   };
 
   const [visibleHeight, setVisibleHeight] = useState(minVisibleHeight);
+  const [state, setState] = useState<"min" | "mid" | "max">("mid");
   const [dragging, setDragging] = useState(false);
 
+  const setHeight = (type: "min" | "mid" | "max") => {
+    console.log(type);
+
+    switch (type) {
+      case "min":
+        console.log("ehre");
+
+        setVisibleHeight(touchAreaHeight);
+        break;
+      case "mid":
+        setVisibleHeight(midVisibleHeight);
+        break;
+      case "max":
+        setVisibleHeight(maxVisibleHeight);
+        break;
+
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
-    setVisibleHeight(
-      Math.min(maxVisibleItems * itemSize + 28, itemsCount * itemSize + 28)
-    );
+    setHeight(state);
   }, [itemsCount]);
 
   const onTouchStart = ({
@@ -83,31 +128,15 @@ export const useDraggableList = ({
       const { pageY: actualY } = changedTouches.item(0) as Touch;
       const deltaY = actualY - initialY;
       const changedVisibleHeight = initVisibleHeight - deltaY;
-
-      setVisibleHeight(getVisibleHeight(changedVisibleHeight)!);
+      const newState = getStateFromCurrentHeight(changedVisibleHeight);
+      setState(newState);
+      setHeight(newState);
       window.removeEventListener("touchmove", onTouchMove);
       window.ontouchend = null;
     };
   };
 
   const isFullOpen = visibleHeight === maxVisibleHeight;
-
-  const setHeight = (type: "min" | "mid" | "max") => {
-    switch (type) {
-      case "min":
-        setVisibleHeight(touchAreaHeight);
-        break;
-      case "mid":
-        setVisibleHeight(midVisibleHeight);
-        break;
-      case "max":
-        setVisibleHeight(maxVisibleHeight);
-        break;
-
-      default:
-        break;
-    }
-  };
 
   const visibleHeightType =
     visibleHeight === minVisibleHeight
