@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   CloseButton,
@@ -14,15 +14,18 @@ import { useClickOutside } from "@mantine/hooks";
 import { PointDataToSend } from "../../Types/PointData";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { API_URL } from "../../api/Constants/constants";
 import { addPhotoToPoint } from "../../api/addPhotoToPoint";
+import { PhotosList } from "../PhotosList/PhotoList";
 
-export const NewPointForm = () => {
+interface Props {
+  coords: string[];
+}
+
+export const NewPointForm = ({ coords }: Props) => {
+  const [longitude, latitude] = coords;
   const [photos, setPhotos] = useState<{ photo: File; url: string }[]>([]);
   const navigate = useNavigate();
   const closeForm = () => navigate(-1);
-  const { coords } = useParams() as { coords: string };
-  const [longitude, latitude] = coords.split(",");
 
   const queryClient = useQueryClient();
 
@@ -80,7 +83,7 @@ export const NewPointForm = () => {
     <form
       ref={ref}
       onSubmit={onSubmit}
-      className="w-full sm:w-[500px] h-fit flex flex-col gap-7 bg-white rounded-lg p-6 relative"
+      className="w-full sm:w-[500px] h-fit flex flex-col gap-5 bg-white rounded-lg p-6 relative"
     >
       <LoadingOverlay
         visible={addPointMutation.isPending}
@@ -112,28 +115,25 @@ export const NewPointForm = () => {
         key={form.key("rate")}
         {...form.getInputProps("rate")}
       />
-      <div>
-        <div className="w-14">
+      <div className="">
+        <div className="w-fit">
           <FileButton
             accept="image/png,image/jpeg"
-            onChange={(photo) => {
-              if (!photo) return;
-              /*  setPhotos((prev) => [...prev, photo]); */
+            multiple
+            onChange={(photosInput) => {
+              console.log(photos);
 
-              const reader = new FileReader();
-              reader.readAsDataURL(photo);
-              reader.onloadstart = (e) => {
-                console.log(reader.result);
-              };
-              reader.onprogress = (e) => {
-                console.log(e.loaded, e.total);
-              };
-              reader.onload = (e) => {
-                const url = reader.result?.toString();
-                if (url) {
-                  setPhotos((prev) => [...prev, { photo, url }]);
-                }
-              };
+              photosInput.slice(0, 3 - photos.length).forEach((photo) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(photo);
+                reader.onload = () => {
+                  const url = reader.result?.toString();
+                  if (photos.find((p) => p.url === url)) return;
+                  if (url) {
+                    setPhotos((prev) => [...prev, { photo, url }]);
+                  }
+                };
+              });
             }}
           >
             {(props) => (
@@ -143,14 +143,18 @@ export const NewPointForm = () => {
             )}
           </FileButton>
         </div>
+
+        <PhotosList
+          urlList={photos}
+          deleteItem={(url: string) => {
+            setPhotos((prev) => prev.filter((p) => p.url !== url));
+          }}
+        />
       </div>
 
       <Button size="sm" type="submit">
         Save
       </Button>
-      {photos.map(({ url }) => {
-        return <img className="block w-24 h-24" src={url} />;
-      })}
     </form>
   );
 };

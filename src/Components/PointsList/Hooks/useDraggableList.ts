@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
   touchAreaHeight: number;
@@ -45,6 +45,12 @@ export const useDraggableList = ({
 
   const [visibleHeight, setVisibleHeight] = useState(minVisibleHeight);
   const [dragging, setDragging] = useState(false);
+
+  useEffect(() => {
+    setVisibleHeight(
+      Math.min(maxVisibleItems * itemSize + 28, itemsCount * itemSize + 28)
+    );
+  }, [itemsCount]);
 
   const onTouchStart = ({
     changedTouches,
