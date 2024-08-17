@@ -11,7 +11,7 @@ import { IconCurrencyDollar } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import { addPoint } from "../../api/addPoint";
 import { useClickOutside } from "@mantine/hooks";
-import { PointDataToSend } from "../../Types/PointData";
+import { PointDataToSend } from "../../Types/PointTypes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { addPhotoToPoint } from "../../api/addPhotoToPoint";

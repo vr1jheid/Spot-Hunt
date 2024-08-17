@@ -1,4 +1,4 @@
-import { PointLocalData } from "../../Types/PointData";
+import { PointLocalData } from "../../Types/PointTypes";
 import { IconCar } from "@tabler/icons-react";
 
 interface Props {

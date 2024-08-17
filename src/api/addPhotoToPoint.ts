@@ -7,10 +7,6 @@ export const addPhotoToPoint = async ({
   id: number;
   photoData: { key: string; photo: File }[];
 }) => {
-  console.log("adding photo");
-  const fetchPointData = await fetch(`${API_URL}/api/park-point/${id}`);
-  console.log(fetchPointData);
-
   const formData = new FormData();
   photoData.forEach(({ key, photo }) => {
     formData.append(key, photo);
@@ -19,10 +15,7 @@ export const addPhotoToPoint = async ({
     method: "POST",
     body: formData,
   });
-  console.log(response);
-
   const responseJson = await response.json();
-  console.log(responseJson);
 
   return responseJson;
 };

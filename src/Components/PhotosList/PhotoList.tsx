@@ -23,7 +23,7 @@ export const PhotosList = ({ urlList, deleteItem }: Props) => {
               />
             )}
 
-            <img className="block w-16 h-16" src={url} />
+            <img className="block w-16 h-16 rounded-md" src={url} />
           </li>
         );
       })}

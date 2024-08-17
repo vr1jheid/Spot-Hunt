@@ -1,13 +1,13 @@
-import { CloseButton } from "@mantine/core";
-import photoPlug from "../../Assets/no_photo.jpg";
+import { CloseButton, Image } from "@mantine/core";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { PointLocalData } from "../../Types/PointData";
+import { PointLocalData } from "../../Types/PointTypes";
 import { IconCurrencyDollar, IconMapPin } from "@tabler/icons-react";
 import googleMapsIcon from "../../Assets/google-maps-icon.png";
 import wazeMapsIcon from "../../Assets/waze-maps-icon.svg";
 import { useContext, useEffect } from "react";
 import { MapBoxContext } from "../../Components/MapBox/Context/MapBoxContext";
+import { Carousel, CarouselSlide } from "@mantine/carousel";
 
 export const PointPage = () => {
   const { map } = useContext(MapBoxContext);
@@ -35,17 +35,31 @@ export const PointPage = () => {
     return;
   }
 
-  const { title, rate, capacity, coordinates } = pointData;
+  const { title, rate, capacity, coordinates, images } = pointData;
   const { lng, lat } = coordinates;
 
   return (
     <div className="absolute bottom-0 h-[630px] w-full p-2 bg-white z-10">
       <div className="w-full h-52">
-        <div className=" absolute top-1 right-1">
+        <div className=" absolute top-1 right-1 z-10">
           <CloseButton onClick={closePage} size="lg" />
         </div>
         <header className="flex justify-center flex-col">
-          <img src={photoPlug} className="rounded-lg h-[300px]" />
+          {images.length ? (
+            <Carousel withIndicators>
+              {images.map((i) => (
+                <CarouselSlide key={i}>
+                  <Image h={250} src={i} />
+                </CarouselSlide>
+              ))}
+            </Carousel>
+          ) : (
+            <img
+              src="https://placehold.co/374x250?text=No%20photos"
+              className="rounded-lg h-[300px]"
+            />
+          )}
+
           <h1 className="text-center text-3xl font-normal mt-2">{title}</h1>
         </header>
         <div className=" flex flex-col gap-5">

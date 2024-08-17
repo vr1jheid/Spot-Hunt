@@ -1,9 +1,7 @@
-import { PointDataToSend, PointServerData } from "../Types/PointData";
+import { PointDataToSend, PointServerData } from "../Types/PointTypes";
 import { API_URL } from "./Constants/constants";
 
 export const addPoint = async (data: PointDataToSend) => {
-  console.log(data);
-
   const response = await fetch(
     `${API_URL}/api/park-point/add`,
 
@@ -15,6 +13,8 @@ export const addPoint = async (data: PointDataToSend) => {
       body: JSON.stringify(data),
     }
   );
+  console.log(response);
+
   if (!response.ok) {
     throw new Error("Error adding new point. Server error");
   }
@@ -23,7 +23,5 @@ export const addPoint = async (data: PointDataToSend) => {
     data: PointServerData;
     status: string;
   };
-  console.log(responseJson);
-
   return responseJson;
 };

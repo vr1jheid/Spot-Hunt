@@ -5,7 +5,7 @@ export interface PointServerData {
     longitude: string;
     latitude: string;
   };
-  images: unknown[];
+  images: string[];
   rate: number | null;
   capacity: number | null;
 }

@@ -1,4 +1,4 @@
-import { PointLocalData, PointServerData } from "../Types/PointData";
+import { PointLocalData, PointServerData } from "../Types/PointTypes";
 import { API_URL } from "./Constants/constants";
 
 export const mockPoints = [
@@ -160,7 +160,7 @@ export const fetchPoints = async ({
 
   const response = await fetch(url, {
     headers: {
-      "ngrok-skip-browser-warning": "true",
+      /*    "ngrok-skip-browser-warning": "true", */
     },
   });
   if (!response.ok) {
