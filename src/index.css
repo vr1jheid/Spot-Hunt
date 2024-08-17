@@ -12,6 +12,17 @@ body,
   overflow: hidden;
 }
 
+html {
+  height: auto;
+  overflow: hidden;
+}
+
+body {
+  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+}
+
 #root {
   position: relative;
   background: black;
@@ -19,6 +30,7 @@ body,
 
 * {
   box-sizing: border-box;
+  touch-action: manipulation;
 }
 
 .mapboxgl-marker:hover {

@@ -14,12 +14,14 @@ export const PointsList = () => {
   /*   const data = mockPoints; */
   const navigate = useNavigate();
 
-  const { visibleHeight, height, onTouchStart, isFullOpen } = useDraggableList({
-    touchAreaHeight,
-    maxVisibleItems,
-    itemSize,
-    itemsCount: data?.length ?? 0,
-  });
+  const { visibleHeight, height, onPointerDown, isFullOpen } = useDraggableList(
+    {
+      touchAreaHeight,
+      maxVisibleItems,
+      itemSize,
+      itemsCount: data?.length ?? 0,
+    }
+  );
 
   const { value: visibleHeightValue } = visibleHeight;
 
@@ -35,7 +37,7 @@ export const PointsList = () => {
     >
       <button
         className="w-full h-fit py-1 bg-slate-100"
-        onTouchStart={onTouchStart}
+        onPointerDown={onPointerDown}
       >
         <div className="h-2 mb-2 mt-1 w-16 mx-auto bg-slate-400 rounded-full"></div>
       </button>

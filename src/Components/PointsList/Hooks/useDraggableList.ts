@@ -96,18 +96,21 @@ export const useDraggableList = (props: Props) => {
     setHeight(state);
   }, [itemsCount, setHeight, state]);
 
-  const onTouchStart = ({
-    changedTouches,
-  }: React.TouchEvent<HTMLButtonElement>) => {
+  /*   const onTouchStart = ({ */
+  const onPointerDown = ({
+    pageY: initialY,
+  }: React.PointerEvent<HTMLButtonElement>) => {
     setDragging(true);
-    const { pageY: initialY } = changedTouches.item(0);
+    /*     const { pageY: initialY } = changedTouches.item(0); */
     const initVisibleHeight = visibleHeight;
 
-    const onTouchMove = ({ changedTouches }: globalThis.TouchEvent) => {
-      const touchData = changedTouches.item(0);
+    const onPointerMove = ({ pageY: actualY }: PointerEvent) => {
+      /*       const touchData = changedTouches.item(0);
       if (!touchData) return;
-      const { pageY: actualY } = touchData;
+      const { pageY: actualY } = touchData; */
       const deltaY = actualY - initialY;
+      console.log(actualY);
+
       if (deltaY > height) {
         return;
       }
@@ -121,17 +124,17 @@ export const useDraggableList = (props: Props) => {
       setVisibleHeight(changedVisibleHeight);
     };
 
-    window.addEventListener("touchmove", onTouchMove);
-    window.ontouchend = ({ changedTouches }) => {
+    window.addEventListener("pointermove", onPointerMove);
+    window.onpointerup = ({ pageY: actualY }) => {
       setDragging(false);
-      const { pageY: actualY } = changedTouches.item(0) as Touch;
+      /*       const { pageY: actualY } = changedTouches.item(0) as Touch; */
       const deltaY = actualY - initialY;
       const changedVisibleHeight = initVisibleHeight - deltaY;
       const newState = getStateFromCurrentHeight(changedVisibleHeight);
       setState(newState);
       setHeight(newState);
-      window.removeEventListener("touchmove", onTouchMove);
-      window.ontouchend = null;
+      window.removeEventListener("pointermove", onPointerMove);
+      window.onpointerup = null;
     };
   };
 
@@ -149,7 +152,7 @@ export const useDraggableList = (props: Props) => {
       value: visibleHeight,
       type: visibleHeightType,
     },
-    onTouchStart,
+    onPointerDown,
     dragging,
     height,
     isFullOpen,
