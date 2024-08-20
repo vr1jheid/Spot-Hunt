@@ -40,7 +40,7 @@ export const MapBox = () => {
         const validCoords = { lng, lat };
 
         setLocation(validCoords);
-        queryClient.invalidateQueries({ queryKey: ["points"] });
+
         target.setCenter(validCoords);
         createPulsingDotOnMap(target, validCoords);
       },
@@ -51,9 +51,11 @@ export const MapBox = () => {
   };
 
   useEffect(() => {
-    if (!map || !location) return;
-    console.log("here");
+    queryClient.invalidateQueries({ queryKey: ["points"] });
+  }, [location]);
 
+  useEffect(() => {
+    if (!map || !location) return;
     const dot = map.getSource(PULSING_DOT_ID);
     if (dot) {
       changePulsingDotLocation(map, location);

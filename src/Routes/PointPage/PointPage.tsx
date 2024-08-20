@@ -41,7 +41,7 @@ export const PointPage = () => {
     if (!pointData) return;
     map?.easeTo({
       center: {
-        lat: pointData.coordinates.lat - 0.004,
+        lat: pointData.coordinates.lat - 0.003,
         lng: pointData.coordinates.lng,
       },
       zoom: 15,
