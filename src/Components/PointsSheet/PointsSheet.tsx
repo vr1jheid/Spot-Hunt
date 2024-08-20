@@ -1,3 +1,4 @@
+import { IconMoodEmpty } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";
@@ -22,6 +23,12 @@ export const PointsSheet = () => {
       header={<div className="h-6 bg-white rounded-t-lg"></div>}
       expandOnContentDrag
     >
+      {!data?.length && (
+        <div className="w-full h-full flex flex-col items-center gap-10 py-16 text-4xl font-semibold">
+          <IconMoodEmpty size={80} />
+          No points nearby
+        </div>
+      )}
       {data?.map((p) => (
         <PointPreview
           key={p.id}
