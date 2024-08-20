@@ -19,25 +19,12 @@ export const PointsSheet = () => {
 
   const onDismiss = () => setOpen(false);
 
-  useEffect(() => {
-    if (!data?.length) {
-      setOpen(false);
-    }
-  }, [data, setOpen]);
-
-  const getSnapPoints = ({ minHeight }: SnapPointProps) =>
-    minHeight < 200 ? minHeight : [200, minHeight];
-
-  const getDefaultSnap = ({ lastSnap, minHeight }: defaultSnapProps) =>
-    lastSnap ?? (minHeight < 200 ? minHeight : 200);
-
   return (
     <BottomSheet
       open={open}
       onDismiss={onDismiss}
-      snapPoints={getSnapPoints}
-      defaultSnap={getDefaultSnap}
-      blocking={false}
+      snapPoints={({ maxHeight }) => maxHeight * 0.8}
+      header={<div className="h-6 bg-white rounded-t-lg"></div>}
       expandOnContentDrag
     >
       {data?.map((p) => (

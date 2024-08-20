@@ -49,11 +49,10 @@ export const MapControls = () => {
             <IconMinus size={33} />
           </MapControlButton>
         </div>
-        {!open && (
-          <MapControlButton onClick={() => setOpen(true)}>
-            <IconListDetails size={25} />
-          </MapControlButton>
-        )}
+
+        <MapControlButton onClick={() => setOpen(true)}>
+          <IconListDetails size={25} />
+        </MapControlButton>
       </div>
     </>
   );

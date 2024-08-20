@@ -143,11 +143,10 @@
   pointer-events: none;
 }
 
-/* [data-rsbs-backdrop] {
-  width: 0px !important;
-  height: 0px !important;
-} */
-
 [data-rsbs-header] {
   padding: 0;
+}
+
+[data-rsbs-backdrop] {
+  background-color: transparent !important;
 }

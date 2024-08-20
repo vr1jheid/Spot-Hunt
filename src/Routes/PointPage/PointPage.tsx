@@ -27,7 +27,7 @@ export const PointPage = () => {
     if (!pointData) return;
     map?.easeTo({
       center: {
-        lat: pointData.coordinates.lat - 0.001,
+        lat: pointData.coordinates.lat - 0.004,
         lng: pointData.coordinates.lng,
       },
       zoom: 15,
@@ -49,7 +49,6 @@ export const PointPage = () => {
 
   return (
     <BottomSheet
-      blocking={false}
       onSpringStart={(e) => {
         if (e.type === "CLOSE") {
           setTimeout(() => {
@@ -60,7 +59,7 @@ export const PointPage = () => {
       open={open}
       onDismiss={() => setOpen(false)}
       header={<div className="h-6 bg-white rounded-t-lg"></div>}
-      snapPoints={({ minHeight }) => [minHeight, (minHeight * 2) / 3]}
+      snapPoints={({ maxHeight }) => maxHeight * 0.75}
       expandOnContentDrag
     >
       <header className="flex justify-center flex-col relative">
@@ -71,16 +70,16 @@ export const PointPage = () => {
           {title}
         </h1>
         {images.length ? (
-          <Carousel height={250} withIndicators>
+          <Carousel height={200} withIndicators>
             {images.map((i) => (
               <CarouselSlide key={i}>
-                <Image h={250} src={i} />
+                <Image h={200} src={i} />
               </CarouselSlide>
             ))}
           </Carousel>
         ) : (
           <img
-            src="https://placehold.co/374x250?text=No%20photos"
+            src="https://placehold.co/374x200?text=No%20photos"
             className="rounded-lg"
           />
         )}
@@ -100,7 +99,7 @@ export const PointPage = () => {
       </div>
       <div>
         <div className="text-center mt-10">open in maps...</div>
-        <div className=" flex p-5 justify-center gap-10">
+        <div className="flex p-5 justify-center gap-10">
           <a
             target="_blank"
             href={`https://www.waze.com/en/live-map/directions?latlng=${lat}%2C${lng}`}
@@ -120,62 +119,5 @@ export const PointPage = () => {
         </div>
       </div>
     </BottomSheet>
-    /*     <div className="absolute bottom-0 h-[630px] w-full p-2 bg-white z-10">
-      <div className="w-full h-52">
-        <div className=" absolute top-1 right-1 z-10">
-          <CloseButton onClick={closePage} size="lg" />
-        </div>
-        <header className="flex justify-center flex-col">
-          {images.length ? (
-            <Carousel withIndicators>
-              {images.map((i) => (
-                <CarouselSlide key={i}>
-                  <Image h={250} src={i} />
-                </CarouselSlide>
-              ))}
-            </Carousel>
-          ) : (
-            <img
-              src="https://placehold.co/374x250?text=No%20photos"
-              className="rounded-lg h-[300px]"
-            />
-          )}
-
-          <h1 className="text-center text-3xl font-normal mt-2">{title}</h1>
-        </header>
-        <div className=" flex flex-col gap-5">
-          <div className="inline-flex gap-2">
-            <IconMapPin /> "location"
-          </div>
-          {rate && (
-            <div className="inline-flex gap-2">
-              <IconCurrencyDollar /> {rate}$/h
-            </div>
-          )}
-          <div className="inline-flex gap-2">Capcity: {capacity}</div>
-        </div>
-        <div>
-          <div className="text-center mt-10">open in maps...</div>
-          <div className=" flex p-5 justify-center gap-10">
-            <a
-              target="_blank"
-              href={`https://www.waze.com/en/live-map/directions?latlng=${lat}%2C${lng}`}
-            >
-              <img className=" w-12 h-12" src={wazeMapsIcon} alt="waze maps" />
-            </a>
-            <a
-              target="_blank"
-              href={`https://www.google.com/maps/place/${lat},${lng}`}
-            >
-              <img
-                className=" w-12 h-12"
-                src={googleMapsIcon}
-                alt="google maps"
-              />
-            </a>
-          </div>
-        </div>
-      </div>
-    </div> */
   );
 };
