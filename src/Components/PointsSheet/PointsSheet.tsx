@@ -1,11 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";
-import {
-  defaultSnapProps,
-  SnapPointProps,
-} from "react-spring-bottom-sheet/dist/types";
 
 import { PointLocalData } from "../../Types/PointTypes";
 import { PointPreview } from "../PointPreview/PointPreview";

@@ -14,7 +14,7 @@ import { MapControlButton } from "./MapControlButton";
 export const MapControls = () => {
   const { map } = useContext(MapBoxContext);
   const { setLocation } = useUserStore();
-  const { open, setOpen } = usePointsSheet();
+  const { setOpen } = usePointsSheet();
 
   if (!map) return;
 

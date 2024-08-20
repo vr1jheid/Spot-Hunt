@@ -2,7 +2,8 @@ import { Carousel, CarouselSlide } from "@mantine/carousel";
 import { Image } from "@mantine/core";
 import { IconCurrencyDollar, IconMapPin } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
-import { useContext, useEffect, useState } from "react";
+import mapboxgl, { Marker } from "mapbox-gl";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";
 
@@ -10,9 +11,9 @@ import googleMapsIcon from "../../Assets/google-maps-icon.png";
 import wazeMapsIcon from "../../Assets/waze-maps-icon.svg";
 import { MapBoxContext } from "../../Components/MapBox/Context/MapBoxContext";
 import { PointLocalData } from "../../Types/PointTypes";
-
 export const PointPage = () => {
   const [open, setOpen] = useState(true);
+  const marker = useRef<Marker | null>(null);
   const { map } = useContext(MapBoxContext);
   const { data } = useQuery<PointLocalData[]>({ queryKey: ["points"] });
   const navigate = useNavigate();
@@ -22,6 +23,19 @@ export const PointPage = () => {
   const id = params.id;
 
   const pointData = data?.find((p) => p.id == +(id ?? -1));
+
+  useEffect(() => {
+    if (!pointData?.coordinates || !map || marker.current) {
+      return;
+    }
+    marker.current = new mapboxgl.Marker({ color: "red" })
+      .setLngLat(pointData?.coordinates)
+      .addTo(map);
+
+    () => {
+      marker.current?.remove();
+    };
+  }, [map, pointData?.coordinates]);
 
   useEffect(() => {
     if (!pointData) return;
@@ -57,7 +71,11 @@ export const PointPage = () => {
         }
       }}
       open={open}
-      onDismiss={() => setOpen(false)}
+      onDismiss={() => {
+        setOpen(false);
+        marker.current?.remove();
+        marker.current = null;
+      }}
       header={<div className="h-6 bg-white rounded-t-lg"></div>}
       snapPoints={({ maxHeight }) => maxHeight * 0.75}
       expandOnContentDrag
