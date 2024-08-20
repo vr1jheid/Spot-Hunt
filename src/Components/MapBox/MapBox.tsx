@@ -1,16 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import mapboxgl, { LngLatLike, Map, MapMouseEvent } from "mapbox-gl";
-import { useRef, useEffect, useState, useContext } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { MapBoxContext } from "./Context/MapBoxContext";
-import { useNavigate } from "react-router-dom";
+
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import mapboxgl, { LngLatLike, Map, MapMouseEvent } from "mapbox-gl";
+import { useContext, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { fetchPoints } from "../../api/fetchPoints";
-import { getBounds } from "../../Utils/getBounds";
 import { useUserStore } from "../../Routes/MapPage/userStore";
-import { createPulsingDotOnMap } from "./Utils/createPulsingDotOnMap";
+import { getBounds } from "../../Utils/getBounds";
 import { PULSING_DOT_ID } from "./Constants/pulsingDot";
+import { MapBoxContext } from "./Context/MapBoxContext";
 import { changePulsingDotLocation } from "./Utils/changePulsingDotLocation";
+import { createPulsingDotOnMap } from "./Utils/createPulsingDotOnMap";
 
 // Cyprus
 
@@ -114,24 +116,6 @@ export const MapBox = () => {
   return (
     <>
       <div className="h-full w-full" ref={mapContainerRef} />
-      <button
-        className="absolute top-0 right-0 z-[9999] bg-white"
-        onClick={() => {
-          /* createPulsingDotOnMap(map, { lng: 34, lat: 34 }); */
-          points!.forEach(({ id, coordinates }) => {
-            new mapboxgl.Marker()
-              .setLngLat(coordinates)
-              .addTo(map!)
-              .getElement()
-              .addEventListener("click", (e) => {
-                e.stopPropagation();
-                console.log("OPENED ", id);
-              });
-          });
-        }}
-      >
-        TEST
-      </button>
     </>
   );
 };

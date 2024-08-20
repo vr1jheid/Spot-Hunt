@@ -1,6 +1,7 @@
-import { memo, ReactNode, useState } from "react";
-import { MapBoxContext } from "./MapBoxContext";
 import { Map } from "mapbox-gl";
+import { memo, ReactNode, useState } from "react";
+
+import { MapBoxContext } from "./MapBoxContext";
 
 export const MapBoxContextProvider = memo(
   ({ children }: { children: ReactNode }) => {

@@ -1,4 +1,5 @@
 import { Map } from "mapbox-gl";
+
 import { Coords } from "../../../Types/Сoords";
 
 export const changePulsingDotLocation = (map: Map, { lng, lat }: Coords) => {

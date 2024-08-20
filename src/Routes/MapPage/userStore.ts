@@ -1,4 +1,5 @@
 import { create } from "zustand";
+
 import { Coords } from "../../Types/Сoords";
 
 export interface UserStore {

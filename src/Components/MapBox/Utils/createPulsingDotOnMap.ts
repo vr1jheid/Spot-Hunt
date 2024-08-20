@@ -1,4 +1,5 @@
 import { Map } from "mapbox-gl";
+
 import { Coords } from "../../../Types/Сoords";
 import { PULSING_DOT_ID } from "../Constants/pulsingDot";
 

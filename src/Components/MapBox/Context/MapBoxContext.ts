@@ -1,5 +1,5 @@
-import { createContext } from "react";
 import { Map } from "mapbox-gl";
+import { createContext } from "react";
 
 export interface MapContext {
   map: Map | null;

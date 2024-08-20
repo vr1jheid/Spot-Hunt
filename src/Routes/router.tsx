@@ -1,8 +1,8 @@
-import { createBrowserRouter, Outlet } from "react-router-dom";
-
 import { MantineProvider } from "@mantine/core";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { createBrowserRouter, Outlet } from "react-router-dom";
+
 import { queryClient } from "../Tanstack/queryClient";
 import { MapPage } from "./MapPage/MapPage";
 import { NewPointPage } from "./NewPointPage/NewPointPage";

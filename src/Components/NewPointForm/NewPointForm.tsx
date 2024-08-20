@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import {
   Button,
   CloseButton,
@@ -7,14 +6,16 @@ import {
   NumberInput,
   TextInput,
 } from "@mantine/core";
-import { IconCurrencyDollar } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
-import { addPoint } from "../../api/addPoint";
 import { useClickOutside } from "@mantine/hooks";
-import { PointDataToSend } from "../../Types/PointTypes";
+import { IconCurrencyDollar } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { addPhotoToPoint } from "../../api/addPhotoToPoint";
+import { addPoint } from "../../api/addPoint";
+import { PointDataToSend } from "../../Types/PointTypes";
 import { PhotosList } from "../PhotosList/PhotoList";
 
 interface Props {
@@ -25,7 +26,7 @@ export const NewPointForm = ({ coords }: Props) => {
   const [longitude, latitude] = coords;
   const [photos, setPhotos] = useState<{ photo: File; url: string }[]>([]);
   const navigate = useNavigate();
-  const closeForm = () => navigate(-1);
+  const closeForm = () => navigate("/");
 
   const queryClient = useQueryClient();
 

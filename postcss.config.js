@@ -1,3 +1,5 @@
+import defaults from "react-spring-bottom-sheet/defaults.json" with { type: "json" };
+
 export default {
   plugins: {
     tailwindcss: {},
@@ -11,6 +13,9 @@ export default {
         "mantine-breakpoint-lg": "75em",
         "mantine-breakpoint-xl": "88em",
       },
+    },
+    "postcss-custom-properties-fallback": {
+      importFrom: defaults,
     },
   },
 };

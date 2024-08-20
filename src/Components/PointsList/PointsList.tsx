@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
+import clsx from "clsx";
+import { useNavigate } from "react-router-dom";
+
 import { PointLocalData } from "../../Types/PointTypes";
 import { PointPreview } from "../PointPreview/PointPreview";
-import clsx from "clsx";
 import { useDraggableList } from "./Hooks/useDraggableList";
-import { useNavigate } from "react-router-dom";
 
 const touchAreaHeight = 28;
 const maxVisibleItems = 10;
