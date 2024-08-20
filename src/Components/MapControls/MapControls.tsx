@@ -4,6 +4,7 @@ import {
   IconNavigationFilled,
   IconPlus,
 } from "@tabler/icons-react";
+import mapboxgl from "mapbox-gl";
 import { useContext } from "react";
 
 import { useUserStore } from "../../Routes/MapPage/userStore";

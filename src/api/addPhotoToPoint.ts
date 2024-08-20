@@ -9,8 +9,11 @@ export const addPhotoToPoint = async ({
 }) => {
   const formData = new FormData();
   photoData.forEach(({ key, photo }) => {
+    console.log({ key, photo });
+
     formData.append(key, photo);
   });
+
   const response = await fetch(`${API_URL}/api/park-point/upload-image/${id}`, {
     method: "POST",
     body: formData,
