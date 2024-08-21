@@ -7,7 +7,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconCurrencyDollar } from "@tabler/icons-react";
+import { IconCashBanknote } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ForwardedRef, forwardRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -110,7 +110,7 @@ export const NewPointForm = forwardRef(
           label="Rate per hr"
           placeholder="e.g. 15$"
           min={0}
-          leftSection={<IconCurrencyDollar />}
+          leftSection={<IconCashBanknote />}
           key={form.key("rate")}
           {...form.getInputProps("rate")}
         />

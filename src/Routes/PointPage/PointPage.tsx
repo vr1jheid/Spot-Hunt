@@ -1,6 +1,10 @@
-import { Carousel, CarouselSlide } from "@mantine/carousel";
-import { Image } from "@mantine/core";
-import { IconCurrencyDollar, IconMapPin } from "@tabler/icons-react";
+import { Carousel } from "@mantine/carousel";
+import {
+  IconCar,
+  IconCashBanknote,
+  IconMapPin,
+  IconRulerMeasure,
+} from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import mapboxgl, { Marker } from "mapbox-gl";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -9,9 +13,14 @@ import { BottomSheet } from "react-spring-bottom-sheet";
 
 import googleMapsIcon from "../../Assets/google-maps-icon.png";
 import wazeMapsIcon from "../../Assets/waze-maps-icon.svg";
+import { AboutListItem } from "../../Components/AboutListItem/AboutListItem";
 import { MapBoxContext } from "../../Components/MapBox/Context/MapBoxContext";
 import { PointLocalData } from "../../Types/PointTypes";
+import { convertDistanceToText } from "../../Utils/convertDistanceToText";
+import { getDistanceBetweenPoints } from "../../Utils/getDistanceBetweenPoints";
+import { useUserStore } from "../MapPage/userStore";
 export const PointPage = () => {
+  const { location } = useUserStore();
   const [open, setOpen] = useState(true);
   const marker = useRef<Marker | null>(null);
   const { map } = useContext(MapBoxContext);
@@ -88,13 +97,7 @@ export const PointPage = () => {
           {title}
         </h1>
         {images.length ? (
-          <Carousel height={200} withIndicators>
-            {images.map((i) => (
-              <CarouselSlide key={i}>
-                <Image h={200} src={i} />
-              </CarouselSlide>
-            ))}
-          </Carousel>
+          <Carousel />
         ) : (
           <img
             src="https://placehold.co/374x200?text=No%20photos"
@@ -102,25 +105,42 @@ export const PointPage = () => {
           />
         )}
       </header>
-      <div className=" flex flex-col gap-5">
-        <div className="inline-flex gap-2">
-          <IconMapPin /> "location"
-        </div>
-        {rate && (
-          <div className="inline-flex gap-2">
-            <IconCurrencyDollar /> {rate}$/h
-          </div>
-        )}
-        <div className="inline-flex gap-2">Capacity: {capacity}</div>
-      </div>
+      <ul className="p-3 flex flex-col gap-3">
+        <AboutListItem
+          icon={<IconMapPin size={25} />}
+          title="Adress"
+          text="Lorem ipsum dolor sit."
+        />
+        <AboutListItem
+          icon={<IconRulerMeasure size={25} />}
+          title="Distance from you"
+          text={
+            !location
+              ? "We cant get your location"
+              : convertDistanceToText(
+                  getDistanceBetweenPoints(location, coordinates)
+                )
+          }
+        />
+        <AboutListItem
+          icon={<IconCar size={25} />}
+          title="Capacity"
+          text={`${capacity ?? "no data"}`}
+        />
+        <AboutListItem
+          icon={<IconCashBanknote size={25} />}
+          title="Rate"
+          text={rate ? `${rate}$/h` : "no data"}
+        />
+      </ul>
+
       <div>
-        <div className="text-center mt-10">open in maps...</div>
         <div className="flex p-5 justify-center gap-10">
           <a
             target="_blank"
             href={`https://www.waze.com/en/live-map/directions?latlng=${lat}%2C${lng}`}
           >
-            <img className=" w-12 h-12" src={wazeMapsIcon} alt="waze maps" />
+            <img className="w-14 h-14" src={wazeMapsIcon} alt="waze maps" />
           </a>
           <a
             target="_blank"
