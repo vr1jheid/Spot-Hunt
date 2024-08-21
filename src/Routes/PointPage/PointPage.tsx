@@ -101,8 +101,6 @@ export const PointPage = () => {
             className="rounded-lg"
           />
         )}
-
-        {/*         <h1 className="text-center text-3xl font-normal mt-2">{title}</h1> */}
       </header>
       <div className=" flex flex-col gap-5">
         <div className="inline-flex gap-2">

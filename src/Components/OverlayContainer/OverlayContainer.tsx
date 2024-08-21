@@ -1,5 +1,9 @@
-import { ReactNode } from "react";
+import { ComponentProps } from "react";
 
-export const OverlayContainer = ({ children }: { children: ReactNode }) => {
-  return <div className="absolute w-full h-full top-0 left-0">{children}</div>;
+interface Props extends ComponentProps<"button"> {}
+
+export const OverlayContainer = ({ children }: Props) => {
+  return (
+    <div className="absolute w-full h-full top-0 left-0 z-10">{children}</div>
+  );
 };

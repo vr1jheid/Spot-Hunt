@@ -1,8 +1,6 @@
-import { ComponentProps, ReactNode } from "react";
+import { ComponentProps } from "react";
 
-interface Props extends ComponentProps<"button"> {
-  children: ReactNode;
-}
+interface Props extends ComponentProps<"button"> {}
 
 export const MapControlButton = ({ children, ...buttonProps }: Props) => {
   return (
