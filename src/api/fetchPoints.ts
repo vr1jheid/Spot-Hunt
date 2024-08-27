@@ -169,8 +169,6 @@ export const fetchPoints = async ({
   const data = await response.json();
   const serverData = data.data.items as PointServerData[];
 
-  console.log(params, data);
-
   return serverData.map((p) => {
     return {
       ...p,

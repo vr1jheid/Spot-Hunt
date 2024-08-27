@@ -1,4 +1,5 @@
-import { Carousel } from "@mantine/carousel";
+import { Carousel, CarouselSlide } from "@mantine/carousel";
+import { Image } from "@mantine/core";
 import {
   IconCar,
   IconCashBanknote,
@@ -19,6 +20,7 @@ import { PointLocalData } from "../../Types/PointTypes";
 import { convertDistanceToText } from "../../Utils/convertDistanceToText";
 import { getDistanceBetweenPoints } from "../../Utils/getDistanceBetweenPoints";
 import { useUserStore } from "../MapPage/userStore";
+
 export const PointPage = () => {
   const { location } = useUserStore();
   const [open, setOpen] = useState(true);
@@ -69,6 +71,7 @@ export const PointPage = () => {
 
   const { title, rate, capacity, coordinates, images } = pointData;
   const { lng, lat } = coordinates;
+  console.log(pointData);
 
   return (
     <BottomSheet
@@ -97,12 +100,15 @@ export const PointPage = () => {
           {title}
         </h1>
         {images.length ? (
-          <Carousel />
+          <Carousel>
+            {images.map((i) => (
+              <CarouselSlide h={200}>
+                <Image src={i} h={200} />
+              </CarouselSlide>
+            ))}
+          </Carousel>
         ) : (
-          <img
-            src="https://placehold.co/374x200?text=No%20photos"
-            className="rounded-lg"
-          />
+          <Image src="https://placehold.co/374x200?text=No%20photos" />
         )}
       </header>
       <ul className="p-3 flex flex-col gap-3">
