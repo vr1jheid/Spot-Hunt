@@ -1,17 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import { Menu } from "@mantine/core";
-import { IconMapPin } from "@tabler/icons-react";
+import { RingProgress } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import mapboxgl, { LngLatLike, Map } from "mapbox-gl";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BottomSheet } from "react-spring-bottom-sheet";
 
 import { fetchPoints } from "../../api/fetchPoints";
 import { useUserStore } from "../../Routes/MapPage/userStore";
 import { getBounds } from "../../Utils/getBounds";
-import { OverlayContainer } from "../OverlayContainer/OverlayContainer";
 import { PULSING_DOT_ID } from "./Constants/pulsingDot";
 import { MapBoxContext } from "./Context/MapBoxContext";
 import { changePulsingDotLocation } from "./Utils/changePulsingDotLocation";
@@ -135,13 +135,11 @@ export const MapBox = () => {
       const interval = setInterval(() => {
         const touchingTime = Date.now() - touchStart.timestamp;
         console.log(touchingTime);
-        if (touchingTime > 700) {
+        if (touchingTime > 1050) {
           clear(interval);
           setTouchEvent((prev) => {
             return { ...prev, menuOpen: true, touchingTime: 0 };
           });
-          e.target.dragPan.disable();
-
           console.log("menu opened");
           return;
         }
@@ -178,61 +176,41 @@ export const MapBox = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (touchEvent.menuOpen) {
-      map?.dragPan.disable;
-    } else {
-      !map?.dragPan.isEnabled() && map?.dragPan.enable();
-    }
-  }, [touchEvent.menuOpen, map]);
-
   return (
     <>
-      {touchEvent.menuOpen && (
-        <>
-          <OverlayContainer
-            onPointerDown={() => {
-              setTouchEvent(touchInitial);
-            }}
-          />
-          <Menu
-            opened
-            onChange={() => setTouchEvent(touchInitial)}
-            withArrow
-            arrowPosition="center"
-            arrowSize={13}
-            styles={{
-              dropdown: {
-                top: `${(touchEvent?.pageY ?? 0) + 10}px`,
-                left: `${(touchEvent?.pageX ?? 0) - 10}px`,
-              },
-            }}
-          >
-            <Menu.Dropdown>
-              <Menu.Item
-                onClick={() => {
-                  navigate(`new-point/${[touchEvent.lng, touchEvent.lat]}`);
-                }}
-                leftSection={<IconMapPin />}
-              >
-                {" "}
-                Add Spot
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
-        </>
-      )}
-
+      <BottomSheet
+        open={touchEvent.menuOpen}
+        onDismiss={() =>
+          setTouchEvent((prev) => {
+            return { ...prev, menuOpen: false };
+          })
+        }
+      >
+        <button
+          onClick={() => {
+            navigate(`new-point/${[touchEvent.lng, touchEvent.lat]}`);
+            setTouchEvent((prev) => {
+              return { ...prev, menuOpen: false };
+            });
+          }}
+          className=" flex h-11 w-full justify-center "
+        >
+          <IconPlus /> add spot
+        </button>
+      </BottomSheet>
       {!!touchEvent.touchingTime && (
         <div
-          className="absolute z-50 opacity-70 bg-gray-400 -translate-x-1/2 -translate-y-1/2 rounded-full"
+          className=" absolute top-0 left-0 z-20 -translate-x-1/2 -translate-y-1/2"
           style={{
-            top: touchEvent.pageY,
-            left: touchEvent.pageX,
-            width: `${touchEvent.touchingTime / 30}px`,
-            height: `${touchEvent.touchingTime / 30}px`,
+            top: `${touchEvent.pageY}px`,
+            left: `${touchEvent.pageX}px`,
           }}
-        ></div>
+        >
+          <RingProgress
+            size={70}
+            sections={[{ value: touchEvent.touchingTime / 10, color: "green" }]}
+          />
+        </div>
       )}
       <div className="h-full w-full" id="map-container" ref={mapContainerRef} />
     </>
