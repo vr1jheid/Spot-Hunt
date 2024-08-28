@@ -140,6 +140,7 @@ export const MapBox = () => {
           setTouchEvent((prev) => {
             return { ...prev, menuOpen: true, touchingTime: 0 };
           });
+          e.target.dragPan.disable();
 
           console.log("menu opened");
           return;
@@ -177,6 +178,14 @@ export const MapBox = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (touchEvent.menuOpen) {
+      map?.dragPan.disable;
+    } else {
+      !map?.dragPan.isEnabled() && map?.dragPan.enable();
+    }
+  }, [touchEvent.menuOpen, map]);
+
   return (
     <>
       {touchEvent.menuOpen && (
@@ -201,9 +210,9 @@ export const MapBox = () => {
           >
             <Menu.Dropdown>
               <Menu.Item
-                onClick={() =>
-                  navigate(`new-point/${[touchEvent.lng, touchEvent.lat]}`)
-                }
+                onClick={() => {
+                  navigate(`new-point/${[touchEvent.lng, touchEvent.lat]}`);
+                }}
                 leftSection={<IconMapPin />}
               >
                 {" "}
