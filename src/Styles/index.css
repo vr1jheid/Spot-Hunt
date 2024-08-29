@@ -22,17 +22,6 @@ body,
   user-select: none; /* Стандартный синтаксис */
 }
 
-/* html {
-  height: auto;
-  overflow: hidden;
-}
-
-body {
-  min-height: 100vh;
-  height: 100vh;
-  overflow: hidden;
-} */
-
 #root {
   position: relative;
   background: black;

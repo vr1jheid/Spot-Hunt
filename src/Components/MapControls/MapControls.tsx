@@ -6,9 +6,9 @@ import {
 } from "@tabler/icons-react";
 import { useContext } from "react";
 
-import { useUserStore } from "../../Routes/MapPage/userStore";
+import { useSpotsSheet } from "../../Store/SpotsSheetStore";
+import { useUserStore } from "../../Store/userStore";
 import { MapBoxContext } from "../MapBox/Context/MapBoxContext";
-import { useSpotsSheet } from "../SpotsBottomSheet/SpotsSheetStore";
 import { MapControlButton } from "./MapControlButton";
 
 export const MapControls = () => {

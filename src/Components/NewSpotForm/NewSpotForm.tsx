@@ -8,12 +8,13 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconCashBanknote } from "@tabler/icons-react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { ForwardedRef, forwardRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { addPhotoToSpot } from "../../api/addPhotoToSpot";
 import { addSpot } from "../../api/addSpot";
+import { invalidateSpots } from "../../api/invalidateSpots";
 import { SpotDataToSend } from "../../Types/PointTypes";
 import { PhotosList } from "./PhotosList/PhotoList";
 
@@ -28,13 +29,10 @@ export const NewSpotForm = forwardRef(
     const navigate = useNavigate();
     const closeForm = () => navigate("/");
 
-    const queryClient = useQueryClient();
-
     const addPhotoMutation = useMutation({
       mutationFn: addPhotoToSpot,
-      onSuccess: (res) => {
-        queryClient.invalidateQueries({ queryKey: ["points"] });
-        console.log(res);
+      onSuccess: () => {
+        invalidateSpots();
       },
     });
 
@@ -42,7 +40,7 @@ export const NewSpotForm = forwardRef(
       mutationFn: addSpot,
       onSuccess: async ({ data }) => {
         console.log("Point added", data);
-        queryClient.invalidateQueries({ queryKey: ["points"] });
+        invalidateSpots();
         closeForm();
         const photoData = photos.map((p) => {
           return { ...p, key: p.url };

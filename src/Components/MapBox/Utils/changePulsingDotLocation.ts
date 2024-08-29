@@ -3,7 +3,7 @@ import { Map } from "mapbox-gl";
 import { Coords } from "../../../Types/Сoords";
 
 export const changePulsingDotLocation = (map: Map, { lng, lat }: Coords) => {
-  const dot = map.getSource("dot-point")! as mapboxgl.GeoJSONSource;
+  const dot = map.getSource("dot-point") as mapboxgl.GeoJSONSource;
   if (!dot) {
     throw new Error("Dot not found on map");
   }

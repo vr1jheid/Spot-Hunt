@@ -4,14 +4,14 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";
 
-import { useUserStore } from "../../Routes/MapPage/userStore";
+import { useSpotsSheet } from "../../Store/SpotsSheetStore";
+import { useUserStore } from "../../Store/userStore";
 import { SpotLocalData } from "../../Types/PointTypes";
 import { getDistanceBetweenPoints } from "../../Utils/getDistanceBetweenPoints";
 import { SpotPreview } from "../SpotPreview/SpotPreview";
-import { useSpotsSheet } from "./SpotsSheetStore";
 
 export const SpotsBottomSheet = () => {
-  const { data } = useQuery<SpotLocalData[]>({ queryKey: ["points"] });
+  const { data } = useQuery<SpotLocalData[]>({ queryKey: ["spots"] });
   const navigate = useNavigate();
   const { location } = useUserStore();
 
@@ -52,7 +52,7 @@ export const SpotsBottomSheet = () => {
         <SpotPreview
           key={p.id}
           onClick={() => {
-            navigate(`point/${p.id}`);
+            navigate(`spot/${p.id}`);
             setOpen(false);
           }}
           spotData={p}

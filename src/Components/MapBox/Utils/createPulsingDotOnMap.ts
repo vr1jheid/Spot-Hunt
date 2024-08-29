@@ -1,7 +1,7 @@
 import { Map } from "mapbox-gl";
 
 import { Coords } from "../../../Types/Сoords";
-import { PULSING_DOT_ID } from "../Constants/pulsingDot";
+import { USER_LOCATION_DOT_ID } from "../Constants/pulsingDot";
 
 interface Options {
   size: number;
@@ -13,7 +13,6 @@ export const createPulsingDotOnMap = (
   { size }: Options = { size: 100 }
 ) => {
   const canvas = document.createElement("canvas");
-  console.log(size);
 
   const pulsingDot = {
     width: size,
@@ -56,7 +55,7 @@ export const createPulsingDotOnMap = (
     },
   };
   map.addImage("pulsing-dot", pulsingDot, { pixelRatio: 2 });
-  map.addSource(PULSING_DOT_ID, {
+  map.addSource(USER_LOCATION_DOT_ID, {
     type: "geojson",
     data: {
       type: "FeatureCollection",
@@ -75,7 +74,7 @@ export const createPulsingDotOnMap = (
   map.addLayer({
     id: "layer-with-pulsing-dot",
     type: "symbol",
-    source: PULSING_DOT_ID,
+    source: USER_LOCATION_DOT_ID,
     layout: {
       "icon-image": "pulsing-dot",
     },
