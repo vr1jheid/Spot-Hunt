@@ -27,11 +27,11 @@ export const router = createBrowserRouter([
         element: <MapPage />,
         children: [
           {
-            path: "/new-point/:coords",
+            path: "/new-spot/:coords",
             element: <NewSpotPage />,
           },
           {
-            path: "/point/:id",
+            path: "/spot/:id",
             element: <SpotPage />,
           },
           {

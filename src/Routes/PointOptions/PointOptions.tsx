@@ -13,7 +13,7 @@ export const PointOptions = () => {
           <Button
             fullWidth
             onClick={() => {
-              navigate(`/new-point/${coords}`);
+              navigate(`/new-spot/${coords}`);
             }}
             classNames={{ label: "w-full flex justify-between" }}
           >

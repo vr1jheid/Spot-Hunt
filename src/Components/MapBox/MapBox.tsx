@@ -3,7 +3,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 
 import { RingProgress } from "@mantine/core";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import mapboxgl, { LngLatLike, Map } from "mapbox-gl";
+import mapboxgl, { LngLatLike, Map, Marker } from "mapbox-gl";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -16,23 +16,30 @@ import { changePulsingDotLocation } from "./Utils/changePulsingDotLocation";
 import { createPulsingDotOnMap } from "./Utils/createPulsingDotOnMap";
 
 // Cyprus
-
-const touchInitial = {
-  pageX: -1,
-  pageY: -1,
-  lng: 0,
-  lat: 0,
-  menuOpen: false,
-  touchingTime: 0,
+const clear = (interval: number) => {
+  clearInterval(interval);
+  window.onpointermove = null;
+  window.onpointerup = null;
 };
 
+interface MapTouchEvent {
+  pageX: number;
+  pageY: number;
+  lngLat: LngLatLike;
+  touchingTime: number;
+}
+
+interface Markers {
+  [key: string]: Marker;
+}
+
 export const MapBox = () => {
-  const [touchEvent, setTouchEvent] = useState(touchInitial);
+  const [touchEvent, setTouchEvent] = useState<MapTouchEvent | null>(null);
 
   const navigate = useNavigate();
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const initialCoords: LngLatLike = { lng: 33.354173, lat: 35.172871 };
-  const [markersIds, setMarkersIds] = useState<number[]>([]);
+  const [markers, setMarkers] = useState<Markers>({});
   const { map, setMap } = useContext(MapBoxContext);
   const queryClient = useQueryClient();
   const { setLocation, location } = useUserStore();
@@ -78,22 +85,31 @@ export const MapBox = () => {
 
   useEffect(() => {
     if (!map || !points) return;
+    const markersCopy = { ...markers };
 
-    const newIds: number[] = [];
-    points.forEach(({ id, coordinates }) => {
-      if (markersIds.includes(id)) return;
-      newIds.push(id);
-
-      new mapboxgl.Marker()
-        .setLngLat(coordinates)
-        .addTo(map)
-        .getElement()
-        .addEventListener("click", (e) => {
-          e.stopPropagation();
-          navigate(`point/${id}`);
-        });
+    const newMarkers: Markers = {};
+    const currentSpotsIds = points.map(({ id }) => id);
+    Object.keys(markers).forEach((id) => {
+      if (!currentSpotsIds.includes(+id)) {
+        markersCopy[id].remove();
+        delete markersCopy[id];
+      }
     });
-    setMarkersIds((prev) => [...prev, ...newIds]);
+
+    points.forEach(({ id, coordinates }) => {
+      /* if (markersIds.includes(id)) return; */
+      if (markers[id]) return;
+
+      const marker = new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
+      marker.getElement().addEventListener("click", (e) => {
+        e.stopPropagation();
+        navigate(`spot/${id}`);
+      });
+      newMarkers[id] = marker;
+    });
+    console.log(markersCopy, newMarkers);
+
+    setMarkers({ ...markersCopy, ...newMarkers });
   }, [points, map]);
 
   useEffect(() => {
@@ -110,15 +126,9 @@ export const MapBox = () => {
 
     mapboxMap.on("load", onMapLoad);
 
-    mapboxMap.on("touchstart", (e) => {
-      const { lng, lat } = e.lngLat;
+    mapboxMap.on("touchstart", ({ lngLat, originalEvent }) => {
+      const { pageX, pageY } = originalEvent.targetTouches[0];
 
-      const { pageX, pageY } = e.originalEvent.targetTouches[0];
-      const clear = (interval: number) => {
-        clearInterval(interval);
-        window.onpointermove = null;
-        window.onpointerup = null;
-      };
       console.log("start touching");
 
       const touchStart = {
@@ -126,31 +136,29 @@ export const MapBox = () => {
         pageY,
         timestamp: Date.now(),
       };
-      setTouchEvent((prev) => {
-        return { ...prev, pageX, pageY, lng, lat };
-      });
+
+      setTouchEvent({ pageX, pageY, lngLat, touchingTime: 0 });
 
       const interval = setInterval(() => {
         const touchingTime = Date.now() - touchStart.timestamp;
         console.log(touchingTime);
         if (touchingTime > 1050) {
           clear(interval);
-          setTouchEvent((prev) => {
-            return { ...prev, menuOpen: true, touchingTime: 0 };
-          });
-          navigate(`options/${lng + "," + lat}`);
+          setTouchEvent(null);
+          navigate(`options/${lngLat.toArray()}`);
           console.log("menu opened");
           return;
         }
 
         setTouchEvent((prev) => {
+          if (!prev) return null;
           return { ...prev, touchingTime };
         });
       }, 50);
 
       window.onpointerup = () => {
         clear(interval);
-        setTouchEvent(touchInitial);
+        setTouchEvent(null);
       };
 
       window.onpointermove = ({ pageX, pageY }) => {
@@ -159,7 +167,7 @@ export const MapBox = () => {
         const deltaY = Math.abs(touchStart.pageY - pageY);
         if (deltaX > maxDelta || deltaY > maxDelta) {
           clear(interval);
-          setTouchEvent(touchInitial);
+          setTouchEvent(null);
         }
       };
     });
@@ -177,7 +185,7 @@ export const MapBox = () => {
 
   return (
     <>
-      {!!touchEvent.touchingTime && (
+      {!!touchEvent && (
         <div
           className=" absolute top-0 left-0 z-20 -translate-x-1/2 -translate-y-1/2"
           style={{
