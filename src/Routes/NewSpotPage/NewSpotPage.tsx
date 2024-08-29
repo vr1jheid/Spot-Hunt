@@ -1,7 +1,7 @@
 import { MouseEvent, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { NewPointForm } from "../../Components/NewPointForm/NewPointForm";
+import { NewSpotForm } from "../../Components/NewSpotForm/NewSpotForm";
 import { OverlayContainer } from "../../Components/OverlayContainer/OverlayContainer";
 
 export const NewSpotPage = () => {
@@ -24,7 +24,7 @@ export const NewSpotPage = () => {
         className="p-3 w-full h-full flex justify-center items-center "
         onClick={closeOnClickOutside}
       >
-        <NewPointForm ref={form} coords={coords.split(",")} />
+        <NewSpotForm ref={form} coords={coords.split(",")} />
       </div>
     </OverlayContainer>
   );

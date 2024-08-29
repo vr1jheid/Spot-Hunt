@@ -1,13 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import { Button, RingProgress } from "@mantine/core";
-import { IconPlus } from "@tabler/icons-react";
+import { RingProgress } from "@mantine/core";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import mapboxgl, { LngLatLike, Map } from "mapbox-gl";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BottomSheet } from "react-spring-bottom-sheet";
 
 import { fetchSpots } from "../../api/fetchSpots";
 import { useUserStore } from "../../Routes/MapPage/userStore";
@@ -140,6 +138,7 @@ export const MapBox = () => {
           setTouchEvent((prev) => {
             return { ...prev, menuOpen: true, touchingTime: 0 };
           });
+          navigate(`options/${lng + "," + lat}`);
           console.log("menu opened");
           return;
         }
@@ -178,34 +177,6 @@ export const MapBox = () => {
 
   return (
     <>
-      <BottomSheet
-        open={touchEvent.menuOpen}
-        onDismiss={() =>
-          setTouchEvent((prev) => {
-            return { ...prev, menuOpen: false };
-          })
-        }
-      >
-        <ul className=" p-2">
-          <li className="w-full">
-            <Button
-              fullWidth
-              onClick={() => {
-                navigate(`new-point/${[touchEvent.lng, touchEvent.lat]}`);
-                setTouchEvent((prev) => {
-                  return { ...prev, menuOpen: false };
-                });
-              }}
-              classNames={{ label: "w-full flex justify-between" }}
-            >
-              <span className=" grow">Add new spot</span>
-              <span className=" bg-white rounded-md mx-3">
-                <IconPlus color="#228be6" />
-              </span>
-            </Button>
-          </li>
-        </ul>
-      </BottomSheet>
       {!!touchEvent.touchingTime && (
         <div
           className=" absolute top-0 left-0 z-20 -translate-x-1/2 -translate-y-1/2"

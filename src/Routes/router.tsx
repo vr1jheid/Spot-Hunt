@@ -6,6 +6,7 @@ import { createBrowserRouter, Outlet } from "react-router-dom";
 import { queryClient } from "../Tanstack/queryClient";
 import { MapPage } from "./MapPage/MapPage";
 import { NewSpotPage } from "./NewSpotPage/NewSpotPage";
+import { PointOptions } from "./PointOptions/PointOptions";
 import { SpotPage } from "./SpotPage/SpotPage";
 
 export const router = createBrowserRouter([
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
           {
             path: "/point/:id",
             element: <SpotPage />,
+          },
+          {
+            path: "/options/:coords",
+            element: <PointOptions />,
           },
         ],
       },

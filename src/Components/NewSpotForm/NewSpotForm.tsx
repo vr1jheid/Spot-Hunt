@@ -21,7 +21,7 @@ interface Props {
   coords: string[];
 }
 
-export const NewPointForm = forwardRef(
+export const NewSpotForm = forwardRef(
   ({ coords }: Props, ref: ForwardedRef<HTMLFormElement>) => {
     const [longitude, latitude] = coords;
     const [photos, setPhotos] = useState<{ photo: File; url: string }[]>([]);
