@@ -7,7 +7,7 @@ import { fetchToken } from "../../api/fetchToken";
 import { MapBoxContextProvider } from "../../Components/MapBox/Context/MapBoxContextProvider";
 import { MapBox } from "../../Components/MapBox/MapBox";
 import { MapControls } from "../../Components/MapControls/MapControls";
-import { PointsSheet } from "../../Components/PointsSheet/PointsSheet";
+import { SpotsBottomSheet } from "../../Components/SpotsBottomSheet/SpotsBottomSheet";
 
 export const MapPage = () => {
   const { data: token, isLoading } = useQuery({
@@ -31,7 +31,7 @@ export const MapPage = () => {
     <MapBoxContextProvider>
       <MapBox />
       <MapControls />
-      <PointsSheet />
+      <SpotsBottomSheet />
       <Outlet />
     </MapBoxContextProvider>
   );

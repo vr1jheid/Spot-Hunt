@@ -1,7 +1,7 @@
-import { PointDataToSend, PointServerData } from "../Types/PointTypes";
+import { SpotDataToSend, SpotServerData } from "../Types/PointTypes";
 import { API_URL } from "./Constants/constants";
 
-export const addPoint = async (data: PointDataToSend) => {
+export const addSpot = async (data: SpotDataToSend) => {
   const response = await fetch(
     `${API_URL}/api/park-point/add`,
 
@@ -20,7 +20,7 @@ export const addPoint = async (data: PointDataToSend) => {
   }
   const responseJson = (await response.json()) as {
     code: number;
-    data: PointServerData;
+    data: SpotServerData;
     status: string;
   };
   return responseJson;

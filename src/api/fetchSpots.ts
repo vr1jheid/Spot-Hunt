@@ -1,4 +1,4 @@
-import { PointLocalData, PointServerData } from "../Types/PointTypes";
+import { SpotLocalData, SpotServerData } from "../Types/PointTypes";
 import { API_URL } from "./Constants/constants";
 
 export const mockPoints = [
@@ -145,13 +145,13 @@ export const mockPoints = [
     capacity: 3232,
     rate: 2121,
   },
-] as PointServerData[];
+] as SpotServerData[];
 
-export const fetchPoints = async ({
+export const fetchSpots = async ({
   params,
 }: {
   params: { [key in string]: string };
-}): Promise<PointLocalData[]> => {
+}): Promise<SpotLocalData[]> => {
   const url = new URL(`${API_URL}/api/park-point/`);
   params &&
     Object.entries(params).forEach(([name, value]) => {
@@ -167,7 +167,7 @@ export const fetchPoints = async ({
     throw new Error("Api response error");
   }
   const data = await response.json();
-  const serverData = data.data.items as PointServerData[];
+  const serverData = data.data.items as SpotServerData[];
 
   return serverData.map((p) => {
     return {

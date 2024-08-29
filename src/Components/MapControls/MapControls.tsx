@@ -8,13 +8,13 @@ import { useContext } from "react";
 
 import { useUserStore } from "../../Routes/MapPage/userStore";
 import { MapBoxContext } from "../MapBox/Context/MapBoxContext";
-import { usePointsSheet } from "../PointsSheet/SheetStore";
+import { useSpotsSheet } from "../SpotsBottomSheet/SpotsSheetStore";
 import { MapControlButton } from "./MapControlButton";
 
 export const MapControls = () => {
   const { map } = useContext(MapBoxContext);
   const { setLocation } = useUserStore();
-  const { setOpen } = usePointsSheet();
+  const { setOpen } = useSpotsSheet();
 
   if (!map) return;
 

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import { RingProgress } from "@mantine/core";
+import { Button, RingProgress } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import mapboxgl, { LngLatLike, Map } from "mapbox-gl";
@@ -9,7 +9,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";
 
-import { fetchPoints } from "../../api/fetchPoints";
+import { fetchSpots } from "../../api/fetchSpots";
 import { useUserStore } from "../../Routes/MapPage/userStore";
 import { getBounds } from "../../Utils/getBounds";
 import { PULSING_DOT_ID } from "./Constants/pulsingDot";
@@ -43,7 +43,7 @@ export const MapBox = () => {
     queryKey: ["points"],
     queryFn: async () => {
       if (!map) return null;
-      return await fetchPoints({ params: getBounds(map) });
+      return await fetchSpots({ params: getBounds(map) });
     },
   });
 
@@ -186,17 +186,25 @@ export const MapBox = () => {
           })
         }
       >
-        <button
-          onClick={() => {
-            navigate(`new-point/${[touchEvent.lng, touchEvent.lat]}`);
-            setTouchEvent((prev) => {
-              return { ...prev, menuOpen: false };
-            });
-          }}
-          className=" flex h-11 w-full justify-center "
-        >
-          <IconPlus /> add spot
-        </button>
+        <ul className=" p-2">
+          <li className="w-full">
+            <Button
+              fullWidth
+              onClick={() => {
+                navigate(`new-point/${[touchEvent.lng, touchEvent.lat]}`);
+                setTouchEvent((prev) => {
+                  return { ...prev, menuOpen: false };
+                });
+              }}
+              classNames={{ label: "w-full flex justify-between" }}
+            >
+              <span className=" grow">Add new spot</span>
+              <span className=" bg-white rounded-md mx-3">
+                <IconPlus color="#228be6" />
+              </span>
+            </Button>
+          </li>
+        </ul>
       </BottomSheet>
       {!!touchEvent.touchingTime && (
         <div
@@ -208,7 +216,7 @@ export const MapBox = () => {
         >
           <RingProgress
             size={70}
-            sections={[{ value: touchEvent.touchingTime / 10, color: "green" }]}
+            sections={[{ value: touchEvent.touchingTime / 10, color: "cyan" }]}
           />
         </div>
       )}

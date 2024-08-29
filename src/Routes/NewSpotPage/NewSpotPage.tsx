@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { NewPointForm } from "../../Components/NewPointForm/NewPointForm";
 import { OverlayContainer } from "../../Components/OverlayContainer/OverlayContainer";
 
-export const NewPointPage = () => {
+export const NewSpotPage = () => {
   const form = useRef<HTMLFormElement | null>(null);
   const { coords } = useParams() as { coords: string };
   const navigate = useNavigate();

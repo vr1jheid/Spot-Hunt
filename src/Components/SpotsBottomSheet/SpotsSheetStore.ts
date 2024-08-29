@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-export interface PointsSheetStore {
+export interface SpotsSheetStore {
   open: boolean;
   setOpen: (state: boolean) => void;
 }
 
-export const usePointsSheet = create<PointsSheetStore>((set) => ({
+export const useSpotsSheet = create<SpotsSheetStore>((set) => ({
   open: false,
   setOpen: (state: boolean) => set({ open: state }),
 }));

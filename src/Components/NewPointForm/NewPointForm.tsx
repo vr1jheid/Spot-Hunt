@@ -12,10 +12,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ForwardedRef, forwardRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { addPhotoToPoint } from "../../api/addPhotoToPoint";
-import { addPoint } from "../../api/addPoint";
-import { PointDataToSend } from "../../Types/PointTypes";
-import { PhotosList } from "../PhotosList/PhotoList";
+import { addPhotoToSpot } from "../../api/addPhotoToSpot";
+import { addSpot } from "../../api/addSpot";
+import { SpotDataToSend } from "../../Types/PointTypes";
+import { PhotosList } from "./PhotosList/PhotoList";
 
 interface Props {
   coords: string[];
@@ -31,7 +31,7 @@ export const NewPointForm = forwardRef(
     const queryClient = useQueryClient();
 
     const addPhotoMutation = useMutation({
-      mutationFn: addPhotoToPoint,
+      mutationFn: addPhotoToSpot,
       onSuccess: (res) => {
         queryClient.invalidateQueries({ queryKey: ["points"] });
         console.log(res);
@@ -39,7 +39,7 @@ export const NewPointForm = forwardRef(
     });
 
     const addPointMutation = useMutation({
-      mutationFn: addPoint,
+      mutationFn: addSpot,
       onSuccess: async ({ data }) => {
         console.log("Point added", data);
         queryClient.invalidateQueries({ queryKey: ["points"] });
@@ -71,7 +71,7 @@ export const NewPointForm = forwardRef(
       const formValues = form.getValues();
       console.log(formValues);
 
-      const dataToSend: PointDataToSend = {
+      const dataToSend: SpotDataToSend = {
         ...formValues,
         longitude,
         latitude,

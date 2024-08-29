@@ -1,4 +1,4 @@
-export interface PointServerData {
+export interface SpotServerData {
   id: number;
   title: string;
   coordinates: {
@@ -10,15 +10,15 @@ export interface PointServerData {
   capacity: number | null;
 }
 
-export interface PointLocalData extends Omit<PointServerData, "coordinates"> {
+export interface SpotLocalData extends Omit<SpotServerData, "coordinates"> {
   coordinates: {
     lng: number;
     lat: number;
   };
 }
 
-export interface PointDataToSend
-  extends Omit<PointServerData, "id" | "images" | "coordinates"> {
+export interface SpotDataToSend
+  extends Omit<SpotServerData, "id" | "images" | "coordinates"> {
   longitude: string;
   latitude: string;
 }

@@ -5,17 +5,17 @@ import { useNavigate } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";
 
 import { useUserStore } from "../../Routes/MapPage/userStore";
-import { PointLocalData } from "../../Types/PointTypes";
+import { SpotLocalData } from "../../Types/PointTypes";
 import { getDistanceBetweenPoints } from "../../Utils/getDistanceBetweenPoints";
-import { PointPreview } from "../PointPreview/PointPreview";
-import { usePointsSheet } from "./SheetStore";
+import { SpotPreview } from "../SpotPreview/SpotPreview";
+import { useSpotsSheet } from "./SpotsSheetStore";
 
-export const PointsSheet = () => {
-  const { data } = useQuery<PointLocalData[]>({ queryKey: ["points"] });
+export const SpotsBottomSheet = () => {
+  const { data } = useQuery<SpotLocalData[]>({ queryKey: ["points"] });
   const navigate = useNavigate();
   const { location } = useUserStore();
 
-  const { open, setOpen } = usePointsSheet();
+  const { open, setOpen } = useSpotsSheet();
 
   const onDismiss = () => setOpen(false);
 
@@ -49,13 +49,13 @@ export const PointsSheet = () => {
         </div>
       )}
       {sortedData?.map((p) => (
-        <PointPreview
+        <SpotPreview
           key={p.id}
           onClick={() => {
             navigate(`point/${p.id}`);
             setOpen(false);
           }}
-          pointData={p}
+          spotData={p}
         />
       ))}
     </BottomSheet>

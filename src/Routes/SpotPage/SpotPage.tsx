@@ -16,17 +16,17 @@ import googleMapsIcon from "../../Assets/google-maps-icon.png";
 import wazeMapsIcon from "../../Assets/waze-maps-icon.svg";
 import { AboutListItem } from "../../Components/AboutListItem/AboutListItem";
 import { MapBoxContext } from "../../Components/MapBox/Context/MapBoxContext";
-import { PointLocalData } from "../../Types/PointTypes";
+import { SpotLocalData } from "../../Types/PointTypes";
 import { convertDistanceToText } from "../../Utils/convertDistanceToText";
 import { getDistanceBetweenPoints } from "../../Utils/getDistanceBetweenPoints";
 import { useUserStore } from "../MapPage/userStore";
 
-export const PointPage = () => {
+export const SpotPage = () => {
   const { location } = useUserStore();
   const [open, setOpen] = useState(true);
   const marker = useRef<Marker | null>(null);
   const { map } = useContext(MapBoxContext);
-  const { data } = useQuery<PointLocalData[]>({ queryKey: ["points"] });
+  const { data } = useQuery<SpotLocalData[]>({ queryKey: ["points"] });
   const navigate = useNavigate();
   const closePage = () => navigate("/");
 

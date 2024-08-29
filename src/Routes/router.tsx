@@ -5,8 +5,8 @@ import { createBrowserRouter, Outlet } from "react-router-dom";
 
 import { queryClient } from "../Tanstack/queryClient";
 import { MapPage } from "./MapPage/MapPage";
-import { NewPointPage } from "./NewPointPage/NewPointPage";
-import { PointPage } from "./PointPage/PointPage";
+import { NewSpotPage } from "./NewSpotPage/NewSpotPage";
+import { SpotPage } from "./SpotPage/SpotPage";
 
 export const router = createBrowserRouter([
   {
@@ -27,11 +27,11 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "/new-point/:coords",
-            element: <NewPointPage />,
+            element: <NewSpotPage />,
           },
           {
             path: "/point/:id",
-            element: <PointPage />,
+            element: <SpotPage />,
           },
         ],
       },

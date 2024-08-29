@@ -1,6 +1,6 @@
 import { API_URL } from "./Constants/constants";
 
-export const addPhotoToPoint = async ({
+export const addPhotoToSpot = async ({
   id,
   photoData,
 }: {
