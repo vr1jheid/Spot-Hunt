@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 import { invalidateSpots } from "../../../api/invalidateSpots";
 import { useUserStore } from "../../../Store/userStore";
+import { TIME_TO_OPTIONS_OPEN } from "../Constants/timeToOptionsOpen";
 import { MapBoxContext } from "../Context/MapBoxContext";
 import { createPulsingDotOnMap } from "../Utils/createPulsingDotOnMap";
 
@@ -76,7 +77,7 @@ export const useMapEvents = () => {
         if (!mapRef.current) return;
 
         const touchingTime = Date.now() - touchStart.timestamp;
-        if (touchingTime > 1050) {
+        if (touchingTime > TIME_TO_OPTIONS_OPEN) {
           clear(interval);
           setTouchEvent(null);
           navigate(`options/${lngLat.toArray()}`);

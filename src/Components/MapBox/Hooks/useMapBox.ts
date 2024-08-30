@@ -51,8 +51,6 @@ export const useMapBox = ({
     mapboxMap.on("dragend", onMapDragEnd);
     mapboxMap.on("zoomend", onMapZoomEnd);
     mapboxMap.on("style.load", () => {
-      console.log("styles loaded");
-      /*   setMap(mapboxMap); */
       mapRef.current = mapboxMap;
     });
     return () => {
