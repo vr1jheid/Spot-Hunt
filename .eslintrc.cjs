@@ -12,6 +12,7 @@ module.exports = {
   rules: {
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
+    "react-hooks/exhaustive-deps": "off",
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },

@@ -38,7 +38,7 @@ export const SpotPage = () => {
   const pointData = data?.find((p) => p.id == +(id ?? -1));
 
   useEffect(() => {
-    if (!pointData?.coordinates || !map || marker.current) {
+    if (!pointData?.coordinates || !mapRef.current || marker.current) {
       return;
     }
 
@@ -57,14 +57,14 @@ export const SpotPage = () => {
 
   useEffect(() => {
     if (!pointData) return;
-    map?.easeTo({
+    mapRef.current?.easeTo({
       center: {
         lat: pointData.coordinates.lat - 0.003,
         lng: pointData.coordinates.lng,
       },
       zoom: 15,
     });
-  }, [pointData, map]);
+  }, [pointData]);
 
   useEffect(() => {
     if (!pointData) {

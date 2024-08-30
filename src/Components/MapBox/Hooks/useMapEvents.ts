@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import mapboxgl, {
+import {
   LngLatLike,
   Map,
   MapTouchEvent as MapTouchEventMapBox,
@@ -26,7 +25,7 @@ interface MapTouchEvent {
 }
 
 export const useMapEvents = () => {
-  const { tempPointMarker, mapRef } = useContext(MapBoxContext);
+  const { mapRef } = useContext(MapBoxContext);
 
   const [touchEvent, setTouchEvent] = useState<MapTouchEvent | null>(null);
   const navigate = useNavigate();
@@ -80,12 +79,6 @@ export const useMapEvents = () => {
         if (touchingTime > 1050) {
           clear(interval);
           setTouchEvent(null);
-          /*
-          const tempMarker = new mapboxgl.Marker({ color: "red" })
-            .setLngLat(lngLat)
-            .addTo(mapRef.current);
-          tempPointMarker.current = tempMarker; */
-
           navigate(`options/${lngLat.toArray()}`);
           console.log("menu opened");
           return;

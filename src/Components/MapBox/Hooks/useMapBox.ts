@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import mapboxgl, { Map, MapTouchEvent } from "mapbox-gl";
 import { useContext, useEffect, useRef, useState } from "react";
 
@@ -25,14 +24,14 @@ export const useMapBox = ({
   onMapZoomEnd,
 }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { setMap, map, mapRef } = useContext(MapBoxContext);
+  const { mapRef } = useContext(MapBoxContext);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!ref.current) {
       throw new Error(`mapContainerRef.current not exists ${ref}`);
     }
-    if (map) return;
+    if (mapRef.current) return;
     console.log("INIT MAPBOX");
 
     const mapboxMap = new mapboxgl.Map({
@@ -59,7 +58,7 @@ export const useMapBox = ({
     return () => {
       mapboxMap.remove();
     };
-  }, [onMapDragEnd, onMapLoad, onMapTouchStart, onMapZoomEnd, setMap]);
+  }, [onMapDragEnd, onMapLoad, onMapTouchStart, onMapZoomEnd]);
 
   return {
     ref,

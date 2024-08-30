@@ -23,7 +23,7 @@ export const MapControls = () => {
       const { longitude: lng, latitude: lat } = coords;
 
       setLocation({ lng, lat });
-      mapRef.current.easeTo({ center: { lng, lat }, zoom: 15 });
+      mapRef.current?.easeTo({ center: { lng, lat }, zoom: 15 });
     });
   };
 
@@ -36,14 +36,14 @@ export const MapControls = () => {
         <div className="flex flex-col gap-3">
           <MapControlButton
             onClick={() => {
-              mapRef.current.zoomIn();
+              mapRef.current?.zoomIn();
             }}
           >
             <IconPlus size={33} />
           </MapControlButton>
           <MapControlButton
             onClick={() => {
-              mapRef.current.zoomOut();
+              mapRef.current?.zoomOut();
             }}
           >
             <IconMinus size={33} />

@@ -32,7 +32,7 @@ export const useMapMarkers = (spots: SpotLocalData[]) => {
     });
 
     spots.forEach(({ id, coordinates }) => {
-      if (markers.current[id]) return;
+      if (markers.current[id] || !mapRef.current) return;
       const markerContainer = document.createElement("div");
       ReactDOM.createRoot(markerContainer).render(
         <ParkingMarker color="blue" />
@@ -51,7 +51,6 @@ export const useMapMarkers = (spots: SpotLocalData[]) => {
     });
 
     markers.current = { ...markersCopy, ...newMarkers };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [spots, navigate]);
 
   useEffect(() => {

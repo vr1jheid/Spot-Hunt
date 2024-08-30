@@ -1,20 +1,32 @@
 import { Button } from "@mantine/core";
-import { useContext } from "react";
+import mapboxgl from "mapbox-gl";
+import { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";
 
 import { MapBoxContext } from "../../Components/MapBox/Context/MapBoxContext";
 
 export const PointOptions = () => {
-  const { tempPointMarker } = useContext(MapBoxContext);
+  const { mapRef } = useContext(MapBoxContext);
   const navigate = useNavigate();
   const { coords } = useParams() as { coords: string };
+  const [lng, lat] = coords.split(",").map((c) => +c);
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+    const tempMarker = new mapboxgl.Marker({ color: "red" })
+      .setLngLat({ lng, lat })
+      .addTo(mapRef.current);
+    return () => {
+      tempMarker.remove();
+    };
+  }, []);
+
   return (
     <BottomSheet
       open
       onDismiss={() => {
         navigate("/");
-        console.log(tempPointMarker);
       }}
     >
       <ul className=" p-2">
