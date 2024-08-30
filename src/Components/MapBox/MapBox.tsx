@@ -1,6 +1,6 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import { RingProgress } from "@mantine/core";
+import { Loader, RingProgress } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 
@@ -27,7 +27,7 @@ export const MapBox = () => {
   const { onMapLoad, onMapTouchStart, onMapDragEnd, onMapZoomEnd, touchEvent } =
     useMapEvents();
 
-  const { ref } = useMapBox({
+  const { ref, isLoading } = useMapBox({
     onMapLoad,
     onMapTouchStart,
     onMapDragEnd,
@@ -35,6 +35,12 @@ export const MapBox = () => {
   });
 
   useMapMarkers(spots ?? []);
+
+  if (isLoading) {
+    <div className="w-full h-full flex items-center justify-center">
+      <Loader color="cyan" size="xl" type="bars" />
+    </div>;
+  }
 
   return (
     <>

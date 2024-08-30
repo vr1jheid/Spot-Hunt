@@ -143,7 +143,8 @@ export const SpotPage = () => {
         <div className="flex p-5 justify-center gap-10">
           <a
             target="_blank"
-            href={`https://www.waze.com/en/live-map/directions?latlng=${lat}%2C${lng}`}
+            href={`https://waze.com/ul?ll=${lat},${lng}`}
+            /*             href={`https://www.waze.com/en/live-map/directions?latlng=${lat}%2C${lng}`} */
           >
             <img className="w-14 h-14" src={wazeMapsIcon} alt="waze maps" />
           </a>

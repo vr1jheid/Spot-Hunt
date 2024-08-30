@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import mapboxgl, { Map, MapTouchEvent } from "mapbox-gl";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { MapBoxContext } from "../Context/MapBoxContext";
 
@@ -26,6 +26,7 @@ export const useMapBox = ({
 }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const { setMap, map } = useContext(MapBoxContext);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!ref.current) {
@@ -42,7 +43,10 @@ export const useMapBox = ({
       zoom: 15,
     });
 
-    mapboxMap.on("load", onMapLoad);
+    mapboxMap.on("load", (e) => {
+      setIsLoading(false);
+      onMapLoad(e);
+    });
 
     mapboxMap.on("touchstart", onMapTouchStart);
     mapboxMap.on("dragend", onMapDragEnd);
@@ -58,5 +62,6 @@ export const useMapBox = ({
 
   return {
     ref,
+    isLoading,
   };
 };
