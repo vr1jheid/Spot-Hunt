@@ -15,11 +15,11 @@ import { createPulsingDotOnMap } from "../Utils/createPulsingDotOnMap";
 export const useMapMarkers = (spots: SpotLocalData[]) => {
   const navigate = useNavigate();
   const markers = useRef<Markers>({});
-  const { map } = useContext(MapBoxContext);
+  const { mapRef } = useContext(MapBoxContext);
   const { location } = useUserStore();
 
   useEffect(() => {
-    if (!map || !spots) return;
+    if (!mapRef.current || !spots) return;
     const markersCopy = { ...markers.current };
 
     const newMarkers: Markers = {};
@@ -40,7 +40,7 @@ export const useMapMarkers = (spots: SpotLocalData[]) => {
 
       const marker = new mapboxgl.Marker(markerContainer)
         .setLngLat(coordinates)
-        .addTo(map);
+        .addTo(mapRef.current);
       console.log(marker.getElement());
       marker.getElement().setAttribute("data-marker", "true");
       marker.getElement().addEventListener("click", (e) => {
@@ -52,16 +52,16 @@ export const useMapMarkers = (spots: SpotLocalData[]) => {
 
     markers.current = { ...markersCopy, ...newMarkers };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map, spots, navigate]);
+  }, [spots, navigate]);
 
   useEffect(() => {
-    if (!map || !location) return;
+    if (!mapRef.current || !location) return;
 
-    const dot = map.getSource(USER_LOCATION_DOT_ID);
+    const dot = mapRef.current.getSource(USER_LOCATION_DOT_ID);
     if (dot) {
-      changePulsingDotLocation(map, location);
+      changePulsingDotLocation(mapRef.current, location);
     } else {
-      createPulsingDotOnMap(map, location);
+      createPulsingDotOnMap(mapRef.current, location);
     }
-  }, [location, map]);
+  }, [location]);
 };

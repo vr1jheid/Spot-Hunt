@@ -12,14 +12,14 @@ import { useMapEvents } from "./Hooks/useMapEvents";
 import { useMapMarkers } from "./Hooks/useMapMarkers";
 
 export const MapBox = () => {
-  const { map } = useContext(MapBoxContext);
+  const { mapRef } = useContext(MapBoxContext);
   const ringProgressFillTime = 1000;
 
   const { data: spots, isFetching } = useQuery({
     queryKey: ["spots"],
     queryFn: async () => {
-      if (!map) return [];
-      return await fetchSpots({ params: getBounds(map) });
+      if (!mapRef.current) return [];
+      return await fetchSpots({ params: getBounds(mapRef.current) });
     },
   });
   isFetching && console.log("isFetching");
@@ -46,18 +46,19 @@ export const MapBox = () => {
     <>
       {!!touchEvent && (
         <div
-          className=" absolute top-0 left-0 z-20 -translate-x-1/2 -translate-y-1/2"
-          style={{
+          className=" absolute top-3 right-3 z-10"
+          /*           style={{
             top: `${touchEvent.pageY}px`,
             left: `${touchEvent.pageX}px`,
-          }}
+          }} */
         >
           <RingProgress
-            size={85}
+            size={50}
+            thickness={5}
             sections={[
               {
                 value: (touchEvent.touchingTime / ringProgressFillTime) * 100,
-                color: "cyan",
+                color: "blue",
               },
             ]}
           />

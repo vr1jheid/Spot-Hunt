@@ -27,7 +27,7 @@ export const SpotPage = () => {
   const { location } = useUserStore();
   const [open, setOpen] = useState(true);
   const marker = useRef<Marker | null>(null);
-  const { map } = useContext(MapBoxContext);
+  const { mapRef } = useContext(MapBoxContext);
   const { data } = useQuery<SpotLocalData[]>({ queryKey: ["spots"] });
   const navigate = useNavigate();
   const closePage = () => navigate("/");
@@ -48,12 +48,12 @@ export const SpotPage = () => {
     );
     marker.current = new mapboxgl.Marker(markerContainer)
       .setLngLat(pointData?.coordinates)
-      .addTo(map);
+      .addTo(mapRef.current);
 
     () => {
       marker.current?.remove();
     };
-  }, [map, pointData?.coordinates]);
+  }, [pointData?.coordinates]);
 
   useEffect(() => {
     if (!pointData) return;

@@ -12,18 +12,18 @@ import { MapBoxContext } from "../MapBox/Context/MapBoxContext";
 import { MapControlButton } from "./MapControlButton";
 
 export const MapControls = () => {
-  const { map } = useContext(MapBoxContext);
+  const { mapRef } = useContext(MapBoxContext);
   const { setLocation } = useUserStore();
   const { setOpen } = useSpotsSheet();
 
-  if (!map) return;
+  if (!mapRef.current) return;
 
   const getLocation = () => {
     navigator.geolocation.getCurrentPosition(({ coords }) => {
       const { longitude: lng, latitude: lat } = coords;
 
       setLocation({ lng, lat });
-      map.easeTo({ center: { lng, lat }, zoom: 15 });
+      mapRef.current.easeTo({ center: { lng, lat }, zoom: 15 });
     });
   };
 
@@ -36,14 +36,14 @@ export const MapControls = () => {
         <div className="flex flex-col gap-3">
           <MapControlButton
             onClick={() => {
-              map.zoomIn();
+              mapRef.current.zoomIn();
             }}
           >
             <IconPlus size={33} />
           </MapControlButton>
           <MapControlButton
             onClick={() => {
-              map.zoomOut();
+              mapRef.current.zoomOut();
             }}
           >
             <IconMinus size={33} />

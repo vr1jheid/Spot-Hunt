@@ -1,12 +1,12 @@
-import { Map } from "mapbox-gl";
-import { createContext } from "react";
+import { Map, Marker } from "mapbox-gl";
+import { createContext, MutableRefObject } from "react";
 
 export interface MapContext {
-  map: Map | null;
-  setMap: React.Dispatch<React.SetStateAction<Map | null>>;
+  tempPointMarker: MutableRefObject<Marker | null>;
+  mapRef: MutableRefObject<Map | null>;
 }
 
 export const MapBoxContext = createContext<MapContext>({
-  map: null,
-  setMap: () => {},
+  tempPointMarker: {} as MutableRefObject<Marker | null>,
+  mapRef: {} as MutableRefObject<Map | null>,
 });

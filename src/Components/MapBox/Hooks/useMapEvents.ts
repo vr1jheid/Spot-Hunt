@@ -1,13 +1,15 @@
-import {
+/* eslint-disable react-hooks/exhaustive-deps */
+import mapboxgl, {
   LngLatLike,
   Map,
   MapTouchEvent as MapTouchEventMapBox,
 } from "mapbox-gl";
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { invalidateSpots } from "../../../api/invalidateSpots";
 import { useUserStore } from "../../../Store/userStore";
+import { MapBoxContext } from "../Context/MapBoxContext";
 import { createPulsingDotOnMap } from "../Utils/createPulsingDotOnMap";
 
 const clear = (interval: number) => {
@@ -24,6 +26,8 @@ interface MapTouchEvent {
 }
 
 export const useMapEvents = () => {
+  const { tempPointMarker, mapRef } = useContext(MapBoxContext);
+
   const [touchEvent, setTouchEvent] = useState<MapTouchEvent | null>(null);
   const navigate = useNavigate();
   const { setLocation } = useUserStore();
@@ -70,10 +74,18 @@ export const useMapEvents = () => {
       setTouchEvent({ pageX, pageY, lngLat, touchingTime: 0 });
 
       const interval = setInterval(() => {
+        if (!mapRef.current) return;
+
         const touchingTime = Date.now() - touchStart.timestamp;
         if (touchingTime > 1050) {
           clear(interval);
           setTouchEvent(null);
+          /*
+          const tempMarker = new mapboxgl.Marker({ color: "red" })
+            .setLngLat(lngLat)
+            .addTo(mapRef.current);
+          tempPointMarker.current = tempMarker; */
+
           navigate(`options/${lngLat.toArray()}`);
           console.log("menu opened");
           return;

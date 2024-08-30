@@ -25,7 +25,7 @@ export const useMapBox = ({
   onMapZoomEnd,
 }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { setMap, map } = useContext(MapBoxContext);
+  const { setMap, map, mapRef } = useContext(MapBoxContext);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -53,7 +53,8 @@ export const useMapBox = ({
     mapboxMap.on("zoomend", onMapZoomEnd);
     mapboxMap.on("style.load", () => {
       console.log("styles loaded");
-      setMap(mapboxMap);
+      /*   setMap(mapboxMap); */
+      mapRef.current = mapboxMap;
     });
     return () => {
       mapboxMap.remove();

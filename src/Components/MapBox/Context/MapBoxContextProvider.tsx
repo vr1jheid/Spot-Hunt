@@ -1,13 +1,14 @@
-import { Map } from "mapbox-gl";
-import { memo, ReactNode, useState } from "react";
+import { Map, Marker } from "mapbox-gl";
+import { memo, ReactNode, useRef } from "react";
 
 import { MapBoxContext } from "./MapBoxContext";
 
 export const MapBoxContextProvider = memo(
   ({ children }: { children: ReactNode }) => {
-    const [map, setMap] = useState<Map | null>(null);
+    const tempPointMarker = useRef<Marker | null>(null);
+    const mapRef = useRef<Map | null>(null);
     return (
-      <MapBoxContext.Provider value={{ map, setMap }}>
+      <MapBoxContext.Provider value={{ tempPointMarker, mapRef }}>
         {children}
       </MapBoxContext.Provider>
     );
