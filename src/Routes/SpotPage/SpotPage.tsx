@@ -9,6 +9,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import mapboxgl, { Marker } from "mapbox-gl";
 import { useContext, useEffect, useRef, useState } from "react";
+import ReactDOM from "react-dom/client";
 import { useNavigate, useParams } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";
 
@@ -16,6 +17,7 @@ import googleMapsIcon from "../../Assets/google-maps-icon.png";
 import wazeMapsIcon from "../../Assets/waze-maps-icon.svg";
 import { AboutListItem } from "../../Components/AboutListItem/AboutListItem";
 import { MapBoxContext } from "../../Components/MapBox/Context/MapBoxContext";
+import { ParkingMarker } from "../../Components/MapBox/ParkingMarker/ParkingMarker";
 import { useUserStore } from "../../Store/userStore";
 import { SpotLocalData } from "../../Types/PointTypes";
 import { convertDistanceToText } from "../../Utils/convertDistanceToText";
@@ -39,7 +41,12 @@ export const SpotPage = () => {
     if (!pointData?.coordinates || !map || marker.current) {
       return;
     }
-    marker.current = new mapboxgl.Marker({ color: "red" })
+
+    const markerContainer = document.createElement("div");
+    ReactDOM.createRoot(markerContainer).render(
+      <ParkingMarker color="green" />
+    );
+    marker.current = new mapboxgl.Marker(markerContainer)
       .setLngLat(pointData?.coordinates)
       .addTo(map);
 
@@ -141,11 +148,7 @@ export const SpotPage = () => {
 
       <div>
         <div className="flex p-5 justify-center gap-10">
-          <a
-            target="_blank"
-            href={`https://waze.com/ul?ll=${lat},${lng}`}
-            /*             href={`https://www.waze.com/en/live-map/directions?latlng=${lat}%2C${lng}`} */
-          >
+          <a target="_blank" href={`https://waze.com/ul?ll=${lat},${lng}`}>
             <img className="w-14 h-14" src={wazeMapsIcon} alt="waze maps" />
           </a>
           <a

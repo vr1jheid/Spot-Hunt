@@ -1,28 +1,30 @@
 import mapboxgl from "mapbox-gl";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
+import ReactDOM from "react-dom/client";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../../../Store/userStore";
 import { SpotLocalData } from "../../../Types/PointTypes";
 import { USER_LOCATION_DOT_ID } from "../Constants/pulsingDot";
 import { MapBoxContext } from "../Context/MapBoxContext";
+import { ParkingMarker } from "../ParkingMarker/ParkingMarker";
 import { Markers } from "../Types/Markers";
 import { changePulsingDotLocation } from "../Utils/changePulsingDotLocation";
 import { createPulsingDotOnMap } from "../Utils/createPulsingDotOnMap";
 
 export const useMapMarkers = (spots: SpotLocalData[]) => {
   const navigate = useNavigate();
-  const [markers, setMarkers] = useState<Markers>({});
+  const markers = useRef<Markers>({});
   const { map } = useContext(MapBoxContext);
   const { location } = useUserStore();
 
   useEffect(() => {
     if (!map || !spots) return;
-    const markersCopy = { ...markers };
+    const markersCopy = { ...markers.current };
 
     const newMarkers: Markers = {};
     const currentSpotsIds = spots.map(({ id }) => id);
-    Object.keys(markers).forEach((id) => {
+    Object.keys(markers.current).forEach((id) => {
       if (!currentSpotsIds.includes(+id)) {
         markersCopy[id].remove();
         delete markersCopy[id];
@@ -30,10 +32,15 @@ export const useMapMarkers = (spots: SpotLocalData[]) => {
     });
 
     spots.forEach(({ id, coordinates }) => {
-      /* if (markersIds.includes(id)) return; */
-      if (markers[id]) return;
+      if (markers.current[id]) return;
+      const markerContainer = document.createElement("div");
+      ReactDOM.createRoot(markerContainer).render(
+        <ParkingMarker color="blue" />
+      );
 
-      const marker = new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
+      const marker = new mapboxgl.Marker(markerContainer)
+        .setLngLat(coordinates)
+        .addTo(map);
       console.log(marker.getElement());
       marker.getElement().setAttribute("data-marker", "true");
       marker.getElement().addEventListener("click", (e) => {
@@ -43,7 +50,7 @@ export const useMapMarkers = (spots: SpotLocalData[]) => {
       newMarkers[id] = marker;
     });
 
-    setMarkers({ ...markersCopy, ...newMarkers });
+    markers.current = { ...markersCopy, ...newMarkers };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map, spots, navigate]);
 
