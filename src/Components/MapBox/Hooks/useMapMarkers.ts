@@ -34,6 +34,8 @@ export const useMapMarkers = (spots: SpotLocalData[]) => {
       if (markers[id]) return;
 
       const marker = new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
+      console.log(marker.getElement());
+      marker.getElement().setAttribute("data-marker", "true");
       marker.getElement().addEventListener("click", (e) => {
         e.stopPropagation();
         navigate(`spot/${id}`);

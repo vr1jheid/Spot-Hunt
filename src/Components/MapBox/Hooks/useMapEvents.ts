@@ -52,9 +52,12 @@ export const useMapEvents = () => {
 
   const onMapTouchStart = useCallback(
     ({ originalEvent, lngLat }: MapTouchEventMapBox) => {
-      if (originalEvent.targetTouches.length > 1) {
+      const target = originalEvent.target as HTMLElement;
+      const targetIsMarker = !!target.closest(`[data-marker="true"]`);
+      if (originalEvent.targetTouches.length > 1 || targetIsMarker) {
         return;
       }
+
       const { pageX, pageY } = originalEvent.targetTouches[0];
       console.log("touch start");
 

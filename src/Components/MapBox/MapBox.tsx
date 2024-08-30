@@ -47,7 +47,7 @@ export const MapBox = () => {
           }}
         >
           <RingProgress
-            size={70}
+            size={85}
             sections={[
               {
                 value: (touchEvent.touchingTime / ringProgressFillTime) * 100,
