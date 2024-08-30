@@ -8,7 +8,7 @@ interface Props {
 
 export const AboutListItem = ({ icon, title, text }: Props) => {
   return (
-    <li className="flex gap-3 items-center">
+    <li className="flex gap-3 items-center ">
       <div className="bg-gray-100 p-2 rounded-lg w-11 h-11 flex items-center justify-center">
         {icon}
       </div>

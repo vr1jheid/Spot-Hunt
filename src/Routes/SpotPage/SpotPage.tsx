@@ -3,7 +3,6 @@ import { Image } from "@mantine/core";
 import {
   IconCar,
   IconCashBanknote,
-  IconMapPin,
   IconRulerMeasure,
 } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
@@ -95,7 +94,7 @@ export const SpotPage = () => {
         marker.current = null;
       }}
       header={<div className="h-6 bg-white rounded-t-lg"></div>}
-      snapPoints={({ maxHeight }) => maxHeight * 0.75}
+      /*       snapPoints={({ maxHeight }) => maxHeight * 0.75} */
       expandOnContentDrag
     >
       <header className="flex justify-center flex-col relative">
@@ -108,32 +107,53 @@ export const SpotPage = () => {
         {images.length ? (
           <Carousel>
             {images.map((i, index) => (
-              <CarouselSlide key={index} h={200}>
-                <Image src={i} h={200} />
+              <CarouselSlide key={index} h={250}>
+                <Image src={i} h={250} />
               </CarouselSlide>
             ))}
           </Carousel>
         ) : (
-          <Image src="https://placehold.co/374x200?text=No%20photos" />
+          <Image src="https://placehold.co/374x250?text=No%20photos" />
         )}
       </header>
-      <ul className="p-3 flex flex-col gap-3">
-        <AboutListItem
-          icon={<IconMapPin size={25} />}
-          title="Adress"
-          text="Lorem ipsum dolor sit."
-        />
-        <AboutListItem
-          icon={<IconRulerMeasure size={25} />}
-          title="Distance from you"
-          text={
-            !location
-              ? "We cant get your location"
-              : convertDistanceToText(
-                  getDistanceBetweenPoints(location, coordinates)
-                )
-          }
-        />
+      <div className="p-3 flex flex-col gap-3">
+        <div className=" flex items-center justify-between">
+          <div className="inline-flex items-center gap-3">
+            <span className="bg-gray-100 p-2 rounded-lg w-11 h-11 flex items-center justify-center">
+              <IconRulerMeasure size={25} />
+            </span>
+            <span className=" inline-flex flex-col">
+              <span className=" text-md font-medium">Distance from you</span>
+              <span>
+                {!location
+                  ? "We cant get your location"
+                  : convertDistanceToText(
+                      getDistanceBetweenPoints(location, coordinates)
+                    )}
+              </span>
+            </span>
+          </div>
+          <ul className="flex justify-center gap-4">
+            <li>
+              <a target="_blank" href={`https://waze.com/ul?ll=${lat},${lng}`}>
+                <img className="w-9 h-9" src={wazeMapsIcon} alt="waze maps" />
+              </a>
+            </li>
+            <li>
+              <a
+                target="_blank"
+                href={`https://www.google.com/maps/place/${lat},${lng}`}
+              >
+                <img
+                  className=" w-9 h-9"
+                  src={googleMapsIcon}
+                  alt="google maps"
+                />
+              </a>
+            </li>
+          </ul>
+        </div>
+
         <AboutListItem
           icon={<IconCar size={25} />}
           title="Capacity"
@@ -144,24 +164,6 @@ export const SpotPage = () => {
           title="Rate"
           text={rate ? `${rate}$/h` : "no data"}
         />
-      </ul>
-
-      <div>
-        <div className="flex p-5 justify-center gap-10">
-          <a target="_blank" href={`https://waze.com/ul?ll=${lat},${lng}`}>
-            <img className="w-14 h-14" src={wazeMapsIcon} alt="waze maps" />
-          </a>
-          <a
-            target="_blank"
-            href={`https://www.google.com/maps/place/${lat},${lng}`}
-          >
-            <img
-              className=" w-12 h-12"
-              src={googleMapsIcon}
-              alt="google maps"
-            />
-          </a>
-        </div>
       </div>
     </BottomSheet>
   );
