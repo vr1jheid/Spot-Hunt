@@ -89,7 +89,7 @@ export const useMapEvents = () => {
           if (!prev) return null;
           return { ...prev, touchingTime };
         });
-      }, 50);
+      }, 20);
 
       window.ontouchend = () => {
         clear(interval);
