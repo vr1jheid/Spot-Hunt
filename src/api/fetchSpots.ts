@@ -2,6 +2,7 @@ import { useUserStore } from "../Store/userStore";
 import { SpotLocalBrief, SpotServerBrief } from "../Types/SpotTypes";
 import { convertCoordsToLocal } from "../Utils/convertCoordsToLocal";
 import { API_URL } from "./Constants/constants";
+import { getFetchOptions } from "./Options/fetchOptions";
 import { ServerResponse } from "./Types/types";
 
 interface Props {
@@ -21,11 +22,7 @@ export const fetchSpots = async ({
     voted: new URL(`${API_URL}/api/park-point/voted-list`),
   };
 
-  const fetchOptions = {
-    headers: {
-      "tt-auth-token": userID,
-    },
-  };
+  const fetchOptions = getFetchOptions();
 
   Object.entries(params).forEach(([name, value]) => {
     Object.values(urls).forEach((url) => url.searchParams.set(name, value));

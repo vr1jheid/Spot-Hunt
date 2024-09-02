@@ -3,17 +3,19 @@ import {
   IconMinus,
   IconNavigationFilled,
   IconPlus,
+  IconZoomQuestion,
 } from "@tabler/icons-react";
 import { useContext } from "react";
 
 import { useSpotsSheet } from "../../Store/spotsSheetStore";
 import { useUserStore } from "../../Store/userStore";
+import { queryClient } from "../../Tanstack/queryClient";
 import { MapBoxContext } from "../MapBox/Context/MapBoxContext";
 import { MapControlButton } from "./MapControlButton";
 
 export const MapControls = () => {
   const { mapRef } = useContext(MapBoxContext);
-  const { setLocation } = useUserStore();
+  const { setLocation, setShowUnapproved } = useUserStore();
   const { setOpen } = useSpotsSheet();
 
   if (!mapRef.current) return;
@@ -29,6 +31,16 @@ export const MapControls = () => {
 
   return (
     <>
+      <div className="absolute left-1 w-12 bottom-1/2 translate-y-1/2">
+        <MapControlButton
+          onClick={() => {
+            setShowUnapproved(true);
+            queryClient.invalidateQueries({ queryKey: ["unapprovedSpots"] });
+          }}
+        >
+          <IconZoomQuestion size={33} />
+        </MapControlButton>
+      </div>
       <div className="absolute right-1 w-12 bottom-1/2 translate-y-1/2 flex flex-col gap-10">
         <MapControlButton onClick={getLocation}>
           <IconNavigationFilled size={33} />

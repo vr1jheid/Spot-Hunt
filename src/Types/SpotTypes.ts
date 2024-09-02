@@ -36,7 +36,7 @@ export interface SpotLocalData extends Omit<SpotServerData, "coordinates"> {
 }
 
 export interface SpotDataToSend
-  extends Omit<SpotServerData, "id" | "images" | "coordinates"> {
+  extends Omit<SpotServerBrief, "id" | "mainImage" | "coordinates"> {
   longitude: string;
   latitude: string;
 }

@@ -5,6 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useContext, useEffect, useState } from "react";
 
 import { fetchSpots } from "../../api/fetchSpots";
+import { fetchUnapprovedSpots } from "../../api/fetchUnapprovedSpots";
+import { useUserStore } from "../../Store/userStore";
 import { getBounds } from "../../Utils/getBounds";
 import { TIME_TO_OPTIONS_OPEN } from "./Constants/timeToOptionsOpen";
 import { MapBoxContext } from "./Context/MapBoxContext";
@@ -16,6 +18,7 @@ import { OptionsRingProgress } from "./RingProgress/OptionsRingProgress";
 export const MapBox = () => {
   const { mapRef } = useContext(MapBoxContext);
   const [showFilledProgress, setShowFilledProgress] = useState(false);
+  const { showUnapproved } = useUserStore();
 
   const { data: spots } = useQuery({
     queryKey: ["spots"],
@@ -24,6 +27,18 @@ export const MapBox = () => {
       return await fetchSpots({
         params: getBounds(mapRef.current),
       });
+    },
+  });
+
+  console.log(spots);
+
+  const { data: unapproved } = useQuery({
+    queryKey: ["unapprovedSpots"],
+    queryFn: async () => {
+      if (!showUnapproved || !mapRef.current) {
+        return [];
+      }
+      return await fetchUnapprovedSpots(getBounds(mapRef.current));
     },
   });
   /*   console.log(spots); */
@@ -38,7 +53,7 @@ export const MapBox = () => {
     onMapZoomEnd,
   });
 
-  useMapMarkers(spots ?? []);
+  useMapMarkers({ spots: spots ?? [], unapproved });
 
   if (isLoading) {
     <div className="w-full h-full flex items-center justify-center">

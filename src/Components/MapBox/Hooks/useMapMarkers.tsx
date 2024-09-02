@@ -1,31 +1,51 @@
-import mapboxgl from "mapbox-gl";
 import { useContext, useEffect, useRef } from "react";
-import ReactDOM from "react-dom/client";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../../../Store/userStore";
-import { SpotLocalBrief } from "../../../Types/SpotTypes";
+import { LocalCoords, SpotLocalBrief } from "../../../Types/SpotTypes";
 import { USER_LOCATION_DOT_ID } from "../Constants/pulsingDot";
 import { MapBoxContext } from "../Context/MapBoxContext";
-import { ParkingMarker } from "../ParkingMarker/ParkingMarker";
 import { Markers } from "../Types/Markers";
 import { changePulsingDotLocation } from "../Utils/changePulsingDotLocation";
+import { createMarkers } from "../Utils/createMarkers";
 import { createPulsingDotOnMap } from "../Utils/createPulsingDotOnMap";
 
-export const useMapMarkers = (spots: SpotLocalBrief[]) => {
+interface Props {
+  spots: SpotLocalBrief[];
+  unapproved?: SpotLocalBrief[];
+}
+
+export const useMapMarkers = ({ spots, unapproved }: Props) => {
   const navigate = useNavigate();
   const markers = useRef<Markers>({});
   const { mapRef } = useContext(MapBoxContext);
   const { location } = useUserStore();
 
+  const onMarkerClick = (
+    e: MouseEvent,
+    spot: { id: number; coordinates: LocalCoords }
+  ) => {
+    e.stopPropagation();
+    navigate(`spot/${spot.id}`);
+  };
+
+  useEffect(() => {
+    if (!unapproved?.length || !mapRef.current) return;
+    console.log("adding unaproved to map");
+
+    const newMarkers = createMarkers(unapproved, {
+      color: "red",
+      onClick: onMarkerClick,
+    });
+    Object.values(newMarkers).forEach((m) => m.addTo(mapRef.current!));
+  }, [unapproved]);
+
   useEffect(() => {
     console.log("marker effect");
-
     if (!mapRef.current || !spots) return;
     const markersCopy = { ...markers.current };
-
-    const newMarkers: Markers = {};
     const currentSpotsIds = spots.map(({ id }) => id);
+
     Object.keys(markers.current).forEach((id) => {
       if (!currentSpotsIds.includes(+id)) {
         markersCopy[id].remove();
@@ -33,23 +53,14 @@ export const useMapMarkers = (spots: SpotLocalBrief[]) => {
       }
     });
 
-    spots.forEach(({ id, coordinates }) => {
-      if (markers.current[id] || !mapRef.current) return;
-      const markerContainer = document.createElement("div");
-      ReactDOM.createRoot(markerContainer).render(
-        <ParkingMarker color="blue" />
-      );
-
-      const marker = new mapboxgl.Marker(markerContainer)
-        .setLngLat(coordinates)
-        .addTo(mapRef.current);
-      marker.getElement().setAttribute("data-marker", "true");
-      marker.getElement().addEventListener("click", (e) => {
-        e.stopPropagation();
-        navigate(`spot/${id}`);
-      });
-      newMarkers[id] = marker;
+    const spotsToMark = spots.filter(({ id }) => !markersCopy[id]);
+    const newMarkers = createMarkers(spotsToMark, {
+      onClick: onMarkerClick,
     });
+    console.log(newMarkers, mapRef.current);
+
+    Object.values(newMarkers).forEach((m) => m.addTo(mapRef.current!));
+    markers.current = { ...markers.current, ...newMarkers };
 
     markers.current = { ...markersCopy, ...newMarkers };
   }, [spots, navigate]);

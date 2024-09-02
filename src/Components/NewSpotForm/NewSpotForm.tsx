@@ -45,7 +45,7 @@ export const NewSpotForm = forwardRef(
         const photoData = photos.map((p) => {
           return { ...p, key: p.url };
         });
-        addPhotoMutation.mutate({ id: data.id, photoData });
+        photos.length && addPhotoMutation.mutate({ id: data.id, photoData });
       },
     });
 
