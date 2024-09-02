@@ -21,9 +21,12 @@ export const MapBox = () => {
     queryKey: ["spots"],
     queryFn: async () => {
       if (!mapRef.current) return [];
-      return await fetchSpots({ params: getBounds(mapRef.current) });
+      return await fetchSpots({
+        params: getBounds(mapRef.current),
+      });
     },
   });
+  /*   console.log(spots); */
 
   const { onMapLoad, onMapTouchStart, onMapDragEnd, onMapZoomEnd, touchEvent } =
     useMapEvents();

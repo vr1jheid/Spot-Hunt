@@ -6,7 +6,7 @@ import {
 } from "@tabler/icons-react";
 import { useContext } from "react";
 
-import { useSpotsSheet } from "../../Store/SpotsSheetStore";
+import { useSpotsSheet } from "../../Store/spotsSheetStore";
 import { useUserStore } from "../../Store/userStore";
 import { MapBoxContext } from "../MapBox/Context/MapBoxContext";
 import { MapControlButton } from "./MapControlButton";

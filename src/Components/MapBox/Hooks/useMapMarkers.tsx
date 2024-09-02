@@ -4,7 +4,7 @@ import ReactDOM from "react-dom/client";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../../../Store/userStore";
-import { SpotLocalData } from "../../../Types/PointTypes";
+import { SpotLocalBrief } from "../../../Types/SpotTypes";
 import { USER_LOCATION_DOT_ID } from "../Constants/pulsingDot";
 import { MapBoxContext } from "../Context/MapBoxContext";
 import { ParkingMarker } from "../ParkingMarker/ParkingMarker";
@@ -12,13 +12,15 @@ import { Markers } from "../Types/Markers";
 import { changePulsingDotLocation } from "../Utils/changePulsingDotLocation";
 import { createPulsingDotOnMap } from "../Utils/createPulsingDotOnMap";
 
-export const useMapMarkers = (spots: SpotLocalData[]) => {
+export const useMapMarkers = (spots: SpotLocalBrief[]) => {
   const navigate = useNavigate();
   const markers = useRef<Markers>({});
   const { mapRef } = useContext(MapBoxContext);
   const { location } = useUserStore();
 
   useEffect(() => {
+    console.log("marker effect");
+
     if (!mapRef.current || !spots) return;
     const markersCopy = { ...markers.current };
 
@@ -41,7 +43,6 @@ export const useMapMarkers = (spots: SpotLocalData[]) => {
       const marker = new mapboxgl.Marker(markerContainer)
         .setLngLat(coordinates)
         .addTo(mapRef.current);
-      console.log(marker.getElement());
       marker.getElement().setAttribute("data-marker", "true");
       marker.getElement().addEventListener("click", (e) => {
         e.stopPropagation();

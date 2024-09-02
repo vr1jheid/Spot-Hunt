@@ -1,6 +1,6 @@
 import { IconMapPin } from "@tabler/icons-react";
 
-import { SpotLocalData } from "../../Types/PointTypes";
+import { SpotLocalData } from "../../Types/SpotTypes";
 import { convertDistanceToText } from "../../Utils/convertDistanceToText";
 
 interface SpotDataWithDistance extends SpotLocalData {
@@ -24,7 +24,6 @@ export const SpotPreview = ({ spotData, onClick }: Props) => {
           {title}
           {rate && ` (${rate}$/h)`}
         </span>
-        <span className=" text-sm">Adress</span>
       </div>
       {distance && convertDistanceToText(distance)}
     </div>

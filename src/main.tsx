@@ -5,6 +5,9 @@ import "@mantine/carousel/styles.css";
 
 import ReactDOM from "react-dom/client";
 
-import { App } from "./Components/App/App";
+import { App } from "./App/App";
+import { useUserStore } from "./Store/userStore";
+
+useUserStore.getState().setID(window.btoa("3450"));
 
 ReactDOM.createRoot(document.getElementById("root")!).render(<App />);

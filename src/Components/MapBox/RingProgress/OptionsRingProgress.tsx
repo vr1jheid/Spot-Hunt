@@ -6,8 +6,6 @@ interface Props {
 }
 
 export const OptionsRingProgress = ({ value }: Props) => {
-  console.log(value);
-
   if (value >= 100) {
     return (
       <ActionIcon color="teal" variant="filled" radius="xl" size="xl">

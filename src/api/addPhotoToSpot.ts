@@ -16,6 +16,9 @@ export const addPhotoToSpot = async ({
 
   const response = await fetch(`${API_URL}/api/park-point/upload-image/${id}`, {
     method: "POST",
+    headers: {
+      "tt-auth-token": window.btoa("1488"),
+    },
     body: formData,
   });
   const responseJson = await response.json();

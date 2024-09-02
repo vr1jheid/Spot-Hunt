@@ -4,9 +4,9 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";
 
-import { useSpotsSheet } from "../../Store/SpotsSheetStore";
+import { useSpotsSheet } from "../../Store/spotsSheetStore";
 import { useUserStore } from "../../Store/userStore";
-import { SpotLocalData } from "../../Types/PointTypes";
+import { SpotLocalData } from "../../Types/SpotTypes";
 import { getDistanceBetweenPoints } from "../../Utils/getDistanceBetweenPoints";
 import { SpotPreview } from "../SpotPreview/SpotPreview";
 

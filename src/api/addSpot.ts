@@ -1,5 +1,5 @@
-import { SpotDataToSend, SpotServerData } from "../Types/PointTypes";
-import { API_URL } from "./Constants/constants";
+import { SpotDataToSend, SpotServerData } from "../Types/SpotTypes";
+import { API_URL, tgFakeUser } from "./Constants/constants";
 
 export const addSpot = async (data: SpotDataToSend) => {
   const response = await fetch(
@@ -9,6 +9,7 @@ export const addSpot = async (data: SpotDataToSend) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "tt-auth-token": tgFakeUser,
       },
       body: JSON.stringify(data),
     }
@@ -23,5 +24,7 @@ export const addSpot = async (data: SpotDataToSend) => {
     data: SpotServerData;
     status: string;
   };
+  console.log(responseJson);
+
   return responseJson;
 };

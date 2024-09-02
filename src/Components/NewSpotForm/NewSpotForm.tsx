@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { addPhotoToSpot } from "../../api/addPhotoToSpot";
 import { addSpot } from "../../api/addSpot";
 import { invalidateSpots } from "../../api/invalidateSpots";
-import { SpotDataToSend } from "../../Types/PointTypes";
+import { SpotDataToSend } from "../../Types/SpotTypes";
 import { PhotosList } from "./PhotosList/PhotoList";
 
 interface Props {
