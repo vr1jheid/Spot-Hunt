@@ -1,9 +1,9 @@
-import { useUserStore } from "../Store/userStore";
-import { SpotLocalBrief, SpotServerBrief } from "../Types/SpotTypes";
-import { convertCoordsToLocal } from "../Utils/convertCoordsToLocal";
-import { API_URL } from "./Constants/constants";
-import { getFetchOptions } from "./Options/fetchOptions";
-import { ServerResponse } from "./Types/types";
+import { useUserStore } from "../../Store/userStore";
+import { SpotLocalBrief, SpotServerBrief } from "../../Types/SpotTypes";
+import { convertCoordsToLocal } from "../../Utils/convertCoordsToLocal";
+import { API_URL } from "../Constants/constants";
+import { getFetchOptions } from "../Options/fetchOptions";
+import { ServerResponse } from "../Types/types";
 
 interface Props {
   params: { [key in string]: string };

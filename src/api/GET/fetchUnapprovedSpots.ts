@@ -1,8 +1,8 @@
-import { SpotServerBrief } from "../Types/SpotTypes";
-import { convertCoordsToLocal } from "../Utils/convertCoordsToLocal";
-import { API_URL } from "./Constants/constants";
-import { getFetchOptions } from "./Options/fetchOptions";
-import { ServerResponse } from "./Types/types";
+import { SpotServerBrief } from "../../Types/SpotTypes";
+import { convertCoordsToLocal } from "../../Utils/convertCoordsToLocal";
+import { API_URL } from "../Constants/constants";
+import { getFetchOptions } from "../Options/fetchOptions";
+import { ServerResponse } from "../Types/types";
 
 export const fetchUnapprovedSpots = async (params: {
   [key in string]: string;

@@ -1,6 +1,6 @@
-import { SpotDataToSend, SpotServerData } from "../Types/SpotTypes";
-import { API_URL } from "./Constants/constants";
-import { getFetchOptions } from "./Options/fetchOptions";
+import { SpotDataToSend, SpotServerData } from "../../Types/SpotTypes";
+import { API_URL } from "../Constants/constants";
+import { getFetchOptions } from "../Options/fetchOptions";
 
 export const addSpot = async (data: SpotDataToSend) => {
   const response = await fetch(

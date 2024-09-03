@@ -1,8 +1,8 @@
-import { SpotLocalData, SpotServerData } from "../Types/SpotTypes";
-import { convertCoordsToLocal } from "../Utils/convertCoordsToLocal";
-import { API_URL } from "./Constants/constants";
-import { getFetchOptions } from "./Options/fetchOptions";
-import { ServerResponse, VoteInfo } from "./Types/types";
+import { SpotLocalData, SpotServerData } from "../../Types/SpotTypes";
+import { convertCoordsToLocal } from "../../Utils/convertCoordsToLocal";
+import { API_URL } from "../Constants/constants";
+import { getFetchOptions } from "../Options/fetchOptions";
+import { ServerResponse, VoteInfo } from "../Types/types";
 
 export const fetchSpotData = async (
   id: number | string
@@ -34,7 +34,6 @@ export const fetchSpotData = async (
 
   const { data: voteData } =
     (await voteInfo.json()) as ServerResponse<VoteInfo>;
-  console.log(voteData.vote);
 
   if (voteData.vote) {
     spotData.voteCode = voteData.vote;

@@ -6,7 +6,7 @@ import ReactDOM from "react-dom/client";
 import { useNavigate, useParams } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";
 
-import { fetchSpotData } from "../../api/fetchSpotData";
+import { fetchSpotData } from "../../api/GET/fetchSpotData";
 import { MapBoxContext } from "../../Components/MapBox/Context/MapBoxContext";
 import { ParkingMarker } from "../../Components/MapBox/ParkingMarker/ParkingMarker";
 import { SpotDetails } from "../../Components/SpotDetails/SpotDetails";

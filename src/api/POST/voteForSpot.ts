@@ -1,5 +1,5 @@
-import { getFetchOptions } from "./Options/fetchOptions";
-import { VoteCode } from "./Types/types";
+import { getFetchOptions } from "../Options/fetchOptions";
+import { VoteCode } from "../Types/types";
 
 export const voteForSpot = async ({
   id,

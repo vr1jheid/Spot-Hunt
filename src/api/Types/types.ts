@@ -9,6 +9,10 @@ export interface VoteInfo {
   parkPointId: number;
 }
 
+export interface UserSettings {
+  minimumVotes: number;
+}
+
 export enum VoteCode {
   Error = -1,
   Positive = 1,

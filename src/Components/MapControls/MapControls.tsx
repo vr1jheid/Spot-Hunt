@@ -1,3 +1,4 @@
+import { Burger } from "@mantine/core";
 import {
   IconListDetails,
   IconMinus,
@@ -7,6 +8,7 @@ import {
 } from "@tabler/icons-react";
 import { useContext } from "react";
 
+import { useMenu } from "../../Store/menuStore";
 import { useSpotsSheet } from "../../Store/spotsSheetStore";
 import { useUserStore } from "../../Store/userStore";
 import { MapBoxContext } from "../MapBox/Context/MapBoxContext";
@@ -16,6 +18,7 @@ export const MapControls = () => {
   const { mapRef } = useContext(MapBoxContext);
   const { setLocation, setShowUnapproved, showUnapproved } = useUserStore();
   const { setOpen } = useSpotsSheet();
+  const { open: menuOpen, setOpen: setMenuOpen } = useMenu();
 
   if (!mapRef.current) return;
 
@@ -64,6 +67,9 @@ export const MapControls = () => {
         <MapControlButton onClick={() => setOpen(true)}>
           <IconListDetails size={25} />
         </MapControlButton>
+      </div>
+      <div className="absolute right-1 top-1 z-[210]">
+        <Burger opened={menuOpen} onClick={() => setMenuOpen(!menuOpen)} />
       </div>
     </>
   );

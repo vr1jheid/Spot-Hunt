@@ -4,8 +4,8 @@ import { Loader } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { useContext, useEffect, useState } from "react";
 
-import { fetchSpots } from "../../api/fetchSpots";
-import { fetchUnapprovedSpots } from "../../api/fetchUnapprovedSpots";
+import { fetchSpots } from "../../api/GET/fetchSpots";
+import { fetchUnapprovedSpots } from "../../api/GET/fetchUnapprovedSpots";
 import { useUserStore } from "../../Store/userStore";
 import { queryClient } from "../../Tanstack/queryClient";
 import { getBounds } from "../../Utils/getBounds";

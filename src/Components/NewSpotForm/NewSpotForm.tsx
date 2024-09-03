@@ -12,9 +12,9 @@ import { useMutation } from "@tanstack/react-query";
 import { ForwardedRef, forwardRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { addPhotoToSpot } from "../../api/addPhotoToSpot";
-import { addSpot } from "../../api/addSpot";
 import { invalidateSpots } from "../../api/invalidateSpots";
+import { addPhotoToSpot } from "../../api/POST/addPhotoToSpot";
+import { addSpot } from "../../api/POST/addSpot";
 import { SpotDataToSend } from "../../Types/SpotTypes";
 import { PhotosList } from "./PhotosList/PhotoList";
 

@@ -11,8 +11,8 @@ import {
 } from "@tabler/icons-react";
 import { useMutation } from "@tanstack/react-query";
 
+import { voteForSpot } from "../../api/POST/voteForSpot";
 import { VoteCode } from "../../api/Types/types";
-import { voteForSpot } from "../../api/voteForSpot";
 import googleMapsIcon from "../../Assets/google-maps-icon.png";
 import wazeMapsIcon from "../../Assets/waze-maps-icon.svg";
 import { useUserStore } from "../../Store/userStore";
@@ -36,7 +36,6 @@ export const SpotDetails = ({
   voteCode,
   votedAgainst,
   votedFor,
-  isFetching,
 }: Props) => {
   const { location } = useUserStore();
   const { lng, lat } = coordinates;

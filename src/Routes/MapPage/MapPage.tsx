@@ -3,10 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import mapboxgl from "mapbox-gl";
 import { Outlet } from "react-router-dom";
 
-import { fetchToken } from "../../api/fetchToken";
+import { fetchToken } from "../../api/GET/fetchToken";
 import { MapBoxContextProvider } from "../../Components/MapBox/Context/MapBoxContextProvider";
 import { MapBox } from "../../Components/MapBox/MapBox";
 import { MapControls } from "../../Components/MapControls/MapControls";
+import { Menu } from "../../Components/Menu/Menu";
 import { SpotsBottomSheet } from "../../Components/SpotsBottomSheet/SpotsBottomSheet";
 
 export const MapPage = () => {
@@ -32,6 +33,7 @@ export const MapPage = () => {
       <MapBox />
       <MapControls />
       <SpotsBottomSheet />
+      <Menu />
       <Outlet />
     </MapBoxContextProvider>
   );

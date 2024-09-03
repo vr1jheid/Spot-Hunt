@@ -1,6 +1,6 @@
-import { useUserStore } from "../Store/userStore";
-import { API_URL } from "./Constants/constants";
-import { getFetchOptions } from "./Options/fetchOptions";
+import { useUserStore } from "../../Store/userStore";
+import { API_URL } from "../Constants/constants";
+import { getFetchOptions } from "../Options/fetchOptions";
 
 export const addPhotoToSpot = async ({
   id,
