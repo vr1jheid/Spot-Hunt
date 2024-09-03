@@ -1,4 +1,4 @@
-import { SpotDataToSend, SpotServerData } from "../../Types/SpotTypes";
+import { SpotDataToSend, SpotServerData } from "../../Types/spotTypes";
 import { API_URL } from "../Constants/constants";
 import { getFetchOptions } from "../Options/fetchOptions";
 
@@ -13,7 +13,7 @@ export const addSpot = async (data: SpotDataToSend) => {
         "Content-type": "application/json",
         ...getFetchOptions().headers,
       },
-    }
+    },
   );
   console.log(response);
 

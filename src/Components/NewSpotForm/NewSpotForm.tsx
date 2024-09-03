@@ -12,10 +12,10 @@ import { useMutation } from "@tanstack/react-query";
 import { ForwardedRef, forwardRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { invalidateSpots } from "../../api/invalidateSpots";
 import { addPhotoToSpot } from "../../api/POST/addPhotoToSpot";
 import { addSpot } from "../../api/POST/addSpot";
-import { SpotDataToSend } from "../../Types/SpotTypes";
+import { invalidateSpots } from "../../Tanstack/invalidateSpots";
+import { SpotDataToSend } from "../../Types/spotTypes";
 import { PhotosList } from "./PhotosList/PhotoList";
 
 interface Props {
@@ -80,14 +80,14 @@ export const NewSpotForm = forwardRef(
       <form
         ref={ref}
         onSubmit={onSubmit}
-        className="w-full sm:w-[500px] h-fit flex flex-col gap-5 bg-white rounded-lg p-6 relative"
+        className="relative flex h-fit w-full flex-col gap-5 rounded-lg bg-white p-6 sm:w-[500px]"
       >
         <LoadingOverlay
           visible={addPointMutation.isPending}
           zIndex={1000}
           overlayProps={{ radius: "sm", blur: 2 }}
         />
-        <header className="flex justify-between items-center font-medium">
+        <header className="flex items-center justify-between font-medium">
           Add a spot <CloseButton onClick={closeForm} size="lg" />
         </header>
         <TextInput
@@ -154,5 +154,5 @@ export const NewSpotForm = forwardRef(
         </Button>
       </form>
     );
-  }
+  },
 );

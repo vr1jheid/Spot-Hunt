@@ -6,7 +6,7 @@ import { BottomSheet } from "react-spring-bottom-sheet";
 
 import { useSpotsSheet } from "../../Store/spotsSheetStore";
 import { useUserStore } from "../../Store/userStore";
-import { SpotLocalData } from "../../Types/SpotTypes";
+import { SpotLocalData } from "../../Types/spotTypes";
 import { getDistanceBetweenPoints } from "../../Utils/getDistanceBetweenPoints";
 import { SpotPreview } from "../SpotPreview/SpotPreview";
 
@@ -31,7 +31,7 @@ export const SpotsBottomSheet = () => {
             })
             .sort((a, b) => a.distance - b.distance)
         : data,
-    [data, location]
+    [data, location],
   );
 
   return (
@@ -39,11 +39,11 @@ export const SpotsBottomSheet = () => {
       open={open}
       onDismiss={onDismiss}
       snapPoints={({ maxHeight }) => maxHeight * 0.8}
-      header={<div className="h-6 bg-white rounded-t-lg"></div>}
+      header={<div className="h-6 rounded-t-lg bg-white"></div>}
       expandOnContentDrag
     >
       {!data?.length && (
-        <div className="w-full h-full flex flex-col items-center gap-10 py-16 text-4xl font-semibold">
+        <div className="flex h-full w-full flex-col items-center gap-10 py-16 text-4xl font-semibold">
           <IconMoodEmpty size={80} />
           No points nearby
         </div>

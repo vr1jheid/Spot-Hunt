@@ -10,7 +10,7 @@ import { fetchSpotData } from "../../api/GET/fetchSpotData";
 import { MapBoxContext } from "../../Components/MapBox/Context/MapBoxContext";
 import { ParkingMarker } from "../../Components/MapBox/ParkingMarker/ParkingMarker";
 import { SpotDetails } from "../../Components/SpotDetails/SpotDetails";
-import { SpotLocalData } from "../../Types/SpotTypes";
+import { SpotLocalData } from "../../Types/spotTypes";
 
 export const SpotPage = () => {
   const { id } = useParams() as { id: string };
@@ -34,7 +34,7 @@ export const SpotPage = () => {
 
     const markerContainer = document.createElement("div");
     ReactDOM.createRoot(markerContainer).render(
-      <ParkingMarker color="green" />
+      <ParkingMarker color="green" />,
     );
     marker.current = new mapboxgl.Marker(markerContainer)
       .setLngLat(spotData?.coordinates)
@@ -71,12 +71,12 @@ export const SpotPage = () => {
         marker.current?.remove();
         marker.current = null;
       }}
-      header={<div className="h-6 bg-white rounded-t-lg"></div>}
+      header={<div className="h-6 rounded-t-lg bg-white"></div>}
       expandOnContentDrag
       /*     blocking={false} */
     >
       {!spotData ? (
-        <div className="bg-transparent w-full h-80 flex justify-center items-center">
+        <div className="flex h-80 w-full items-center justify-center bg-transparent">
           <Loader type="bars" />
         </div>
       ) : (

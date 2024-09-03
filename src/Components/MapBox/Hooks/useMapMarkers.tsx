@@ -2,10 +2,10 @@ import { useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../../../Store/userStore";
-import { LocalCoords, SpotLocalBrief } from "../../../Types/SpotTypes";
+import { LocalCoords, SpotLocalBrief } from "../../../Types/spotTypes";
 import { USER_LOCATION_DOT_ID } from "../Constants/pulsingDot";
 import { MapBoxContext } from "../Context/MapBoxContext";
-import { Markers } from "../Types/Markers";
+import { Markers } from "../Types/types";
 import { changePulsingDotLocation } from "../Utils/changePulsingDotLocation";
 import { createMarkers } from "../Utils/createMarkers";
 import { createPulsingDotOnMap } from "../Utils/createPulsingDotOnMap";
@@ -24,7 +24,7 @@ export const useMapMarkers = ({ spots, unapproved }: Props) => {
 
   const onMarkerClick = (
     e: MouseEvent,
-    spot: { id: number; coordinates: LocalCoords }
+    spot: { id: number; coordinates: LocalCoords },
   ) => {
     e.stopPropagation();
     navigate(`spot/${spot.id}`);

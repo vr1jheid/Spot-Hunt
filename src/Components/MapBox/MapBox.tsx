@@ -59,7 +59,7 @@ export const MapBox = () => {
   useMapMarkers({ spots: spots ?? [], unapproved });
 
   if (isLoading) {
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="flex h-full w-full items-center justify-center">
       <Loader color="cyan" size="xl" type="bars" />
     </div>;
   }
@@ -75,7 +75,7 @@ export const MapBox = () => {
   return (
     <>
       {(showFilledProgress || touchEvent) && (
-        <div className="absolute top-3 right-3 z-10">
+        <div className="absolute right-3 top-3 z-10">
           <OptionsRingProgress
             value={
               showFilledProgress

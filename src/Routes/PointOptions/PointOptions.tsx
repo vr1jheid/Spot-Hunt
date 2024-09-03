@@ -29,7 +29,7 @@ export const PointOptions = () => {
         navigate("/");
       }}
     >
-      <ul className=" p-2">
+      <ul className="p-2">
         <li className="w-full">
           <Button
             fullWidth
@@ -38,7 +38,7 @@ export const PointOptions = () => {
             }}
             classNames={{ label: "w-full flex justify-between" }}
           >
-            <span className=" grow">Add new spot</span>
+            <span className="grow">Add new spot</span>
           </Button>
         </li>
       </ul>

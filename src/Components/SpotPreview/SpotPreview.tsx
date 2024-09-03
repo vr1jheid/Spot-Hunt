@@ -1,6 +1,6 @@
 import { IconMapPin } from "@tabler/icons-react";
 
-import { SpotLocalData } from "../../Types/SpotTypes";
+import { SpotLocalData } from "../../Types/spotTypes";
 import { convertDistanceToText } from "../../Utils/convertDistanceToText";
 
 interface SpotDataWithDistance extends SpotLocalData {
@@ -15,12 +15,12 @@ interface Props {
 export const SpotPreview = ({ spotData, onClick }: Props) => {
   const { title, rate, distance } = spotData;
   return (
-    <div onClick={onClick} className="w-full h-[60px] px-2 flex items-center">
-      <div className=" h-3/4 p-2 bg-slate-100 rounded-md">
+    <div onClick={onClick} className="flex h-[60px] w-full items-center px-2">
+      <div className="h-3/4 rounded-md bg-slate-100 p-2">
         <IconMapPin stroke={1} size={25} />
       </div>
-      <div className=" inline-flex flex-col px-4 grow">
-        <span className=" text-md  font-medium">
+      <div className="inline-flex grow flex-col px-4">
+        <span className="text-md font-medium">
           {title}
           {rate && ` (${rate}$/h)`}
         </span>

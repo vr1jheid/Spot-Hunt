@@ -13,9 +13,9 @@ export const MapControlButton = ({
   return (
     <button
       className={clsx(
-        "p-2 bg-white rounded-xl active:opacity-100",
-        !active && " opacity-40",
-        active && "opacity-100"
+        "rounded-xl bg-white p-2 active:opacity-100",
+        !active && "opacity-40",
+        active && "opacity-100",
       )}
       {...buttonProps}
     >

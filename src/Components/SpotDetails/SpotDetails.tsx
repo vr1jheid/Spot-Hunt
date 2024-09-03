@@ -17,7 +17,7 @@ import googleMapsIcon from "../../Assets/google-maps-icon.png";
 import wazeMapsIcon from "../../Assets/waze-maps-icon.svg";
 import { useUserStore } from "../../Store/userStore";
 import { queryClient } from "../../Tanstack/queryClient";
-import { SpotLocalData } from "../../Types/SpotTypes";
+import { SpotLocalData } from "../../Types/spotTypes";
 import { convertDistanceToText } from "../../Utils/convertDistanceToText";
 import { getDistanceBetweenPoints } from "../../Utils/getDistanceBetweenPoints";
 import { AboutListItem } from "../AboutListItem/AboutListItem";
@@ -48,6 +48,7 @@ export const SpotDetails = ({
       });
     },
   });
+  console.log({ voteCode, votedFor, votedAgainst });
 
   const thumbUp =
     voteCode === VoteCode.Positive ? <IconThumbUpFilled /> : <IconThumbUp />;
@@ -61,10 +62,10 @@ export const SpotDetails = ({
 
   return (
     <>
-      <header className="flex justify-center flex-col relative">
+      <header className="relative flex flex-col justify-center">
         <h1
           style={{ boxShadow: "inset 0px 0px 40px 40px #0505051b" }}
-          className="absolute top-3 left-3 z-10 px-2 rounded-md text-white text-xl font-semibold first-letter:capitalize bg-[#05050521]"
+          className="absolute left-3 top-3 z-10 rounded-md bg-[#05050521] px-2 text-xl font-semibold text-white first-letter:capitalize"
         >
           {title}
         </h1>
@@ -79,7 +80,7 @@ export const SpotDetails = ({
         ) : (
           <Image src="https://placehold.co/374x250?text=No%20photos" />
         )}
-        <div className="absolute bottom-1 right-1 h-10 p-2 bg-white z-10 rounded-lg flex gap-3">
+        <div className="absolute bottom-1 right-1 z-10 flex h-10 gap-3 rounded-lg bg-white p-2">
           <LoadingOverlay
             visible={voteMutation.isPending}
             overlayProps={{ radius: "sm" }}
@@ -89,7 +90,7 @@ export const SpotDetails = ({
             onClick={async () => {
               voteMutation.mutate({ id, vote: VoteCode.Positive });
             }}
-            className="grow inline-flex justify-between items-center gap-1"
+            className="inline-flex grow items-center justify-between gap-1"
           >
             {thumbUp}
             {votedFor}
@@ -99,25 +100,25 @@ export const SpotDetails = ({
             onClick={async () => {
               voteMutation.mutate({ id, vote: VoteCode.Negative });
             }}
-            className="grow inline-flex justify-between items-center gap-1"
+            className="inline-flex grow items-center justify-between gap-1"
           >
             {thumpDown} {votedAgainst}
           </button>
         </div>
       </header>
-      <div className="p-3 flex flex-col gap-3">
-        <div className=" flex items-center justify-between">
+      <div className="flex flex-col gap-3 p-3">
+        <div className="flex items-center justify-between">
           <div className="inline-flex items-center gap-3">
-            <span className="bg-gray-100 p-2 rounded-lg w-11 h-11 flex items-center justify-center">
+            <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-gray-100 p-2">
               <IconRulerMeasure size={25} />
             </span>
-            <span className=" inline-flex flex-col">
-              <span className=" text-md font-medium">Distance from you</span>
+            <span className="inline-flex flex-col">
+              <span className="text-md font-medium">Distance from you</span>
               <span>
                 {!location
                   ? "We cant get your location"
                   : convertDistanceToText(
-                      getDistanceBetweenPoints(location, coordinates)
+                      getDistanceBetweenPoints(location, coordinates),
                     )}
               </span>
             </span>
@@ -125,7 +126,7 @@ export const SpotDetails = ({
           <ul className="flex justify-center gap-4">
             <li>
               <a target="_blank" href={`https://waze.com/ul?ll=${lat},${lng}`}>
-                <img className="w-9 h-9" src={wazeMapsIcon} alt="waze maps" />
+                <img className="h-9 w-9" src={wazeMapsIcon} alt="waze maps" />
               </a>
             </li>
             <li>
@@ -134,7 +135,7 @@ export const SpotDetails = ({
                 href={`https://www.google.com/maps/place/${lat},${lng}`}
               >
                 <img
-                  className=" w-9 h-9"
+                  className="h-9 w-9"
                   src={googleMapsIcon}
                   alt="google maps"
                 />

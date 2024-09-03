@@ -1,4 +1,4 @@
-import { LocalCoords, ServerCoords } from "../Types/SpotTypes";
+import { LocalCoords, ServerCoords } from "../Types/spotTypes";
 
 export const convertCoordsToLocal = ({
   longitude,

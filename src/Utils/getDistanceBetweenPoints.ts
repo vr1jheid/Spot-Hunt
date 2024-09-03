@@ -1,4 +1,4 @@
-import { Coords } from "../Types/Сoords";
+import { Coords } from "../Types/coords";
 
 const deg2rad = (deg: number) => {
   return deg * (Math.PI / 180);
@@ -6,7 +6,7 @@ const deg2rad = (deg: number) => {
 
 export const getDistanceBetweenPoints = (
   { lat: lat1, lng: lng1 }: Coords,
-  { lat: lat2, lng: lng2 }: Coords
+  { lat: lat2, lng: lng2 }: Coords,
 ) => {
   const R = 6371; // Радиус Земли в километрах
   const dLat = deg2rad(lat2 - lat1); // Разность широт в радианах

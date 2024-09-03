@@ -1,11 +1,11 @@
-import { SpotLocalData, SpotServerData } from "../../Types/SpotTypes";
+import { SpotLocalData, SpotServerData } from "../../Types/spotTypes";
 import { convertCoordsToLocal } from "../../Utils/convertCoordsToLocal";
 import { API_URL } from "../Constants/constants";
 import { getFetchOptions } from "../Options/fetchOptions";
 import { ServerResponse, VoteInfo } from "../Types/types";
 
 export const fetchSpotData = async (
-  id: number | string
+  id: number | string,
 ): Promise<SpotLocalData> => {
   console.log("fetching spot", id);
   const fetchOptions = getFetchOptions();
@@ -25,7 +25,7 @@ export const fetchSpotData = async (
 
   const voteInfo = await fetch(
     `${API_URL}/api/park-point/vote-status/${id}`,
-    fetchOptions
+    fetchOptions,
   );
 
   if (!voteInfo.ok) {

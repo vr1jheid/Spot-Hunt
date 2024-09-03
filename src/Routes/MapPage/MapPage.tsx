@@ -22,7 +22,7 @@ export const MapPage = () => {
 
   if (isLoading) {
     return (
-      <div className="w-full h-full flex items-center justify-center">
+      <div className="flex h-full w-full items-center justify-center">
         <Loader color="cyan" size="xl" type="bars" />
       </div>
     );

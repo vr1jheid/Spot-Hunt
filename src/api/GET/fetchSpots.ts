@@ -1,5 +1,5 @@
 import { useUserStore } from "../../Store/userStore";
-import { SpotLocalBrief, SpotServerBrief } from "../../Types/SpotTypes";
+import { SpotLocalBrief, SpotServerBrief } from "../../Types/spotTypes";
 import { convertCoordsToLocal } from "../../Utils/convertCoordsToLocal";
 import { API_URL } from "../Constants/constants";
 import { getFetchOptions } from "../Options/fetchOptions";
@@ -47,7 +47,7 @@ export const fetchSpots = async ({
 
   const spotsByFilter = filterRespData.items;
   const votedSpots = votedRespData.items.filter(
-    (voted) => !filterRespData.items.find(({ id }) => id === voted.id)
+    (voted) => !filterRespData.items.find(({ id }) => id === voted.id),
   );
 
   console.log("park-point", spotsByFilter);

@@ -6,7 +6,7 @@ interface Props extends ComponentProps<"div"> {
 
 export const OverlayContainer = ({ children, ...other }: Props) => {
   return (
-    <div {...other} className="absolute w-full h-full top-0 left-0 z-10">
+    <div {...other} className="absolute left-0 top-0 z-10 h-full w-full">
       {children}
     </div>
   );

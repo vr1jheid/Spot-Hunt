@@ -8,17 +8,18 @@ import { useMenu } from "../../Store/menuStore";
 import { useUserStore } from "../../Store/userStore";
 
 export const Menu = () => {
-  const [sliderValue, setSliderValue] = useState(2);
   const { open, setOpen } = useMenu();
   const { id } = useUserStore();
   const { data: settings } = useQuery({
     queryKey: ["settings"],
     queryFn: fetchUserSettings,
   });
+  const [sliderValue, setSliderValue] = useState(settings?.minimumVotes);
+
   const settingsMutation = useMutation({
     mutationFn: updateUserSettings,
     onError: () => {
-      setSliderValue(2);
+      setSliderValue(settings?.minimumVotes);
     },
   });
 
@@ -32,8 +33,8 @@ export const Menu = () => {
       withCloseButton={false}
       size={"100%"}
     >
-      <div className="w-full h-full flex flex-col gap-7">
-        <div className=" flex gap-5 items-center">
+      <div className="flex h-full w-full flex-col gap-7">
+        <div className="flex items-center gap-5">
           User id
           <CopyButton value={id ?? ""}>
             {({ copied, copy }) => (

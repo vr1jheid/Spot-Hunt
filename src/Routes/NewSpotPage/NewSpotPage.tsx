@@ -21,7 +21,7 @@ export const NewSpotPage = () => {
   return (
     <OverlayContainer>
       <div
-        className="p-3 w-full h-full flex justify-center items-center "
+        className="flex h-full w-full items-center justify-center p-3"
         onClick={closeOnClickOutside}
       >
         <NewSpotForm ref={form} coords={coords.split(",")} />

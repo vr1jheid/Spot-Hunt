@@ -1,4 +1,4 @@
-import { SpotServerBrief } from "../../Types/SpotTypes";
+import { SpotServerBrief } from "../../Types/spotTypes";
 import { convertCoordsToLocal } from "../../Utils/convertCoordsToLocal";
 import { API_URL } from "../Constants/constants";
 import { getFetchOptions } from "../Options/fetchOptions";

@@ -33,7 +33,7 @@ export const MapControls = () => {
 
   return (
     <>
-      <div className="absolute left-1 w-12 bottom-1/2 translate-y-1/2">
+      <div className="absolute bottom-1/2 left-1 w-12 translate-y-1/2">
         <MapControlButton
           active={showUnapproved}
           onClick={() => {
@@ -43,7 +43,7 @@ export const MapControls = () => {
           <IconZoomQuestion size={33} />
         </MapControlButton>
       </div>
-      <div className="absolute right-1 w-12 bottom-1/2 translate-y-1/2 flex flex-col gap-10">
+      <div className="absolute bottom-1/2 right-1 flex w-12 translate-y-1/2 flex-col gap-10">
         <MapControlButton onClick={getLocation}>
           <IconNavigationFilled size={33} />
         </MapControlButton>

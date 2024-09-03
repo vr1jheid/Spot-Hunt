@@ -6,8 +6,8 @@ import {
 import { useCallback, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { invalidateSpots } from "../../../api/invalidateSpots";
 import { useUserStore } from "../../../Store/userStore";
+import { invalidateSpots } from "../../../Tanstack/invalidateSpots";
 import { TIME_TO_OPTIONS_OPEN } from "../Constants/timeToOptionsOpen";
 import { MapBoxContext } from "../Context/MapBoxContext";
 import { createPulsingDotOnMap } from "../Utils/createPulsingDotOnMap";
@@ -48,10 +48,10 @@ export const useMapEvents = () => {
         },
         () => {
           target.easeTo({ zoom: 9 });
-        }
+        },
       );
     },
-    [setLocation]
+    [setLocation],
   );
 
   const onMapTouchStart = useCallback(
@@ -107,7 +107,7 @@ export const useMapEvents = () => {
         }
       };
     },
-    [navigate]
+    [navigate],
   );
 
   const onMapDragEnd = useCallback(() => invalidateSpots(), []);

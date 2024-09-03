@@ -1,6 +1,6 @@
 import { Map } from "mapbox-gl";
 
-import { Coords } from "../../../Types/Сoords";
+import { Coords } from "../../../Types/coords";
 import { USER_LOCATION_DOT_ID } from "../Constants/pulsingDot";
 
 interface Options {
@@ -10,7 +10,7 @@ interface Options {
 export const createPulsingDotOnMap = (
   map: Map,
   { lng, lat }: Coords,
-  { size }: Options = { size: 100 }
+  { size }: Options = { size: 100 },
 ) => {
   const canvas = document.createElement("canvas");
 

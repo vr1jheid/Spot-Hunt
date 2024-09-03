@@ -1,9 +1,9 @@
 import mapboxgl from "mapbox-gl";
 import ReactDOM from "react-dom/client";
 
-import { LocalCoords } from "../../../Types/SpotTypes";
+import { LocalCoords } from "../../../Types/spotTypes";
 import { ParkingMarker } from "../ParkingMarker/ParkingMarker";
-import { Markers } from "../Types/Markers";
+import { Markers } from "../Types/types";
 
 interface SpotShort {
   id: number;
@@ -17,14 +17,14 @@ export const createMarkers = (
   options?: {
     color?: string;
     onClick?: MarkerOnClick;
-  }
+  },
 ) => {
   const markers: Markers = {};
   spots.forEach((spot) => {
     const { id, coordinates } = spot;
     const markerContainer = document.createElement("div");
     ReactDOM.createRoot(markerContainer).render(
-      <ParkingMarker color={options?.color ?? "blue"} />
+      <ParkingMarker color={options?.color ?? "blue"} />,
     );
 
     const marker = new mapboxgl.Marker(markerContainer).setLngLat(coordinates);

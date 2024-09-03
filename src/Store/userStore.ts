@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { Coords } from "../Types/Сoords";
+import { Coords } from "../Types/coords";
 
 export interface UserStore {
   id: string | null;

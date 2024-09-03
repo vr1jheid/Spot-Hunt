@@ -1,5 +1,5 @@
 import "./Styles/index.css";
-import "./Styles/BotomSheet.css";
+import "./Styles/bottomSheet.css";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 
@@ -11,7 +11,7 @@ import { useUserStore } from "./Store/userStore";
 useUserStore
   .getState()
   .setID(
-    window.btoa(`${window.Telegram.WebApp.initDataUnsafe.user?.id ?? 3451}`)
+    window.btoa(`${window.Telegram.WebApp.initDataUnsafe.user?.id ?? 3457}`),
   );
 
 /* window.Telegram */
