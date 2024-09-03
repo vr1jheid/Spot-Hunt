@@ -26,6 +26,7 @@
     "react-router-dom": "^6.26.0",
     "react-spring-bottom-sheet": "^3.4.1",
     "react-swipeable": "^7.0.1",
+    "tailwind-merge": "^2.5.2",
     "zustand": "^4.5.4"
   },
   "devDependencies": {

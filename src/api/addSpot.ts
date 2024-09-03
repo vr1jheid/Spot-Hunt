@@ -9,7 +9,10 @@ export const addSpot = async (data: SpotDataToSend) => {
     {
       method: "POST",
       body: JSON.stringify(data),
-      ...getFetchOptions(),
+      headers: {
+        "Content-type": "application/json",
+        ...getFetchOptions().headers,
+      },
     }
   );
   console.log(response);

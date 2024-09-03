@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { fetchSpots } from "../../api/fetchSpots";
 import { fetchUnapprovedSpots } from "../../api/fetchUnapprovedSpots";
 import { useUserStore } from "../../Store/userStore";
+import { queryClient } from "../../Tanstack/queryClient";
 import { getBounds } from "../../Utils/getBounds";
 import { TIME_TO_OPTIONS_OPEN } from "./Constants/timeToOptionsOpen";
 import { MapBoxContext } from "./Context/MapBoxContext";
@@ -30,18 +31,20 @@ export const MapBox = () => {
     },
   });
 
-  console.log(spots);
-
   const { data: unapproved } = useQuery({
     queryKey: ["unapprovedSpots"],
     queryFn: async () => {
+      console.log(showUnapproved);
+
       if (!showUnapproved || !mapRef.current) {
         return [];
       }
       return await fetchUnapprovedSpots(getBounds(mapRef.current));
     },
   });
-  /*   console.log(spots); */
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["unapprovedSpots"] });
+  }, [showUnapproved]);
 
   const { onMapLoad, onMapTouchStart, onMapDragEnd, onMapZoomEnd, touchEvent } =
     useMapEvents();

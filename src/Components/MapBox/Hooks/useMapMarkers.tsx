@@ -18,6 +18,7 @@ interface Props {
 export const useMapMarkers = ({ spots, unapproved }: Props) => {
   const navigate = useNavigate();
   const markers = useRef<Markers>({});
+  const unapprovedSpotsMarkers = useRef<Markers>({});
   const { mapRef } = useContext(MapBoxContext);
   const { location } = useUserStore();
 
@@ -30,14 +31,16 @@ export const useMapMarkers = ({ spots, unapproved }: Props) => {
   };
 
   useEffect(() => {
-    if (!unapproved?.length || !mapRef.current) return;
+    if (!unapproved || !mapRef.current) return;
     console.log("adding unaproved to map");
+    Object.values(unapprovedSpotsMarkers.current).forEach((m) => m.remove());
 
     const newMarkers = createMarkers(unapproved, {
-      color: "red",
+      color: "gray",
       onClick: onMarkerClick,
     });
     Object.values(newMarkers).forEach((m) => m.addTo(mapRef.current!));
+    unapprovedSpotsMarkers.current = newMarkers;
   }, [unapproved]);
 
   useEffect(() => {

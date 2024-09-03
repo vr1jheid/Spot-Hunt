@@ -14,11 +14,12 @@ import { SpotLocalData } from "../../Types/SpotTypes";
 
 export const SpotPage = () => {
   const { id } = useParams() as { id: string };
-  const { data: spotData } = useQuery<SpotLocalData>({
+  const { data: spotData, isFetching } = useQuery<SpotLocalData>({
     queryKey: ["spots", id],
     queryFn: async () => await fetchSpotData(id),
-    /*     staleTime: 300000, */
   });
+  console.log("isFetching", isFetching);
+
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(true);
@@ -72,13 +73,14 @@ export const SpotPage = () => {
       }}
       header={<div className="h-6 bg-white rounded-t-lg"></div>}
       expandOnContentDrag
+      /*     blocking={false} */
     >
       {!spotData ? (
         <div className="bg-transparent w-full h-80 flex justify-center items-center">
           <Loader type="bars" />
         </div>
       ) : (
-        <SpotDetails {...spotData} />
+        <SpotDetails {...spotData} isFetching={isFetching} />
       )}
     </BottomSheet>
   );
