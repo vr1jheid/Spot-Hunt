@@ -1,4 +1,4 @@
-import { API_URL } from "../Constants/constants";
+import { API_URL } from "shared/api/constants";
 
 export const fetchToken = async () => {
   const resp = await fetch(`${API_URL}/api/config/all`);

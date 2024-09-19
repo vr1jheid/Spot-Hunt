@@ -9,16 +9,14 @@ import {
   IconThumbUp,
   IconThumbUpFilled,
 } from "@tabler/icons-react";
-import { useMutation } from "@tanstack/react-query";
+import { useSpotVote } from "entities/parkingSpot/lib/hooks/useSpotVote";
+import { VoteCode } from "shared/api/types";
 import googleMapsIcon from "shared/assets/google-maps-icon.png";
 import wazeMapsIcon from "shared/assets/waze-maps-icon.svg";
 import { convertDistanceToText } from "shared/lib/convertDistanceToText";
 import { getDistanceBetweenPoints } from "shared/lib/getDistanceBetweenPoints";
-import { queryClient } from "shared/lib/queryClient";
 import { SpotLocalData } from "shared/model/spotTypes";
 import { useUserStore } from "shared/Store/userStore";
-import { voteForSpot } from "src/api/POST/voteForSpot";
-import { VoteCode } from "src/api/Types/types";
 
 import { SpotDetailsListItem } from "./SpotDetailsListItem";
 
@@ -40,7 +38,9 @@ export const SpotDetails = ({
   const { location } = useUserStore();
   const { lng, lat } = coordinates;
 
-  const voteMutation = useMutation({
+  const voteMutation = useSpotVote();
+
+  /*   const voteMutation = useMutation({
     mutationFn: voteForSpot,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -48,7 +48,7 @@ export const SpotDetails = ({
       });
     },
   });
-  console.log({ voteCode, votedFor, votedAgainst });
+  console.log({ voteCode, votedFor, votedAgainst }); */
 
   const thumbUp =
     voteCode === VoteCode.Positive ? <IconThumbUpFilled /> : <IconThumbUp />;

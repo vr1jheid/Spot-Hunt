@@ -1,22 +1,18 @@
 import { Loader } from "@mantine/core";
-import { useQuery } from "@tanstack/react-query";
 import { useMap } from "entities/MapContext";
+import { useSpot } from "entities/parkingSpot/lib/hooks/useSpot";
 import mapboxgl, { Marker } from "mapbox-gl";
 import { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { useNavigate, useParams } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";
-import { SpotLocalData } from "shared/model/spotTypes";
 import { ParkingMarker } from "shared/ui/ParkingMarker/ParkingMarker";
-import { fetchSpotData } from "src/api/GET/fetchSpotData";
 import { SpotDetails } from "widgets/SpotDetails";
 
 export const SpotPage = () => {
   const { id } = useParams() as { id: string };
-  const { data: spotData, isFetching } = useQuery<SpotLocalData>({
-    queryKey: ["spots", id],
-    queryFn: async () => await fetchSpotData(id),
-  });
+  const { spotData, isFetching } = useSpot(id);
+
   console.log("isFetching", isFetching);
 
   const navigate = useNavigate();

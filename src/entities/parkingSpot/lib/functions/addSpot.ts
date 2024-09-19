@@ -1,6 +1,6 @@
-import { SpotDataToSend, SpotServerData } from "../../shared/model/spotTypes";
-import { API_URL } from "../Constants/constants";
-import { getFetchOptions } from "../Options/fetchOptions";
+import { getFetchOptions } from "entities/parkingSpot/config/fetchOptions";
+import { API_URL } from "shared/api/constants";
+import { SpotDataToSend, SpotServerData } from "shared/model/spotTypes";
 
 export const addSpot = async (data: SpotDataToSend) => {
   const response = await fetch(

@@ -1,23 +1,13 @@
 import { Loader } from "@mantine/core";
-import { useQuery } from "@tanstack/react-query";
 import { MapContextProvider } from "entities/MapContext";
-import mapboxgl from "mapbox-gl";
 import { Outlet } from "react-router-dom";
 import { AppMenu } from "widgets/AppMenu/AppMenu";
 import { Map } from "widgets/Map";
+import { useMapToken } from "widgets/Map/lib/hooks/useMapToken";
 import { SpotsBottomSheet } from "widgets/SpotsBottomSheet";
 
-import { fetchToken } from "../../../api/GET/fetchToken";
-
 export const MapPage = () => {
-  const { data: token, isLoading } = useQuery({
-    queryKey: ["token"],
-    queryFn: fetchToken,
-  });
-
-  if (token && !mapboxgl.accessToken) {
-    mapboxgl.accessToken = token;
-  }
+  const { isLoading } = useMapToken();
 
   if (isLoading) {
     return (
@@ -30,7 +20,6 @@ export const MapPage = () => {
   return (
     <MapContextProvider>
       <Map />
-
       <SpotsBottomSheet />
       <AppMenu />
       <Outlet />

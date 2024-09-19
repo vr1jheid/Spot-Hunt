@@ -8,9 +8,9 @@ import { useNavigate } from "react-router-dom";
 import { invalidateSpots } from "shared/lib/invalidateSpots";
 import { useUserStore } from "shared/Store/userStore";
 
-import { MapContext } from "../../../entities/MapContext/config/MapContext";
-import { TIME_TO_OPTIONS_OPEN } from "../ui/Map";
-import { createPulsingDotOnMap } from "./PulsingDot/createPulsingDotOnMap";
+import { MapContext } from "../../../../entities/MapContext/config/MapContext";
+import { TIME_TO_OPTIONS_OPEN } from "../../ui/Map";
+import { createPulsingDotOnMap } from "../PulsingDot/createPulsingDotOnMap";
 
 const clear = (interval: number) => {
   clearInterval(interval);

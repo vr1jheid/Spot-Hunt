@@ -8,13 +8,11 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconCashBanknote } from "@tabler/icons-react";
-import { useMutation } from "@tanstack/react-query";
+import { useCreateSpot } from "entities/parkingSpot/lib/hooks/useCreateSpot";
 import { ForwardedRef, forwardRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Photo } from "shared/model/photoTypes";
 
-import { addPhotoToSpot } from "../../../api/POST/addPhotoToSpot";
-import { addSpot } from "../../../api/POST/addSpot";
-import { invalidateSpots } from "../../../shared/lib/invalidateSpots";
 import { SpotDataToSend } from "../../../shared/model/spotTypes";
 import { PhotosList } from "../../../shared/ui/PhotosList/PhotosList";
 
@@ -25,28 +23,12 @@ interface Props {
 export const NewSpotForm = forwardRef(
   ({ coords }: Props, ref: ForwardedRef<HTMLFormElement>) => {
     const [longitude, latitude] = coords;
-    const [photos, setPhotos] = useState<{ photo: File; url: string }[]>([]);
+    const [photos, setPhotos] = useState<Photo[]>([]);
     const navigate = useNavigate();
     const closeForm = () => navigate("/");
-
-    const addPhotoMutation = useMutation({
-      mutationFn: addPhotoToSpot,
-      onSuccess: () => {
-        invalidateSpots();
-      },
-    });
-
-    const addPointMutation = useMutation({
-      mutationFn: addSpot,
-      onSuccess: async ({ data }) => {
-        console.log("Point added", data);
-        invalidateSpots();
-        closeForm();
-        const photoData = photos.map((p) => {
-          return { ...p, key: p.url };
-        });
-        photos.length && addPhotoMutation.mutate({ id: data.id, photoData });
-      },
+    const { pointMutation } = useCreateSpot({
+      photos,
+      onSuccess: () => closeForm(),
     });
 
     const form = useForm({
@@ -74,7 +56,7 @@ export const NewSpotForm = forwardRef(
         longitude,
         latitude,
       };
-      addPointMutation.mutate(dataToSend);
+      pointMutation.mutate(dataToSend);
     };
     return (
       <form
@@ -83,7 +65,7 @@ export const NewSpotForm = forwardRef(
         className="relative flex h-fit w-full flex-col gap-5 rounded-lg bg-white p-6 sm:w-[500px]"
       >
         <LoadingOverlay
-          visible={addPointMutation.isPending}
+          visible={pointMutation.isPending}
           zIndex={1000}
           overlayProps={{ radius: "sm", blur: 2 }}
         />
@@ -120,14 +102,14 @@ export const NewSpotForm = forwardRef(
               onChange={(photosInput) => {
                 console.log(photos);
 
-                photosInput.slice(0, 3 - photos.length).forEach((photo) => {
+                photosInput.slice(0, 3 - photos.length).forEach((file) => {
                   const reader = new FileReader();
-                  reader.readAsDataURL(photo);
+                  reader.readAsDataURL(file);
                   reader.onload = () => {
                     const url = reader.result?.toString();
                     if (photos.find((p) => p.url === url)) return;
                     if (url) {
-                      setPhotos((prev) => [...prev, { photo, url }]);
+                      setPhotos((prev) => [...prev, { file, url }]);
                     }
                   };
                 });

@@ -1,24 +1,23 @@
-import { useUserStore } from "../../shared/Store/userStore";
-import { API_URL } from "../Constants/constants";
-import { getFetchOptions } from "../Options/fetchOptions";
+import { getFetchOptions } from "entities/parkingSpot/config/fetchOptions";
+import { API_URL } from "shared/api/constants";
+import { Photo } from "shared/model/photoTypes";
+import { useUserStore } from "shared/Store/userStore";
 
 export const addPhotoToSpot = async ({
   id,
   photoData,
 }: {
   id: number;
-  photoData: { key: string; photo: File }[];
+  photoData: Photo[];
 }) => {
   const { id: userID } = useUserStore.getState();
   if (!userID) {
-    console.error("Can`t get user id");
     throw new Error("Can`t get user id");
   }
   const formData = new FormData();
-  photoData.forEach(({ key, photo }) => {
-    console.log({ key, photo });
 
-    formData.append(key, photo);
+  photoData.forEach(({ url, file }) => {
+    formData.append(url, file);
   });
 
   const response = await fetch(`${API_URL}/api/park-point/upload-image/${id}`, {
@@ -27,6 +26,7 @@ export const addPhotoToSpot = async ({
     ...getFetchOptions(),
   });
   const responseJson = await response.json();
+  console.log("addPhoto", responseJson);
 
   return responseJson;
 };

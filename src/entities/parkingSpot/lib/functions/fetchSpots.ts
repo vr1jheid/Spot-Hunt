@@ -1,20 +1,15 @@
-import { convertCoordsToLocal } from "../../shared/lib/convertCoordsToLocal";
-import { SpotLocalBrief, SpotServerBrief } from "../../shared/model/spotTypes";
-import { useUserStore } from "../../shared/Store/userStore";
-import { API_URL } from "../Constants/constants";
-import { getFetchOptions } from "../Options/fetchOptions";
-import { ServerResponse } from "../Types/types";
+import { API_URL } from "shared/api/constants";
+import { ServerResponse } from "shared/api/types";
+import { convertCoordsToLocal } from "shared/lib/convertCoordsToLocal";
+import { Bounds } from "shared/model/mapTypes";
+import { SpotLocalBrief, SpotServerBrief } from "shared/model/spotTypes";
+import { useUserStore } from "shared/Store/userStore";
 
-interface Props {
-  params: { [key in string]: string };
-}
+import { getFetchOptions } from "../../config/fetchOptions";
 
-export const fetchSpots = async ({
-  params,
-}: Props): Promise<SpotLocalBrief[]> => {
+export const fetchSpots = async (bounds: Bounds): Promise<SpotLocalBrief[]> => {
   const { id: userID } = useUserStore.getState();
   if (!userID) {
-    console.error("Can`t get user id");
     throw new Error("Can`t get user id");
   }
   const urls = {
@@ -24,7 +19,7 @@ export const fetchSpots = async ({
 
   const fetchOptions = getFetchOptions();
 
-  Object.entries(params).forEach(([name, value]) => {
+  Object.entries(bounds).forEach(([name, value]) => {
     Object.values(urls).forEach((url) => url.searchParams.set(name, value));
   });
 
@@ -49,9 +44,6 @@ export const fetchSpots = async ({
   const votedSpots = votedRespData.items.filter(
     (voted) => !filterRespData.items.find(({ id }) => id === voted.id),
   );
-
-  console.log("park-point", spotsByFilter);
-  console.log("voted", votedRespData);
 
   const spots = [...spotsByFilter, ...votedSpots].map((p) => ({
     ...p,

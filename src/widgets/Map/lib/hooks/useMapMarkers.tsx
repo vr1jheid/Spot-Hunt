@@ -1,14 +1,14 @@
+import { MapContext } from "entities/MapContext/config/MapContext";
 import { useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { LocalCoords, SpotLocalBrief } from "shared/model/spotTypes";
+import { useUserStore } from "shared/Store/userStore";
+import { Markers } from "widgets/Map/model/types";
 
-import { LocalCoords, SpotLocalBrief } from "../../../shared/model/spotTypes";
-import { useUserStore } from "../../../shared/Store/userStore";
-import { MapContext } from "../../../entities/MapContext/config/MapContext";
-import { Markers } from "../model/types";
-import { createMarkers } from "./createMarkers";
-import { changePulsingDotLocation } from "./PulsingDot/changePulsingDotLocation";
-import { createPulsingDotOnMap } from "./PulsingDot/createPulsingDotOnMap";
-import { USER_LOCATION_DOT_ID } from "./PulsingDot/PulsingDotConstants";
+import { createMarkers } from "../createMarkers";
+import { changePulsingDotLocation } from "../PulsingDot/changePulsingDotLocation";
+import { createPulsingDotOnMap } from "../PulsingDot/createPulsingDotOnMap";
+import { USER_LOCATION_DOT_ID } from "../PulsingDot/PulsingDotConstants";
 
 interface Props {
   spots: SpotLocalBrief[];
@@ -60,7 +60,6 @@ export const useMapMarkers = ({ spots, unapproved }: Props) => {
     const newMarkers = createMarkers(spotsToMark, {
       onClick: onMarkerClick,
     });
-    console.log(newMarkers, mapRef.current);
 
     Object.values(newMarkers).forEach((m) => m.addTo(mapRef.current!));
     markers.current = { ...markers.current, ...newMarkers };

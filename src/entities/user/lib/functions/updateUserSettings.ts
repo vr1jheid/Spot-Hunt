@@ -1,5 +1,5 @@
-import { getFetchOptions } from "../Options/fetchOptions";
-import { UserSettings } from "../Types/types";
+import { getFetchOptions } from "entities/parkingSpot/config/fetchOptions";
+import { UserSettings } from "shared/api/types";
 
 export const updateUserSettings = async (settings: UserSettings) => {
   const resp = await fetch(
@@ -11,7 +11,7 @@ export const updateUserSettings = async (settings: UserSettings) => {
         "Content-type": "application/json",
         ...getFetchOptions().headers,
       },
-    }
+    },
   );
 
   if (!resp.ok) {

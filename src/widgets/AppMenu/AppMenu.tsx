@@ -1,27 +1,21 @@
 import { Button, CopyButton, Drawer, Slider } from "@mantine/core";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useUserSettings } from "entities/user/lib/hooks/useUserSettings";
 import { useState } from "react";
 
-import { fetchUserSettings } from "../../api/GET/fetchUserSettings";
-import { updateUserSettings } from "../../api/POST/updateUserSettings";
 import { useMenu } from "../../shared/Store/menuStore";
 import { useUserStore } from "../../shared/Store/userStore";
 
 export const AppMenu = () => {
   const { open, setOpen } = useMenu();
   const { id } = useUserStore();
-  const { data: settings } = useQuery({
-    queryKey: ["settings"],
-    queryFn: fetchUserSettings,
-  });
-  const [sliderValue, setSliderValue] = useState(settings?.minimumVotes);
-
-  const settingsMutation = useMutation({
-    mutationFn: updateUserSettings,
-    onError: () => {
-      setSliderValue(settings?.minimumVotes);
+  const { settings, mutation: settingsMutation } = useUserSettings({
+    mutationOptions: {
+      onError: () => {
+        setSliderValue(settings?.minimumVotes);
+      },
     },
   });
+  const [sliderValue, setSliderValue] = useState(settings?.minimumVotes);
 
   const sliderMarks = [0, 2, 4, 6, 8, 10].map((n) => ({ value: n, label: n }));
 

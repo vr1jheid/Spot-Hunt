@@ -1,5 +1,5 @@
 import "app/ui/index.css";
-import "./Styles/bottomSheet.css";
+import "app/ui/bottomSheet.css";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 

@@ -1,4 +1,4 @@
-import { useUserStore } from "../../shared/Store/userStore";
+import { useUserStore } from "shared/Store/userStore";
 
 export const getFetchOptions = () => {
   const userID = useUserStore.getState().id;

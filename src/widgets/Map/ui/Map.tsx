@@ -1,52 +1,32 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 
 import { Loader } from "@mantine/core";
-import { useQuery } from "@tanstack/react-query";
+import { MapContext } from "entities/MapContext/config/MapContext";
+import { useSpots } from "entities/parkingSpot";
+import { useUnapprovedSpots } from "entities/parkingSpot/lib/hooks/useUnapprovedSpots";
 import { useContext, useEffect, useState } from "react";
+import { getBounds } from "shared/lib/getBounds";
+import { useUserStore } from "shared/Store/userStore";
 import { RingProgress } from "shared/ui/RingProgress/RingProgress";
 
-import { fetchSpots } from "../../../api/GET/fetchSpots";
-import { fetchUnapprovedSpots } from "../../../api/GET/fetchUnapprovedSpots";
-import { MapContext } from "../../../entities/MapContext/config/MapContext";
-import { getBounds } from "../../../shared/lib/getBounds";
-import { queryClient } from "../../../shared/lib/queryClient";
-import { useUserStore } from "../../../shared/Store/userStore";
-import { useMapBox } from "../lib/useMapBox";
-import { useMapEvents } from "../lib/useMapEvents";
-import { useMapMarkers } from "../lib/useMapMarkers";
+import { useMapBox } from "../lib/hooks/useMapBox";
+import { useMapEvents } from "../lib/hooks/useMapEvents";
+import { useMapMarkers } from "../lib/hooks/useMapMarkers";
 import { MapControls } from "./MapControls/MapControls";
 
 export const TIME_TO_OPTIONS_OPEN = 1100;
 
 export const Map = () => {
   const { mapRef } = useContext(MapContext);
+
+  const bounds = mapRef.current ? getBounds(mapRef.current) : null;
+
   const [showFilledProgress, setShowFilledProgress] = useState(false);
   const { showUnapproved } = useUserStore();
 
-  const { data: spots } = useQuery({
-    queryKey: ["spots"],
-    queryFn: async () => {
-      if (!mapRef.current) return [];
-      return await fetchSpots({
-        params: getBounds(mapRef.current),
-      });
-    },
-  });
-
-  const { data: unapproved } = useQuery({
-    queryKey: ["unapprovedSpots"],
-    queryFn: async () => {
-      console.log(showUnapproved);
-
-      if (!showUnapproved || !mapRef.current) {
-        return [];
-      }
-      return await fetchUnapprovedSpots(getBounds(mapRef.current));
-    },
-  });
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ["unapprovedSpots"] });
-  }, [showUnapproved]);
+  const { spots } = useSpots(bounds);
+  const { spots: unapproved, invalidate: invalidateUnapproved } =
+    useUnapprovedSpots(bounds);
 
   const { onMapLoad, onMapTouchStart, onMapDragEnd, onMapZoomEnd, touchEvent } =
     useMapEvents();
@@ -59,6 +39,10 @@ export const Map = () => {
   });
 
   useMapMarkers({ spots: spots ?? [], unapproved });
+
+  useEffect(() => {
+    invalidateUnapproved();
+  }, [showUnapproved]);
 
   if (isLoading) {
     <div className="flex h-full w-full items-center justify-center">

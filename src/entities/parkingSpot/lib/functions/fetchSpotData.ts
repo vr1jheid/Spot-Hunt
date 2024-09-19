@@ -1,8 +1,9 @@
-import { convertCoordsToLocal } from "../../shared/lib/convertCoordsToLocal";
-import { SpotLocalData, SpotServerData } from "../../shared/model/spotTypes";
-import { API_URL } from "../Constants/constants";
-import { getFetchOptions } from "../Options/fetchOptions";
-import { ServerResponse, VoteInfo } from "../Types/types";
+import { API_URL } from "shared/api/constants";
+import { ServerResponse, VoteInfo } from "shared/api/types";
+import { convertCoordsToLocal } from "shared/lib/convertCoordsToLocal";
+import { SpotLocalData, SpotServerData } from "shared/model/spotTypes";
+
+import { getFetchOptions } from "../../config/fetchOptions";
 
 export const fetchSpotData = async (
   id: number | string,

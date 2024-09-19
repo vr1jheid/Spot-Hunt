@@ -1,5 +1,5 @@
-import { getFetchOptions } from "../Options/fetchOptions";
-import { VoteCode } from "../Types/types";
+import { getFetchOptions } from "entities/parkingSpot/config/fetchOptions";
+import { VoteCode } from "shared/api/types";
 
 export const voteForSpot = async ({
   id,
@@ -15,7 +15,7 @@ export const voteForSpot = async ({
     JSON.stringify({
       vote: vote,
       parkPointId: id,
-    })
+    }),
   );
 
   const resp = await fetch(
@@ -30,7 +30,7 @@ export const voteForSpot = async ({
         ...getFetchOptions().headers,
       },
       method: "POST",
-    }
+    },
   );
 
   if (!resp.ok) {

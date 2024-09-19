@@ -1,10 +1,10 @@
-import { getFetchOptions } from "../Options/fetchOptions";
-import { ServerResponse, UserSettings } from "../Types/types";
+import { getFetchOptions } from "entities/parkingSpot/config/fetchOptions";
+import { ServerResponse, UserSettings } from "shared/api/types";
 
 export const fetchUserSettings = async () => {
   const resp = await fetch(
     "https://cert-spothunt.playnrolls.online/api/user-setting",
-    getFetchOptions()
+    getFetchOptions(),
   );
 
   if (!resp.ok) {
