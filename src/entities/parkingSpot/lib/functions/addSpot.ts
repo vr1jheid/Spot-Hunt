@@ -15,7 +15,6 @@ export const addSpot = async (data: SpotDataToSend) => {
       },
     },
   );
-  console.log(response);
 
   if (!response.ok) {
     throw new Error("Error adding new point. Server error");
@@ -25,7 +24,6 @@ export const addSpot = async (data: SpotDataToSend) => {
     data: SpotServerData;
     status: string;
   };
-  console.log(responseJson);
 
   return responseJson;
 };

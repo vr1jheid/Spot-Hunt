@@ -1,30 +1,18 @@
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { invalidateSpots } from "shared/lib/invalidateSpots";
 import { Photo } from "shared/model/photoTypes";
 
 import { addPhotoToSpot } from "../functions/addPhotoToSpot";
 import { addSpot } from "../functions/addSpot";
 
-/* type MutationOptions = UseMutationOptions<
-  any,
-  Error,
-  {
-    id: number;
-    photoData: Photo[];
-  },
-  unknown
->; */
+export const useCreateSpot = () => {
+  const photosRef = useRef<Photo[]>([]);
+  const navigate = useNavigate();
+  const setPhotos = (photos: Photo[]) => (photosRef.current = photos);
 
-interface UseCreateSpotProps {
-  photos?: Photo[];
-  onSuccess?: () => void;
-}
-
-export const useCreateSpot = (options?: UseCreateSpotProps) => {
-  const [photos, setPhotos] = useState<Photo[]>([]);
-
-  const { mutate: mutatePhotos, isPending } = useMutation({
+  const { mutate: mutatePhotos, ...photosMutationInfo } = useMutation({
     mutationFn: addPhotoToSpot,
     onSuccess: () => {
       invalidateSpots();
@@ -35,12 +23,10 @@ export const useCreateSpot = (options?: UseCreateSpotProps) => {
     mutationFn: addSpot,
     onSuccess: async ({ data }) => {
       invalidateSpots();
-      options?.onSuccess && options.onSuccess();
+      navigate("/");
 
-      if (options?.photos) {
-        const { photos } = options;
-
-        const photoData = photos.map((p) => {
+      if (photosRef.current.length) {
+        const photoData = photosRef.current.map((p) => {
           return { ...p, key: p.url };
         });
         mutatePhotos({ id: data.id, photoData });
@@ -48,12 +34,9 @@ export const useCreateSpot = (options?: UseCreateSpotProps) => {
     },
   });
 
-  /* const addPhoto = */
-
   return {
+    setPhotos,
     pointMutation,
-    photosInfo: {
-      isPending,
-    },
+    photosMutationInfo,
   };
 };

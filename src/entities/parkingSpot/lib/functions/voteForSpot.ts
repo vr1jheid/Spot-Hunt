@@ -11,12 +11,6 @@ export const voteForSpot = async ({
   const formData = new FormData();
   formData.append("vote", vote.toString());
   formData.append("parkPointId", id.toString());
-  console.log(
-    JSON.stringify({
-      vote: vote,
-      parkPointId: id,
-    }),
-  );
 
   const resp = await fetch(
     "https://cert-spothunt.playnrolls.online/api/park-point/make-vote",

@@ -39,21 +39,10 @@ export const SpotDetails = ({
   const { lng, lat } = coordinates;
 
   const voteMutation = useSpotVote();
-
-  /*   const voteMutation = useMutation({
-    mutationFn: voteForSpot,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["spots", id.toString()],
-      });
-    },
-  });
-  console.log({ voteCode, votedFor, votedAgainst }); */
-
-  const thumbUp =
+  const thumbUpIcon =
     voteCode === VoteCode.Positive ? <IconThumbUpFilled /> : <IconThumbUp />;
 
-  const thumpDown =
+  const thumpDownIcon =
     voteCode === VoteCode.Negative ? (
       <IconThumbDownFilled />
     ) : (
@@ -92,7 +81,7 @@ export const SpotDetails = ({
             }}
             className="inline-flex grow items-center justify-between gap-1"
           >
-            {thumbUp}
+            {thumbUpIcon}
             {votedFor}
           </button>
           <Divider orientation="vertical" />
@@ -102,7 +91,7 @@ export const SpotDetails = ({
             }}
             className="inline-flex grow items-center justify-between gap-1"
           >
-            {thumpDown} {votedAgainst}
+            {thumpDownIcon} {votedAgainst}
           </button>
         </div>
       </header>

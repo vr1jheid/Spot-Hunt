@@ -32,7 +32,6 @@ export const useMapMarkers = ({ spots, unapproved }: Props) => {
 
   useEffect(() => {
     if (!unapproved || !mapRef.current) return;
-    console.log("adding unaproved to map");
     Object.values(unapprovedSpotsMarkers.current).forEach((m) => m.remove());
 
     const newMarkers = createMarkers(unapproved, {
@@ -44,7 +43,6 @@ export const useMapMarkers = ({ spots, unapproved }: Props) => {
   }, [unapproved]);
 
   useEffect(() => {
-    console.log("marker effect");
     if (!mapRef.current || !spots) return;
     const markersCopy = { ...markers.current };
     const currentSpotsIds = spots.map(({ id }) => id);

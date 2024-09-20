@@ -1,7 +1,6 @@
 import {
   Button,
   CloseButton,
-  FileButton,
   LoadingOverlay,
   NumberInput,
   TextInput,
@@ -9,27 +8,22 @@ import {
 import { useForm } from "@mantine/form";
 import { IconCashBanknote } from "@tabler/icons-react";
 import { useCreateSpot } from "entities/parkingSpot/lib/hooks/useCreateSpot";
-import { ForwardedRef, forwardRef, useState } from "react";
+import { ForwardedRef, forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Photo } from "shared/model/photoTypes";
 
 import { SpotDataToSend } from "../../../shared/model/spotTypes";
-import { PhotosList } from "../../../shared/ui/PhotosList/PhotosList";
+import { SpotPhotos } from "./SpotPhotos";
 
-interface Props {
+interface NewSpotFormProps {
   coords: string[];
 }
 
 export const NewSpotForm = forwardRef(
-  ({ coords }: Props, ref: ForwardedRef<HTMLFormElement>) => {
+  ({ coords }: NewSpotFormProps, ref: ForwardedRef<HTMLFormElement>) => {
     const [longitude, latitude] = coords;
-    const [photos, setPhotos] = useState<Photo[]>([]);
     const navigate = useNavigate();
     const closeForm = () => navigate("/");
-    const { pointMutation } = useCreateSpot({
-      photos,
-      onSuccess: () => closeForm(),
-    });
+    const { pointMutation, setPhotos } = useCreateSpot();
 
     const form = useForm({
       mode: "uncontrolled",
@@ -49,7 +43,6 @@ export const NewSpotForm = forwardRef(
       const validationResult = form.validate();
       if (validationResult.hasErrors) return;
       const formValues = form.getValues();
-      console.log(formValues);
 
       const dataToSend: SpotDataToSend = {
         ...formValues,
@@ -94,43 +87,7 @@ export const NewSpotForm = forwardRef(
           key={form.key("rate")}
           {...form.getInputProps("rate")}
         />
-        <div>
-          <div className="w-fit">
-            <FileButton
-              accept="image/png,image/jpeg"
-              multiple
-              onChange={(photosInput) => {
-                console.log(photos);
-
-                photosInput.slice(0, 3 - photos.length).forEach((file) => {
-                  const reader = new FileReader();
-                  reader.readAsDataURL(file);
-                  reader.onload = () => {
-                    const url = reader.result?.toString();
-                    if (photos.find((p) => p.url === url)) return;
-                    if (url) {
-                      setPhotos((prev) => [...prev, { file, url }]);
-                    }
-                  };
-                });
-              }}
-            >
-              {(props) => (
-                <Button size="compact-xs" color="pink" {...props}>
-                  Add photos
-                </Button>
-              )}
-            </FileButton>
-          </div>
-
-          <PhotosList
-            items={photos.map((p) => p.url)}
-            onDelete={(url?: string) =>
-              setPhotos((prev) => prev.filter((p) => p.url !== url))
-            }
-          />
-        </div>
-
+        <SpotPhotos onChange={(p) => setPhotos(p)} />
         <Button size="sm" type="submit">
           Save
         </Button>

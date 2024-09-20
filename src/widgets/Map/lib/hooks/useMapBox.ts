@@ -31,7 +31,6 @@ export const useMapBox = ({
       throw new Error(`mapContainerRef.current not exists ${ref}`);
     }
     if (mapRef.current) return;
-    console.log("INIT MAPBOX");
 
     const mapboxMap = new mapboxgl.Map({
       container: ref.current,

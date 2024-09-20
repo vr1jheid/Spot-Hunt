@@ -1,6 +1,5 @@
 import { Map } from "mapbox-gl";
-
-import { Coords } from "../../../shared/model/coords";
+import { Coords } from "shared/model/coords";
 
 export const changePulsingDotLocation = (map: Map, { lng, lat }: Coords) => {
   const dot = map.getSource("dot-point") as mapboxgl.GeoJSONSource;

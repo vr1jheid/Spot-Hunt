@@ -13,8 +13,6 @@ export const SpotPage = () => {
   const { id } = useParams() as { id: string };
   const { spotData, isFetching } = useSpot(id);
 
-  console.log("isFetching", isFetching);
-
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(true);

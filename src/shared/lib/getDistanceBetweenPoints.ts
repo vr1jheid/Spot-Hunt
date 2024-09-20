@@ -1,4 +1,4 @@
-import { Coords } from "../Types/coords";
+import { Coords } from "shared/model/coords";
 
 const deg2rad = (deg: number) => {
   return deg * (Math.PI / 180);

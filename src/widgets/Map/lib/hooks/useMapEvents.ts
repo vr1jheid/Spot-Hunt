@@ -63,7 +63,6 @@ export const useMapEvents = () => {
       }
 
       const { pageX, pageY } = originalEvent.targetTouches[0];
-      /*       console.log("touch start"); */
 
       const touchStart = {
         pageX,
@@ -81,7 +80,6 @@ export const useMapEvents = () => {
           clear(interval);
           setTouchEvent(null);
           navigate(`options/${lngLat.toArray()}`);
-          /*           console.log("menu opened"); */
           return;
         }
 

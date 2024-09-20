@@ -11,6 +11,7 @@ export const addPhotoToSpot = async ({
   photoData: Photo[];
 }) => {
   const { id: userID } = useUserStore.getState();
+
   if (!userID) {
     throw new Error("Can`t get user id");
   }
@@ -26,7 +27,6 @@ export const addPhotoToSpot = async ({
     ...getFetchOptions(),
   });
   const responseJson = await response.json();
-  console.log("addPhoto", responseJson);
 
   return responseJson;
 };

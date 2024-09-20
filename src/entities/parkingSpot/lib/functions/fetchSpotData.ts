@@ -8,7 +8,6 @@ import { getFetchOptions } from "../../config/fetchOptions";
 export const fetchSpotData = async (
   id: number | string,
 ): Promise<SpotLocalData> => {
-  console.log("fetching spot", id);
   const fetchOptions = getFetchOptions();
 
   const resp = await fetch(`${API_URL}/api/park-point/${id}`, fetchOptions);
