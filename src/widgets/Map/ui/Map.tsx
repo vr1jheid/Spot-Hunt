@@ -1,12 +1,12 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 
 import { Loader } from "@mantine/core";
+import { getBounds } from "entities/map/lib/getBounds";
 import { MapContext } from "entities/MapContext/config/MapContext";
-import { useSpots } from "entities/parkingSpot";
-import { useUnapprovedSpots } from "entities/parkingSpot/lib/hooks/useUnapprovedSpots";
+import { useUserStore } from "entities/user";
+import { useSpots } from "features/parkingSpot";
+import { useUnapprovedSpots } from "features/parkingSpot/lib/hooks/useUnapprovedSpots";
 import { useContext, useEffect, useState } from "react";
-import { getBounds } from "shared/lib/getBounds";
-import { useUserStore } from "shared/Store/userStore";
 import { RingProgress } from "shared/ui/RingProgress/RingProgress";
 
 import { useMapBox } from "../lib/hooks/useMapBox";

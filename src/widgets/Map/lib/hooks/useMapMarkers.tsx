@@ -1,8 +1,9 @@
 import { MapContext } from "entities/MapContext/config/MapContext";
+import { SpotTypes } from "entities/parkingSpot";
+import { useUserStore } from "entities/user";
 import { useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { LocalCoords, SpotLocalBrief } from "shared/model/spotTypes";
-import { useUserStore } from "shared/Store/userStore";
+import { Coords } from "shared/model/coords.types";
 import { Markers } from "widgets/Map/model/types";
 
 import { createMarkers } from "../createMarkers";
@@ -11,8 +12,8 @@ import { createPulsingDotOnMap } from "../PulsingDot/createPulsingDotOnMap";
 import { USER_LOCATION_DOT_ID } from "../PulsingDot/PulsingDotConstants";
 
 interface Props {
-  spots: SpotLocalBrief[];
-  unapproved?: SpotLocalBrief[];
+  spots: SpotTypes.SpotLocalBrief[];
+  unapproved?: SpotTypes.SpotLocalBrief[];
 }
 
 export const useMapMarkers = ({ spots, unapproved }: Props) => {
@@ -24,7 +25,7 @@ export const useMapMarkers = ({ spots, unapproved }: Props) => {
 
   const onMarkerClick = (
     e: MouseEvent,
-    spot: { id: number; coordinates: LocalCoords },
+    spot: { id: number; coordinates: Coords },
   ) => {
     e.stopPropagation();
     navigate(`spot/${spot.id}`);

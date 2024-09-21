@@ -1,6 +1,6 @@
 import { Loader } from "@mantine/core";
 import { useMap } from "entities/MapContext";
-import { useSpot } from "entities/parkingSpot/lib/hooks/useSpot";
+import { useSpot } from "features/parkingSpot/lib/hooks/useSpot";
 import mapboxgl, { Marker } from "mapbox-gl";
 import { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom/client";

@@ -7,11 +7,11 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconCashBanknote } from "@tabler/icons-react";
-import { useCreateSpot } from "entities/parkingSpot/lib/hooks/useCreateSpot";
+import { SpotTypes } from "entities/parkingSpot";
+import { useCreateSpot } from "features/parkingSpot";
 import { ForwardedRef, forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { SpotDataToSend } from "../../../shared/model/spotTypes";
 import { SpotPhotos } from "./SpotPhotos";
 
 interface NewSpotFormProps {
@@ -44,7 +44,7 @@ export const NewSpotForm = forwardRef(
       if (validationResult.hasErrors) return;
       const formValues = form.getValues();
 
-      const dataToSend: SpotDataToSend = {
+      const dataToSend: SpotTypes.SpotDataToSend = {
         ...formValues,
         longitude,
         latitude,

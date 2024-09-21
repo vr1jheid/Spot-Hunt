@@ -1,24 +1,12 @@
-import { Burger } from "@mantine/core";
-import {
-  IconListDetails,
-  IconMinus,
-  IconNavigationFilled,
-  IconPlus,
-  IconZoomQuestion,
-} from "@tabler/icons-react";
-import { MapContext } from "entities/MapContext/config/MapContext";
-import { useContext } from "react";
-import { useMenu } from "shared/Store/menuStore";
-import { useSpotsSheet } from "shared/Store/spotsSheetStore";
-import { useUserStore } from "shared/Store/userStore";
+import { IconMinus, IconNavigationFilled, IconPlus } from "@tabler/icons-react";
+import { useMap } from "entities/MapContext";
+import { useUserStore } from "entities/user";
 
-import { MapControlButton } from "./MapControlButton";
+import { MapControlButton } from "../../../../shared/ui/MapControlButton/MapControlButton";
 
 export const MapControls = () => {
-  const { mapRef } = useContext(MapContext);
-  const { setLocation, setShowUnapproved, showUnapproved } = useUserStore();
-  const { setOpen } = useSpotsSheet();
-  const { open: menuOpen, setOpen: setMenuOpen } = useMenu();
+  const { mapRef } = useMap();
+  const { setLocation } = useUserStore();
 
   if (!mapRef.current) return;
 
@@ -32,45 +20,26 @@ export const MapControls = () => {
   };
 
   return (
-    <>
-      <div className="absolute bottom-1/2 left-1 z-10 w-12 translate-y-1/2">
+    <div className="absolute bottom-1/2 right-1 z-[1] flex w-12 translate-y-1/2 flex-col gap-10">
+      <MapControlButton onClick={getLocation}>
+        <IconNavigationFilled size={33} />
+      </MapControlButton>
+      <div className="flex flex-col gap-3">
         <MapControlButton
-          active={showUnapproved}
           onClick={() => {
-            setShowUnapproved(!showUnapproved);
+            mapRef.current?.zoomIn();
           }}
         >
-          <IconZoomQuestion size={33} />
+          <IconPlus size={33} />
+        </MapControlButton>
+        <MapControlButton
+          onClick={() => {
+            mapRef.current?.zoomOut();
+          }}
+        >
+          <IconMinus size={33} />
         </MapControlButton>
       </div>
-      <div className="absolute bottom-1/2 right-1 z-10 flex w-12 translate-y-1/2 flex-col gap-10">
-        <MapControlButton onClick={getLocation}>
-          <IconNavigationFilled size={33} />
-        </MapControlButton>
-        <div className="flex flex-col gap-3">
-          <MapControlButton
-            onClick={() => {
-              mapRef.current?.zoomIn();
-            }}
-          >
-            <IconPlus size={33} />
-          </MapControlButton>
-          <MapControlButton
-            onClick={() => {
-              mapRef.current?.zoomOut();
-            }}
-          >
-            <IconMinus size={33} />
-          </MapControlButton>
-        </div>
-
-        <MapControlButton onClick={() => setOpen(true)}>
-          <IconListDetails size={25} />
-        </MapControlButton>
-      </div>
-      <div className="absolute right-1 top-1 z-[210]">
-        <Burger opened={menuOpen} onClick={() => setMenuOpen(!menuOpen)} />
-      </div>
-    </>
+    </div>
   );
 };

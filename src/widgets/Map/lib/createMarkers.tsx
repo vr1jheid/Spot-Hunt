@@ -1,13 +1,13 @@
 import mapboxgl from "mapbox-gl";
 import ReactDOM from "react-dom/client";
+import { Coords } from "shared/model/coords.types";
 
-import { LocalCoords } from "../../../shared/model/spotTypes";
-import { Markers } from "../model/types";
 import { ParkingMarker } from "../../../shared/ui/ParkingMarker/ParkingMarker";
+import { Markers } from "../model/types";
 
 interface SpotShort {
   id: number;
-  coordinates: LocalCoords;
+  coordinates: Coords;
 }
 
 export type MarkerOnClick = (e: MouseEvent, spot: SpotShort) => void;

@@ -1,5 +1,5 @@
 import { Map } from "mapbox-gl";
-import { Coords } from "shared/model/coords";
+import { Coords } from "shared/model/coords.types";
 
 import { USER_LOCATION_DOT_ID } from "./PulsingDotConstants";
 

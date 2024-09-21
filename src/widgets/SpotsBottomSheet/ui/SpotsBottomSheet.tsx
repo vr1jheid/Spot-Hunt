@@ -1,16 +1,17 @@
 import { IconMoodEmpty } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
+import { getDistanceBetweenPoints } from "entities/map/lib/getDistanceBetweenPoints";
+import { SpotTypes } from "entities/parkingSpot";
+import { useUserStore } from "entities/user";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";
-import { getDistanceBetweenPoints } from "shared/lib/getDistanceBetweenPoints";
-import { SpotLocalData } from "shared/model/spotTypes";
-import { useSpotsSheet } from "shared/Store/spotsSheetStore";
-import { useUserStore } from "shared/Store/userStore";
-import { SpotPreview } from "widgets/SpotsBottomSheet/ui/SpotPreview";
+import { useSpotsSheet } from "widgets/SpotsBottomSheet/model/spotsSheetStore";
+
+import { SpotPreview } from "./SpotPreview";
 
 export const SpotsBottomSheet = () => {
-  const { data } = useQuery<SpotLocalData[]>({ queryKey: ["spots"] });
+  const { data } = useQuery<SpotTypes.SpotLocalData[]>({ queryKey: ["spots"] });
   const navigate = useNavigate();
   const { location } = useUserStore();
 

@@ -9,18 +9,17 @@ import {
   IconThumbUp,
   IconThumbUpFilled,
 } from "@tabler/icons-react";
-import { useSpotVote } from "entities/parkingSpot/lib/hooks/useSpotVote";
-import { VoteCode } from "shared/api/types";
+import { getDistanceBetweenPoints } from "entities/map/lib/getDistanceBetweenPoints";
+import { SpotTypes } from "entities/parkingSpot";
+import { useUserStore } from "entities/user";
+import { useSpotVote } from "features/parkingSpot/lib/hooks/useSpotVote";
 import googleMapsIcon from "shared/assets/google-maps-icon.png";
 import wazeMapsIcon from "shared/assets/waze-maps-icon.svg";
 import { convertDistanceToText } from "shared/lib/convertDistanceToText";
-import { getDistanceBetweenPoints } from "shared/lib/getDistanceBetweenPoints";
-import { SpotLocalData } from "shared/model/spotTypes";
-import { useUserStore } from "shared/Store/userStore";
 
 import { SpotDetailsListItem } from "./SpotDetailsListItem";
 
-interface Props extends SpotLocalData {
+interface Props extends SpotTypes.SpotLocalData {
   isFetching: boolean;
 }
 
@@ -35,6 +34,7 @@ export const SpotDetails = ({
   votedAgainst,
   votedFor,
 }: Props) => {
+  const { VoteCode } = SpotTypes;
   const { location } = useUserStore();
   const { lng, lat } = coordinates;
 

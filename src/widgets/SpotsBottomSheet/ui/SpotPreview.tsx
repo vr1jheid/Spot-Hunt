@@ -1,9 +1,9 @@
 import { IconMapPin } from "@tabler/icons-react";
+import { SpotTypes } from "entities/parkingSpot";
 
 import { convertDistanceToText } from "../../../shared/lib/convertDistanceToText";
-import { SpotLocalData } from "../../../shared/model/spotTypes";
 
-interface SpotDataWithDistance extends SpotLocalData {
+interface SpotDataWithDistance extends SpotTypes.SpotLocalData {
   distance?: number;
 }
 

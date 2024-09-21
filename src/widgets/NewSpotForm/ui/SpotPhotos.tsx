@@ -1,6 +1,6 @@
 import { Button, FileButton } from "@mantine/core";
 import { useState } from "react";
-import { Photo } from "shared/model/photoTypes";
+import { Photo } from "shared/model/photo.types";
 import { PhotosList } from "shared/ui/PhotosList/PhotosList";
 
 interface SpotPhotosProps {

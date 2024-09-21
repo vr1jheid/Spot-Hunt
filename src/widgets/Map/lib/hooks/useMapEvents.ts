@@ -1,3 +1,5 @@
+import { useUserStore } from "entities/user";
+import { spotsAPI } from "features/parkingSpot";
 import {
   LngLatLike,
   Map,
@@ -5,8 +7,6 @@ import {
 } from "mapbox-gl";
 import { useCallback, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { invalidateSpots } from "shared/lib/invalidateSpots";
-import { useUserStore } from "shared/Store/userStore";
 
 import { MapContext } from "../../../../entities/MapContext/config/MapContext";
 import { TIME_TO_OPTIONS_OPEN } from "../../ui/Map";
@@ -42,7 +42,7 @@ export const useMapEvents = () => {
           setLocation(validCoords);
 
           target.setCenter(validCoords);
-          invalidateSpots();
+          spotsAPI.invalidateSpots();
 
           createPulsingDotOnMap(target, validCoords);
         },
@@ -108,9 +108,9 @@ export const useMapEvents = () => {
     [navigate],
   );
 
-  const onMapDragEnd = useCallback(() => invalidateSpots(), []);
+  const onMapDragEnd = useCallback(() => spotsAPI.invalidateSpots(), []);
 
-  const onMapZoomEnd = useCallback(() => invalidateSpots(), []);
+  const onMapZoomEnd = useCallback(() => spotsAPI.invalidateSpots(), []);
 
   return {
     onMapLoad,

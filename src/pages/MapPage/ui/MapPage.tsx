@@ -1,10 +1,11 @@
 import { Loader } from "@mantine/core";
 import { MapContextProvider } from "entities/MapContext";
 import { Outlet } from "react-router-dom";
-import { AppMenu } from "widgets/AppMenu/AppMenu";
-import { Map } from "widgets/Map";
-import { useMapToken } from "widgets/Map/lib/hooks/useMapToken";
+import { AppMenu } from "widgets/AppMenu";
+import { Map, useMapToken } from "widgets/Map";
 import { SpotsBottomSheet } from "widgets/SpotsBottomSheet";
+
+import { Controls } from "./Controls";
 
 export const MapPage = () => {
   const { isLoading } = useMapToken();
@@ -22,6 +23,7 @@ export const MapPage = () => {
       <Map />
       <SpotsBottomSheet />
       <AppMenu />
+      <Controls />
       <Outlet />
     </MapContextProvider>
   );
