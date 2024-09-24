@@ -1,3 +1,4 @@
+import { useMap } from "entities/map";
 import { useUserStore } from "entities/user";
 import { spotsAPI } from "features/parkingSpot";
 import {
@@ -5,10 +6,9 @@ import {
   Map,
   MapTouchEvent as MapTouchEventMapBox,
 } from "mapbox-gl";
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { MapContext } from "../../../../entities/MapContext/config/MapContext";
 import { TIME_TO_OPTIONS_OPEN } from "../../ui/Map";
 import { createPulsingDotOnMap } from "../PulsingDot/createPulsingDotOnMap";
 
@@ -26,7 +26,7 @@ interface MapTouchEvent {
 }
 
 export const useMapEvents = () => {
-  const { mapRef } = useContext(MapContext);
+  const { mapRef } = useMap();
 
   const [touchEvent, setTouchEvent] = useState<MapTouchEvent | null>(null);
   const navigate = useNavigate();
@@ -42,7 +42,9 @@ export const useMapEvents = () => {
           setLocation(validCoords);
 
           target.setCenter(validCoords);
-          spotsAPI.invalidateSpots();
+          setTimeout(() => {
+            spotsAPI.invalidateSpots();
+          }, 0);
 
           createPulsingDotOnMap(target, validCoords);
         },
@@ -76,7 +78,7 @@ export const useMapEvents = () => {
         if (!mapRef.current) return;
 
         const touchingTime = Date.now() - touchStart.timestamp;
-        if (touchingTime > TIME_TO_OPTIONS_OPEN) {
+        if (touchingTime >= TIME_TO_OPTIONS_OPEN) {
           clear(interval);
           setTouchEvent(null);
           navigate(`options/${lngLat.toArray()}`);

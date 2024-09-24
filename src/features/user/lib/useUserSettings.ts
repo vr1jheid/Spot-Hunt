@@ -6,8 +6,8 @@ import {
 import { UserTypes } from "entities/user";
 import { queryClient } from "shared/lib/queryClient";
 
-import { fetchUserSettings } from "./fetchUserSettings";
-import { updateUserSettings } from "./updateUserSettings";
+import { fetchUserSettings } from "../api/fetchUserSettings";
+import { updateUserSettings } from "../api/updateUserSettings";
 
 interface UseUserSettingsProps {
   mutationOptions: Omit<

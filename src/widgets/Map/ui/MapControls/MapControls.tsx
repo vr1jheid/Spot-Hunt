@@ -1,5 +1,5 @@
 import { IconMinus, IconNavigationFilled, IconPlus } from "@tabler/icons-react";
-import { useMap } from "entities/MapContext";
+import { useMap } from "entities/map";
 import { useUserStore } from "entities/user";
 
 import { MapControlButton } from "../../../../shared/ui/MapControlButton/MapControlButton";

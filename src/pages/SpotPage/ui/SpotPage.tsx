@@ -1,12 +1,11 @@
 import { Loader } from "@mantine/core";
-import { useMap } from "entities/MapContext";
-import { useSpot } from "features/parkingSpot/lib/hooks/useSpot";
+import { useMap } from "entities/map";
+import { useSpot } from "features/parkingSpot/lib/useSpot";
 import mapboxgl, { Marker } from "mapbox-gl";
 import { useEffect, useRef, useState } from "react";
-import ReactDOM from "react-dom/client";
 import { useNavigate, useParams } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";
-import { ParkingMarker } from "shared/ui/ParkingMarker/ParkingMarker";
+import { createMarker } from "widgets/Map";
 import { SpotDetails } from "widgets/SpotDetails";
 
 export const SpotPage = () => {
@@ -25,17 +24,10 @@ export const SpotPage = () => {
       return;
     }
 
-    const markerContainer = document.createElement("div");
-    ReactDOM.createRoot(markerContainer).render(
-      <ParkingMarker color="green" />,
-    );
+    const markerContainer = createMarker("selected");
     marker.current = new mapboxgl.Marker(markerContainer)
       .setLngLat(spotData?.coordinates)
       .addTo(mapRef.current);
-
-    () => {
-      marker.current?.remove();
-    };
   }, [spotData]);
 
   useEffect(() => {

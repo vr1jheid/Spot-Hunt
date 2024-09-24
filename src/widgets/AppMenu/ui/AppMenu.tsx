@@ -1,15 +1,21 @@
-import { Button, CopyButton, Drawer, Slider } from "@mantine/core";
+import { Button, CopyButton, Drawer, NumberInput, Slider } from "@mantine/core";
 import { useUserStore } from "entities/user";
 import { spotsAPI } from "features/parkingSpot";
 import { useUserSettings } from "features/user";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useMenu } from "../model/menuStore";
 
 export const AppMenu = () => {
+  const idInput = useRef<HTMLInputElement | null>(null);
   const { open, setOpen } = useMenu();
-  const { id } = useUserStore();
-  const { settings, mutation: settingsMutation } = useUserSettings({
+  const { id, setID } = useUserStore();
+
+  const {
+    settings,
+    mutation: settingsMutation,
+    invalidate,
+  } = useUserSettings({
     mutationOptions: {
       onSuccess: () => {
         spotsAPI.invalidateSpots();
@@ -21,7 +27,17 @@ export const AppMenu = () => {
   });
   const [sliderValue, setSliderValue] = useState(settings?.minimumVotes);
 
-  const sliderMarks = [0, 2, 4, 6, 8, 10].map((n) => ({ value: n, label: n }));
+  const sliderMarks = Array(10)
+    .fill(null)
+    .map((_, i) => ({ value: i + 1, label: i + 1 }));
+
+  useEffect(() => {
+    setSliderValue(settings?.minimumVotes);
+  }, [settings?.minimumVotes]);
+
+  useEffect(() => {
+    invalidate();
+  }, [id]);
 
   return (
     <Drawer
@@ -32,6 +48,20 @@ export const AppMenu = () => {
       size={"100%"}
     >
       <div className="flex h-full w-full flex-col gap-7">
+        <div className="flex gap-2">
+          <NumberInput ref={idInput} min={0} />
+          <Button
+            onClick={() => {
+              if (!idInput.current?.value) {
+                return;
+              }
+
+              setID(window.btoa(idInput.current?.value));
+            }}
+          >
+            set
+          </Button>
+        </div>
         <div className="flex items-center gap-5">
           User id
           <CopyButton value={id ?? ""}>
@@ -42,19 +72,22 @@ export const AppMenu = () => {
             )}
           </CopyButton>
         </div>
-        <Slider
-          disabled={!settings}
-          defaultValue={settings?.minimumVotes}
-          color="blue"
-          min={0}
-          max={10}
-          value={sliderValue}
-          onChange={(value) => setSliderValue(value)}
-          marks={sliderMarks}
-          onChangeEnd={(value) => {
-            settingsMutation.mutate({ minimumVotes: value });
-          }}
-        />
+        <div>
+          <div className="pb-3s">Spots filter by votes</div>
+          <Slider
+            disabled={!settings?.minimumVotes}
+            defaultValue={settings?.minimumVotes}
+            color="blue"
+            min={1}
+            max={10}
+            value={sliderValue}
+            onChange={(value) => setSliderValue(value)}
+            marks={sliderMarks}
+            onChangeEnd={(value) => {
+              settingsMutation.mutate({ minimumVotes: value });
+            }}
+          />
+        </div>
       </div>
     </Drawer>
   );

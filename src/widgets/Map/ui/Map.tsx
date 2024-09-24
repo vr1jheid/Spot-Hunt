@@ -1,11 +1,11 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 
 import { Loader } from "@mantine/core";
+import { MapContext } from "entities/map/config/MapContext";
 import { getBounds } from "entities/map/lib/getBounds";
-import { MapContext } from "entities/MapContext/config/MapContext";
 import { useUserStore } from "entities/user";
 import { useSpots } from "features/parkingSpot";
-import { useUnapprovedSpots } from "features/parkingSpot/lib/hooks/useUnapprovedSpots";
+import { useUnapprovedSpots } from "features/parkingSpot/lib/useUnapprovedSpots";
 import { useContext, useEffect, useState } from "react";
 import { RingProgress } from "shared/ui/RingProgress/RingProgress";
 
@@ -50,7 +50,7 @@ export const Map = () => {
     </div>;
   }
   useEffect(() => {
-    if (touchEvent && touchEvent?.touchingTime > TIME_TO_OPTIONS_OPEN - 50) {
+    if (touchEvent && touchEvent?.touchingTime > TIME_TO_OPTIONS_OPEN - 30) {
       setShowFilledProgress(true);
       setTimeout(() => {
         setShowFilledProgress(false);

@@ -3,9 +3,9 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Photo } from "shared/model/photo.types";
 
-import { addPhotoToSpot } from "../functions/addPhotoToSpot";
-import { addSpot } from "../functions/addSpot";
-import { invalidateSpots } from "../functions/invalidateSpots";
+import { spotsAPI } from "..";
+import { addPhotoToSpot } from "../api/addPhotoToSpot";
+import { addSpot } from "../api/addSpot";
 
 export const useCreateSpot = () => {
   const photosRef = useRef<Photo[]>([]);
@@ -14,15 +14,16 @@ export const useCreateSpot = () => {
 
   const { mutate: mutatePhotos, ...photosMutationInfo } = useMutation({
     mutationFn: addPhotoToSpot,
-    onSuccess: () => {
-      invalidateSpots();
+    onSuccess: ({ data }) => {
+      spotsAPI.invalidateSpots();
+      spotsAPI.invalidateSpot(`${data.id}`);
     },
   });
 
   const pointMutation = useMutation({
     mutationFn: addSpot,
     onSuccess: async ({ data }) => {
-      invalidateSpots();
+      spotsAPI.invalidateSpots();
       navigate("/");
 
       if (photosRef.current.length) {

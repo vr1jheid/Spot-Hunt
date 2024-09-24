@@ -5,11 +5,13 @@ import { API_URL } from "shared/api/constants";
 import { ServerResponse } from "shared/api/types";
 import { convertCoordsToLocal } from "shared/lib/convertCoordsToLocal";
 
-import { getFetchOptions } from "../../config/fetchOptions";
+import { getFetchOptions } from "../config/fetchOptions";
 
 export const fetchSpots = async (
   bounds: Bounds,
 ): Promise<SpotTypes.SpotLocalBrief[]> => {
+  console.log(bounds);
+
   const { id: userID } = useUserStore.getState();
   if (!userID) {
     throw new Error("Can`t get user id");
@@ -42,15 +44,19 @@ export const fetchSpots = async (
     items: SpotTypes.SpotServerBrief[];
   }>;
 
-  const spotsByFilter = filterRespData.items;
-  const votedSpots = votedRespData.items.filter(
-    (voted) => !filterRespData.items.find(({ id }) => id === voted.id),
+  const votedSpots = votedRespData.items.map((s) => ({
+    ...s,
+    isApproved: true,
+  }));
+  const spotsByFilter = filterRespData.items.filter(
+    (byFilter) => !votedSpots.find(({ id }) => id === byFilter.id),
   );
 
   const spots = [...spotsByFilter, ...votedSpots].map((p) => ({
     ...p,
     coordinates: convertCoordsToLocal(p.coordinates),
   }));
+  console.log(spots);
 
   return spots;
 };

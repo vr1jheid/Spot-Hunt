@@ -1,5 +1,5 @@
 import { Button } from "@mantine/core";
-import { useMap } from "entities/MapContext";
+import { useMap } from "entities/map";
 import mapboxgl from "mapbox-gl";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";

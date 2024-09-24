@@ -4,7 +4,7 @@ import { API_URL } from "shared/api/constants";
 import { ServerResponse } from "shared/api/types";
 import { convertCoordsToLocal } from "shared/lib/convertCoordsToLocal";
 
-import { getFetchOptions } from "../../config/fetchOptions";
+import { getFetchOptions } from "../config/fetchOptions";
 
 export const fetchUnapprovedSpots = async (bounds: Bounds) => {
   const url = new URL(`${API_URL}/api/park-point/vote-list`);

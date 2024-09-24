@@ -1,8 +1,10 @@
+import { SpotTypes } from "entities/parkingSpot";
 import { useUserStore } from "entities/user";
 import { API_URL } from "shared/api/constants";
+import { ServerResponse } from "shared/api/types";
 import { Photo } from "shared/model/photo.types";
 
-import { getFetchOptions } from "../../config/fetchOptions";
+import { getFetchOptions } from "../config/fetchOptions";
 
 export const addPhotoToSpot = async ({
   id,
@@ -27,7 +29,9 @@ export const addPhotoToSpot = async ({
     body: formData,
     ...getFetchOptions(),
   });
-  const responseJson = await response.json();
+  const responseJson =
+    (await response.json()) as ServerResponse<SpotTypes.SpotServerBrief>;
+  console.log("photos", responseJson);
 
   return responseJson;
 };

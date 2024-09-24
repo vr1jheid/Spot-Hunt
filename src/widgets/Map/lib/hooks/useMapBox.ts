@@ -1,4 +1,4 @@
-import { useMap } from "entities/MapContext";
+import { useMap } from "entities/map";
 import mapboxgl, { Map, MapTouchEvent } from "mapbox-gl";
 import { useEffect, useRef, useState } from "react";
 

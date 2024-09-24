@@ -1,10 +1,11 @@
-import { addPhotoToSpot } from "./lib/functions/addPhotoToSpot";
-import { addSpot } from "./lib/functions/addSpot";
-import { fetchSpotData } from "./lib/functions/fetchSpotData";
-import { fetchSpots } from "./lib/functions/fetchSpots";
-import { fetchUnapprovedSpots } from "./lib/functions/fetchUnapprovedSpots";
-import { invalidateSpots } from "./lib/functions/invalidateSpots";
-import { voteForSpot } from "./lib/functions/voteForSpot";
+import { addPhotoToSpot } from "./api/addPhotoToSpot";
+import { addSpot } from "./api/addSpot";
+import { fetchSpotData } from "./api/fetchSpotData";
+import { fetchSpots } from "./api/fetchSpots";
+import { fetchUnapprovedSpots } from "./api/fetchUnapprovedSpots";
+import { invalidateSpot } from "./api/invalidateSpot";
+import { invalidateSpots } from "./api/invalidateSpots";
+import { voteForSpot } from "./api/voteForSpot";
 
 export const spotsAPI = {
   fetchSpotData,
@@ -14,10 +15,11 @@ export const spotsAPI = {
   addSpot,
   addPhotoToSpot,
   invalidateSpots,
+  invalidateSpot,
 };
 
-export { useCreateSpot } from "./lib/hooks/useCreateSpot";
-export { useSpot } from "./lib/hooks/useSpot";
-export { useSpots } from "./lib/hooks/useSpots";
-export { useSpotVote } from "./lib/hooks/useSpotVote";
-export { useUnapprovedSpots } from "./lib/hooks/useUnapprovedSpots";
+export { useCreateSpot } from "./lib/useCreateSpot";
+export { useSpot } from "./lib/useSpot";
+export { useSpots } from "./lib/useSpots";
+export { useSpotVote } from "./lib/useSpotVote";
+export { useUnapprovedSpots } from "./lib/useUnapprovedSpots";

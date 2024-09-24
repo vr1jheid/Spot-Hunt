@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { SpotTypes } from "entities/parkingSpot";
 
-import { fetchSpotData } from "../functions/fetchSpotData";
+import { fetchSpotData } from "../api/fetchSpotData";
 
 export const useSpot = (id: string) => {
   const { data: spotData, ...queryData } = useQuery<SpotTypes.SpotLocalData>({

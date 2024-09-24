@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { MapTypes } from "entities/map";
 import { queryClient } from "shared/lib/queryClient";
 
-import { fetchUnapprovedSpots } from "../functions/fetchUnapprovedSpots";
+import { fetchUnapprovedSpots } from "../api/fetchUnapprovedSpots";
 
 export const useUnapprovedSpots = (bounds: MapTypes.Bounds | null) => {
   const { data: spots, ...queryData } = useQuery({

@@ -1,3 +1,9 @@
-export { fetchUserSettings } from "./lib/fetchUserSettings";
-export { updateUserSettings } from "./lib/updateUserSettings";
+import { fetchUserSettings } from "./api/fetchUserSettings";
+import { updateUserSettings } from "./api/updateUserSettings";
+
 export { useUserSettings } from "./lib/useUserSettings";
+
+export const userAPI = {
+  fetchUserSettings,
+  updateUserSettings,
+};

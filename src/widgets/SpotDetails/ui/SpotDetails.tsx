@@ -12,7 +12,7 @@ import {
 import { getDistanceBetweenPoints } from "entities/map/lib/getDistanceBetweenPoints";
 import { SpotTypes } from "entities/parkingSpot";
 import { useUserStore } from "entities/user";
-import { useSpotVote } from "features/parkingSpot/lib/hooks/useSpotVote";
+import { useSpotVote } from "features/parkingSpot/lib/useSpotVote";
 import googleMapsIcon from "shared/assets/google-maps-icon.png";
 import wazeMapsIcon from "shared/assets/waze-maps-icon.svg";
 import { convertDistanceToText } from "shared/lib/convertDistanceToText";

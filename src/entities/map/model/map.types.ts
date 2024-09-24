@@ -4,3 +4,5 @@ export interface Bounds {
   westLongitude: string;
   eastLongitude: string;
 }
+
+export type MarkerType = "standart" | "selected" | "approved";

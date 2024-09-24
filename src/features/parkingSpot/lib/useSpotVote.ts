@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "shared/lib/queryClient";
 
-import { voteForSpot } from "../functions/voteForSpot";
+import { voteForSpot } from "../api/voteForSpot";
 
 export const useSpotVote = () => {
   const voteMutation = useMutation({

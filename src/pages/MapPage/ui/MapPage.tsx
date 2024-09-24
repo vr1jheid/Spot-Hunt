@@ -1,5 +1,5 @@
 import { Loader } from "@mantine/core";
-import { MapContextProvider } from "entities/MapContext";
+import { MapContextProvider } from "entities/map";
 import { Outlet } from "react-router-dom";
 import { AppMenu } from "widgets/AppMenu";
 import { Map, useMapToken } from "widgets/Map";

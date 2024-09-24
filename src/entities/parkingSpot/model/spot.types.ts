@@ -14,6 +14,7 @@ export interface SpotLocalBrief extends Omit<SpotServerBrief, "coordinates"> {
     lng: number;
     lat: number;
   };
+  isApproved?: boolean;
 }
 
 export interface SpotServerData extends SpotServerBrief {
