@@ -10,6 +10,7 @@ export const AppMenu = () => {
   const idInput = useRef<HTMLInputElement | null>(null);
   const { open, setOpen } = useMenu();
   const { id, setID } = useUserStore();
+  const isDev = import.meta.env.DEV;
 
   const {
     settings,
@@ -48,20 +49,22 @@ export const AppMenu = () => {
       size={"100%"}
     >
       <div className="flex h-full w-full flex-col gap-7">
-        <div className="flex gap-2">
-          <NumberInput ref={idInput} min={0} />
-          <Button
-            onClick={() => {
-              if (!idInput.current?.value) {
-                return;
-              }
+        {isDev && (
+          <div className="flex gap-2">
+            <NumberInput ref={idInput} min={0} />
+            <Button
+              onClick={() => {
+                if (!idInput.current?.value) {
+                  return;
+                }
 
-              setID(window.btoa(idInput.current?.value));
-            }}
-          >
-            set
-          </Button>
-        </div>
+                setID(window.btoa(idInput.current?.value));
+              }}
+            >
+              set
+            </Button>
+          </div>
+        )}
         <div className="flex items-center gap-5">
           User id
           <CopyButton value={id ?? ""}>

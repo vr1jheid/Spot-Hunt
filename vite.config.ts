@@ -6,12 +6,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
-  /*   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "src"),
-      pages: path.resolve(__dirname, "src", "pages"),
-      widgets: path.resolve(__dirname, "src", "widgets"),
-      features: path.resolve(__dirname, "src", "pages"),
-    },
+  /*   preview: {
+    port: 5173,
   }, */
 });
