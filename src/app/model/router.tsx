@@ -8,6 +8,8 @@ import { SpotPage } from "pages/SpotPage";
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import { queryClient } from "shared/lib/queryClient";
 
+import { ErrorBoundary } from "../ui/ErrorBoundary/ErrorBoundary.tsx";
+
 export const router = createBrowserRouter([
   {
     element: (
@@ -20,6 +22,7 @@ export const router = createBrowserRouter([
         </QueryClientProvider>
       </>
     ),
+    errorElement: <ErrorBoundary />,
     children: [
       {
         path: "/",
